@@ -104,10 +104,7 @@ dist
 .tern-port
 
 # Compiled JS files
-*js
-./database/*.js
-./website/*.js
-./email/*.js
+*.js
 
 # Sqlite files
 database/*.sqlite3
