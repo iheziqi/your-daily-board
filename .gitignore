@@ -105,9 +105,9 @@ dist
 
 # Compiled JS files
 *js
-database/*.js
-website/*.js
-email/*.js
+./database/*.js
+./website/*.js
+./email/*.js
 
 # Sqlite files
 database/*.sqlite3
