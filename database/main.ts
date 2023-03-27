@@ -1,7 +1,7 @@
 import { mensaList } from './mensaList';
 import { getMensaMenu } from './getMensaMenu';
 import { getCurrentDate } from './utils/utils';
-import { MenuDB } from './database';
+import { MenuDB, UserDB } from './database';
 
 export type MensaMenu = {
 	// The string id of mensa.
@@ -11,13 +11,3 @@ export type MensaMenu = {
 	// The string of menu.
 	menuText: string;
 };
-
-const todayMenu: MensaMenu = {
-	category: 'mohm',
-	date: getCurrentDate(),
-	menuText: 'this is an random test menu',
-};
-
-const menuDB = new MenuDB('daily-board.sqlite3');
-// menuDB.insertMenu(todayMenu);
-menuDB.queryMenu('mohm', getCurrentDate());
