@@ -1,11 +1,11 @@
 import axios from 'axios';
 import jsdom from 'jsdom';
-import { Mensa } from './mensaList';
+import { Mensa } from './mensa';
 
 const { JSDOM } = jsdom;
 
 /**
- * Gets the given mensa menu as string. 
+ * Gets the given mensa menu as string.
  * @param mensa Mensa object.
  * @returns String of menu in HTML format.
  */
@@ -24,15 +24,26 @@ export const getMensaMenu = async (mensa: Mensa) => {
 };
 
 /**
- * Parses the html page that gets from http request of mensa website and return the html element including the menu. 
+ * Determines whether or not the menu exists.
+ * On public holidays and some special days there is no menu.
  * @param htmlPage The html page gets from http request.
- * @returns The html element including the menu. 
+ * @returns A boolean value of whether or not the menu exists.
  */
-const parseMenuHTML = (htmlPage: string): Element | null => {
+const hasMenu = (htmlPage: string): boolean => {
+	return true;
+};
+
+/**
+ * Parses the html page that gets from http request of mensa website and return the html element including the menu.
+ * @param htmlPage The html page gets from http request.
+ * @returns The html element including the menu.
+ */
+const parseMenuHTML = (htmlPage: string): Element => {
 	// Use JSDOM to get the menu div element.
 	const { window } = new JSDOM(htmlPage, { runScripts: 'outside-only' });
 
 	// Remove all <details> tags, because Gmail client does not support it.
+	// Remove the buttons at the bottom of menu.
 	window.eval(`
  		  const details = document.getElementsByTagName('details');
       Array.from(details).forEach((item) => {
@@ -45,7 +56,10 @@ const parseMenuHTML = (htmlPage: string): Element | null => {
 	const mensaDivElement = window.document.querySelector(
 		'div[style*="border-radius: 4px 4px 0px 0px;"]'
 	);
+	if (!mensaDivElement) {
+		throw new Error('There is no menu!');
+	}
 	console.log(mensaDivElement?.innerHTML);
 
-	return mensaDivElement;
+	return mensaDivElement!;
 };

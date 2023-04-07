@@ -1,3 +1,12 @@
+export type MensaMenu = {
+	// The string id of mensa.
+	category: string;
+	// The current data in format of YYYY-MM-DD.
+	date: string;
+	// The string of menu.
+	menuText: string;
+};
+
 export type Mensa = {
 	id: string;
 	name: string;

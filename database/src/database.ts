@@ -1,5 +1,5 @@
 import sqlite3 from 'sqlite3';
-import { MensaMenu } from './main';
+import { MensaMenu } from './mensa';
 
 interface MensaMenuTableCrud {
 	insertMenu: (menu: MensaMenu) => void;
