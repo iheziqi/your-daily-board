@@ -105,5 +105,6 @@ dist
 
 # Compiled JS files
 database/build/
+email/build/
 
 .DS_Store
