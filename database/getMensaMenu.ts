@@ -16,8 +16,8 @@ export const getMensaMenu = async (mensa: Mensa) => {
 		// Handle success.
 		const data: string = response.data;
 		// Parse HTML and get the menu.
-		const menuElement = parseMenuHTML(data);
-		return menuElement?.innerHTML;
+		const menuElement = parseMenuHTML(data)!;
+		return menuElement.innerHTML;
 	} catch (error) {
 		console.error(error);
 	}
