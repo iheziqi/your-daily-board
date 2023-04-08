@@ -11,6 +11,14 @@ interface UserTableCrud {
 	deleteUser: (email: string) => void;
 }
 
+type SubscriptionEntry = { email: string; category: string }[];
+
+interface SubscriptionTableCrud {
+	insertSubscription: (email: string, category: string) => void;
+	deleteSubscription: (email: string, category: string) => void;
+	querySubscription: (email: string) => Promise<SubscriptionEntry | null>;
+}
+
 /**
  * Controls the mensa_menus table in database.
  * The schema of the table:
@@ -100,13 +108,77 @@ export class UserDB implements UserTableCrud {
 	 * @param email The email address of user.
 	 */
 	deleteUser(email: string): void {
-		const del = `DELETE FROM users_menus WHERE email = ?;`;
+		const del = `DELETE FROM users WHERE email = ?;`;
 		this.db.run(del, [email], (err) => {
 			if (err) {
 				console.error(err.message);
 			} else {
 				console.log('User deleted');
 			}
+		});
+	}
+}
+
+export class SubscriptionDB implements SubscriptionTableCrud {
+	// The database instance
+	private db: sqlite3.Database;
+
+	constructor(dbPath: string) {
+		this.db = new sqlite3.Database(dbPath);
+	}
+
+	/**
+	 * Insert the relation of email and category.
+	 * @param email String of email
+	 * @param category The name of mensa
+	 */
+	insertSubscription(email: string, category: string): void {
+		const insert = `INSERT INTO subscribe(email, category) VALUES(?,?); `;
+		this.db.run(insert, [email, category], (err) => {
+			if (err) {
+				console.error(err.message);
+			} else {
+				console.log('Subscription inserted.');
+			}
+		});
+	}
+
+	/**
+	 * Delete the relation of email and category.
+	 * @param email String of email
+	 * @param category The name of mensa
+	 */
+	deleteSubscription(email: string, category: string): void {
+		const del = `DELETE FROM subscribe WHERE email = ? AND category = ?`;
+		this.db.run(del, [email, category], (err) => {
+			if (err) {
+				console.error(err.message);
+			} else {
+				console.log(' deleted');
+			}
+		});
+	}
+
+	/**
+	 * Get the relation of user and mensa category.
+	 * The result is like [
+	 * { email: 'test1@gmail.com', category: 'mohm' },
+	 * { email: 'test2gmail.com', category: 'sued' }
+	 * ]
+	 * If there is no corresponding entry, return null.
+	 * @param email The string of email
+	 */
+	querySubscription(email: string): Promise<SubscriptionEntry | null> {
+		return new Promise((resolve, reject) => {
+			const select = `SELECT * FROM subscribe WHERE email = ?`;
+			this.db.all(select, [email], (err, rows: SubscriptionEntry | null) => {
+				if (err) {
+					console.error(err.message);
+					reject(err);
+				} else {
+					resolve(rows);
+				}
+			});
 		});
 	}
 }

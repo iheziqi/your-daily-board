@@ -281,7 +281,7 @@ const emailTitle = `
 																												font-size: 42px;
 																												font-weight: 700;
 																												line-height: 120%;
-																												text-align: center;
+																												text-align: right;
 																												color: #111111;
 																											"
 																										>
@@ -308,7 +308,7 @@ const emailTitle = `
 																												font-size: 20px;
 																												font-weight: 200;
 																												line-height: 120%;
-																												text-align: center;
+																												text-align: right;
 																												color: #111111;
 																											"
 																										>
@@ -1126,7 +1126,6 @@ const menuJumpLink = `
 																												font-weight: 500;
 																												line-height: 115%;
 																												margin: 0;
-																												text-decoration: none;
 																												text-transform: uppercase;
 																												padding: 10px 20px;
 																												mso-padding-alt: 0px;
@@ -1193,7 +1192,6 @@ const menuJumpLink = `
 																												font-weight: 500;
 																												line-height: 115%;
 																												margin: 0;
-																												text-decoration: none;
 																												text-transform: uppercase;
 																												padding: 10px 20px;
 																												mso-padding-alt: 0px;
