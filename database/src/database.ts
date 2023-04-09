@@ -1,23 +1,12 @@
 import sqlite3 from 'sqlite3';
-import { MensaMenu } from './mensa';
-
-interface MensaMenuTableCrud {
-	insertMenu: (menu: MensaMenu) => void;
-	queryMenu: (category: string, date: string) => void;
-}
-
-interface UserTableCrud {
-	insertUser: (email: string) => void;
-	deleteUser: (email: string) => void;
-}
-
-type SubscriptionEntry = { email: string; category: string }[];
-
-interface SubscriptionTableCrud {
-	insertSubscription: (email: string, category: string) => void;
-	deleteSubscription: (email: string, category: string) => void;
-	querySubscription: (email: string) => Promise<SubscriptionEntry | null>;
-}
+import {
+	MensaMenu,
+	MensaMenuTableCrud,
+	UserTableCrud,
+	SubscriptionTableCrud,
+	MenuEntry,
+	SubscriptionEntry,
+} from './mensa';
 
 /**
  * Controls the mensa_menus table in database.
@@ -59,16 +48,17 @@ export class MenuDB implements MensaMenuTableCrud {
 	 * @param category
 	 * @param date
 	 */
-	queryMenu(category: string, date: string): void {
-		const select = `SELECT menu FROM mensa_menus 
-      WHERE category='${category}' AND date='${date}';`;
-
-		this.db.all(select, [], (err, rows) => {
-			if (err) {
-				console.error(err.message);
-			} else {
-				console.log(rows);
-			}
+	queryMenu(category: string, date: string): Promise<MenuEntry> {
+		const select = `SELECT menu FROM mensa_menus WHERE category=? AND date=?;`;
+		return new Promise((resolve, reject) => {
+			this.db.all(select, [category, date], (err, rows: MenuEntry) => {
+				if (err) {
+					console.error(err.message);
+					reject(err);
+				} else {
+					resolve(rows);
+				}
+			});
 		});
 	}
 }
@@ -167,11 +157,12 @@ export class SubscriptionDB implements SubscriptionTableCrud {
 	 * ]
 	 * If there is no corresponding entry, return null.
 	 * @param email The string of email
+	 * @returns Promise<SubscriptionEntry | null>
 	 */
-	querySubscription(email: string): Promise<SubscriptionEntry | null> {
+	querySubscription(email: string): Promise<SubscriptionEntry> {
 		return new Promise((resolve, reject) => {
 			const select = `SELECT * FROM subscribe WHERE email = ?`;
-			this.db.all(select, [email], (err, rows: SubscriptionEntry | null) => {
+			this.db.all(select, [email], (err, rows: SubscriptionEntry) => {
 				if (err) {
 					console.error(err.message);
 					reject(err);
