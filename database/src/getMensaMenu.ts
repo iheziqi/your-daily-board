@@ -14,7 +14,7 @@ export const getMensaMenu = async (mensa: Mensa) => {
 	try {
 		const response = await axios.get(url);
 		// Handle success.
-		const data: string = response.data;
+		const data: string = await response.data;
 		// Parse HTML and get the menu.
 		const menuElement = parseMenuHTML(data)!;
 		return menuElement.innerHTML;
@@ -29,7 +29,21 @@ export const getMensaMenu = async (mensa: Mensa) => {
  * @param htmlPage The html page gets from http request.
  * @returns A boolean value of whether or not the menu exists.
  */
-const hasMenu = (htmlPage: string): boolean => {
+export const hasMenu = (htmlPage: string): boolean => {
+	// Use JSDOM to get the html document object.
+	const { document } = new JSDOM(htmlPage).window;
+	const menuDivElement = document.querySelector(
+		'div[style*="border-radius: 4px 4px 0px 0px;"]'
+	)!;
+	// Get the first child node of the menuDivElement.
+	// Here childNodes[1] because the first one is textNode
+	// created by line break in HTML structure file.
+	// If the first element is a form, it demonstrates that
+	// there is no menu today.
+	const firstChild = menuDivElement.childNodes[1]!;
+	if (firstChild.nodeName === 'FORM') {
+		return false;
+	}
 	return true;
 };
 
@@ -53,13 +67,12 @@ const parseMenuHTML = (htmlPage: string): Element => {
 			form.remove();`);
 
 	// Get the menu div element
-	const mensaDivElement = window.document.querySelector(
+	const menuDivElement = window.document.querySelector(
 		'div[style*="border-radius: 4px 4px 0px 0px;"]'
 	);
-	if (!mensaDivElement) {
+	if (!menuDivElement) {
 		throw new Error('There is no menu!');
 	}
-	console.log(mensaDivElement?.innerHTML);
 
-	return mensaDivElement!;
+	return menuDivElement!;
 };
