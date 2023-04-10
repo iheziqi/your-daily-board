@@ -1,7 +1,8 @@
 import { MensaID, mensaList } from '../database/mensa';
 
-const emailSkeleton = `
-<!DOCTYPE html>
+
+function emailSkeleton(): string {
+	const emailSkeleton = `<!DOCTYPE html>
 <html
 	xmlns="http://www.w3.org/1999/xhtml"
 	xmlns:v="urn:schemas-microsoft-com:vml"
@@ -168,8 +169,11 @@ const emailSkeleton = `
 	</body>
 </html>
 `;
+	return emailSkeleton;
+}
 
-const emailTitle = `
+function emailTitle() {
+	const emailTitle = `
 <!-- EMAIL TITLE -->
 <table
 				align="center"
@@ -347,8 +351,11 @@ const emailTitle = `
 			</table>
 <!-- END OF EMAIL TITLE -->
 `;
+	return emailTitle;
+}
 
-const blankSpace = `
+function blankSpace() {
+	const blankSpace = `
 <!-- BLANK SPACE -->
 <!--[if mso | IE]></td></tr></table><table align="center" border="0" cellpadding="0" cellspacing="0" class="" role="presentation" style="width:600px;" width="600" ><tr><td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;"><![endif]-->
 
@@ -448,8 +455,11 @@ const blankSpace = `
 			</div>
 <!-- END OF BLANK SPACE -->
 `;
+	return blankSpace;
+}
 
-const menuJumpLink = `
+function menuJumpLink() {
+	const menuJumpLink = `
 <!-- MENU JUMP LINKS -->
 			<!--[if mso | IE]></td></tr></table><table align="center" border="0" cellpadding="0" cellspacing="0" class="gutter-outlook" role="presentation" style="width:600px;" width="600" ><tr><td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;"><![endif]-->
 			<div class="gutter" style="margin: 0px auto; max-width: 600px">
@@ -759,8 +769,11 @@ const menuJumpLink = `
 			</div>
       <!-- END OF MENU JUMP LINKS -->
 `;
+	return menuJumpLink;
+}
 
-const footer = `
+function footer() {
+	const footer = `
 <!-- FOOTER -->
 <!--[if mso | IE]></td></tr></table><![endif]-->
 			<table
@@ -951,11 +964,12 @@ const footer = `
 			</table>
 <!-- END OF FOOTER -->
 `;
+	return footer;
+}
 
 function menuLoader(id: MensaID, menuText: string): string {
 	const { name, picture } = mensaList.find((mensa) => mensa.id === id)!;
-	const menuContainer = `
-<!--[if mso | IE]><table align="center" border="0" cellpadding="0" cellspacing="0" class="gutter-outlook" role="presentation" style="width:600px;" width="600" ><tr><td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;"><![endif]-->
+	const menuContainer = `<!--[if mso | IE]><table align="center" border="0" cellpadding="0" cellspacing="0" class="gutter-outlook" role="presentation" style="width:600px;" width="600" ><tr><td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;"><![endif]-->
 
       <!-- MENSA CONTAINER -->
 			<div class="gutter" style="margin: 0px auto; max-width: 600px">
@@ -1213,6 +1227,7 @@ function menuLoader(id: MensaID, menuText: string): string {
 				</table>
 			</div>
       <!-- END OF MENSA CONTAINER -->
+      ${blankSpace()}
 `;
 	return menuContainer;
 }

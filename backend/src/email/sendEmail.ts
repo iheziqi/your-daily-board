@@ -8,7 +8,7 @@ dotenv.config();
  * @param receivers
  * @param emailContent
  */
-async function sendEmail(receivers: string, emailContent: string) {
+export async function sendEmail(receivers: string, emailContent: string) {
 	try {
 		// create reusable transporter object using the default SMTP transport
 		let transporter = nodemailer.createTransport({

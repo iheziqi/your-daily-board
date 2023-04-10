@@ -13,6 +13,14 @@ export type Mensa = {
 /** Type of Mensa ID */
 export type MensaID = 'sued' | 'lmpl' | 'mohm' | 'isch';
 
+/** Type of menu text */
+export type MenuObject = {
+	sued?: string;
+	lmpl?: string;
+	mohm?: string;
+	isch?: string;
+};
+
 /** All Mensa Information */
 export const mensaList: Mensa[] = [
 	{
