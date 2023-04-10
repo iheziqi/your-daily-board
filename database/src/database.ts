@@ -10,7 +10,7 @@ import {
 } from './mensa';
 import { cwd } from 'process';
 
-const DBPATH = `${cwd()}/daily-board.sqlite3`;
+export const DBPATH = `${cwd()}/daily-board.sqlite3`;
 
 /**
  * Controls the mensa_menus table in database.
@@ -72,7 +72,12 @@ export class MenuDB implements MensaMenuTableCrud {
 	 * Closes the database connection.
 	 */
 	close(): void {
-		this.db.close();
+		this.db.close((err) => {
+			if (err) {
+				console.error(err);
+			}
+		});
+		console.log('Database connection has been closed successfully!');
 	}
 }
 
@@ -83,7 +88,7 @@ export class MenuDB implements MensaMenuTableCrud {
  * id INTEGER PRIMARY KEY AUTOINCREMENT,
  * email TEXT NOT NULL);
  */
-export class UserDB implements UserTableCrud {
+export class UserDB {
 	// Database instance
 	private db: sqlite3.Database;
 	// The path of database file
@@ -93,11 +98,15 @@ export class UserDB implements UserTableCrud {
 		this.db = new sqlite3.Database(this.dbPath);
 	}
 
+	public get databaseInstance(): sqlite3.Database {
+		return this.db;
+	}
+
 	/**
 	 * Queries all users in database.
 	 * @returns An array of user objects.
 	 */
-	queryUsers(): Promise<UsersEntry> {
+	async queryUsers(): Promise<UsersEntry> {
 		return new Promise((resolve, reject) => {
 			const select = `SELECT * FROM users;`;
 			this.db.all(select, [], (err, rows: UsersEntry) => {
@@ -114,7 +123,7 @@ export class UserDB implements UserTableCrud {
 	 * Inserts a user and records email address.
 	 * @param email The email address of user.
 	 */
-	insertUser(email: string): void {
+	async insertUser(email: string): Promise<void> {
 		const insert = `INSERT INTO users(email) VALUES(?);`;
 		this.db.run(insert, [email], (err) => {
 			if (err) {
@@ -129,7 +138,7 @@ export class UserDB implements UserTableCrud {
 	 * Deletes a user.
 	 * @param email The email address of user.
 	 */
-	deleteUser(email: string): void {
+	async deleteUser(email: string): Promise<void> {
 		const del = `DELETE FROM users WHERE email = ?;`;
 		this.db.run(del, [email], (err) => {
 			if (err) {
@@ -140,11 +149,54 @@ export class UserDB implements UserTableCrud {
 		});
 	}
 
+  /**
+   * !!! Dangerous !!!
+   * This is only for test purpose.
+   * You will delete all entries in the user table! 
+   * @returns 
+   */
+	async clearDatabaseEntries(): Promise<void> {
+		return new Promise((resolve, reject) => {
+			this.db.run('DELETE FROM users;', (err) => {
+				if (err) {
+					reject(err);
+				} else {
+					console.log('All users have been deleted from users table!');
+					resolve();
+				}
+			});
+		});
+	}
+
+  /**
+   * !!! Dangerous !!!
+   * This is only for test purpose.
+   * You will delete all indexes in the user table! 
+   * @returns 
+   */
+	async clearDatabaseIndex(): Promise<void> {
+		return new Promise((resolve, reject) => {
+			this.db.run('DELETE FROM sqlite_sequence WHERE name="users";', (err) => {
+				if (err) {
+					reject(err);
+				} else {
+					console.log('All indexes have been deleted from users table!');
+					resolve();
+				}
+			});
+		});
+	}
+
 	/**
 	 * Closes the database connection.
 	 */
 	close(): void {
-		this.db.close();
+		this.db.close((err) => {
+			if (err) {
+				console.error(err);
+			}
+		});
+		console.log('Database connection has been closed successfully!');
 	}
 }
 
@@ -218,6 +270,11 @@ export class SubscriptionDB implements SubscriptionTableCrud {
 	 * Closes the database connection.
 	 */
 	close(): void {
-		this.db.close();
+		this.db.close((err) => {
+			if (err) {
+				console.error(err);
+			}
+		});
+		console.log('Database connection has been closed successfully!');
 	}
 }

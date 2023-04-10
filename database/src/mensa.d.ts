@@ -62,8 +62,8 @@ export type UsersEntry = { email: string }[];
 /** The interface of class to crud users table */
 export interface UserTableCrud {
 	queryUsers: () => Promise<UsersEntry | null>;
-	insertUser: (email: string) => void;
-	deleteUser: (email: string) => void;
+	insertUser: (email: string) => Promise<void>;
+	deleteUser: (email: string) => Promise<void>;
 }
 
 /** The result retrieved from database table subscribe */
