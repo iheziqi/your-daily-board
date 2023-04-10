@@ -3,10 +3,14 @@ import {
 	MensaMenu,
 	MensaMenuTableCrud,
 	UserTableCrud,
+	UsersEntry,
 	SubscriptionTableCrud,
 	MenuEntry,
 	SubscriptionEntry,
 } from './mensa';
+import { cwd } from 'process';
+
+const DBPATH = `${cwd()}/daily-board.sqlite3`;
 
 /**
  * Controls the mensa_menus table in database.
@@ -20,9 +24,11 @@ import {
 export class MenuDB implements MensaMenuTableCrud {
 	// The database instance
 	private db: sqlite3.Database;
+	// The path of database file
+	private dbPath = DBPATH;
 
-	constructor(dbPath: string) {
-		this.db = new sqlite3.Database(dbPath);
+	constructor() {
+		this.db = new sqlite3.Database(this.dbPath);
 	}
 
 	/**
@@ -61,6 +67,13 @@ export class MenuDB implements MensaMenuTableCrud {
 			});
 		});
 	}
+
+	/**
+	 * Closes the database connection.
+	 */
+	close(): void {
+		this.db.close();
+	}
 }
 
 /**
@@ -71,11 +84,30 @@ export class MenuDB implements MensaMenuTableCrud {
  * email TEXT NOT NULL);
  */
 export class UserDB implements UserTableCrud {
-	/** Database instance */
+	// Database instance
 	private db: sqlite3.Database;
+	// The path of database file
+	private dbPath = DBPATH;
 
-	constructor(dbPath: string) {
-		this.db = new sqlite3.Database(dbPath);
+	constructor() {
+		this.db = new sqlite3.Database(this.dbPath);
+	}
+
+	/**
+	 * Queries all users in database.
+	 * @returns An array of user objects.
+	 */
+	queryUsers(): Promise<UsersEntry> {
+		return new Promise((resolve, reject) => {
+			const select = `SELECT * FROM users;`;
+			this.db.all(select, [], (err, rows: UsersEntry) => {
+				if (err) {
+					reject(err);
+				} else {
+					resolve(rows);
+				}
+			});
+		});
 	}
 
 	/**
@@ -107,14 +139,23 @@ export class UserDB implements UserTableCrud {
 			}
 		});
 	}
+
+	/**
+	 * Closes the database connection.
+	 */
+	close(): void {
+		this.db.close();
+	}
 }
 
 export class SubscriptionDB implements SubscriptionTableCrud {
 	// The database instance
 	private db: sqlite3.Database;
+	// The path of database file
+	private dbPath = DBPATH;
 
-	constructor(dbPath: string) {
-		this.db = new sqlite3.Database(dbPath);
+	constructor() {
+		this.db = new sqlite3.Database(this.dbPath);
 	}
 
 	/**
@@ -171,5 +212,12 @@ export class SubscriptionDB implements SubscriptionTableCrud {
 				}
 			});
 		});
+	}
+
+	/**
+	 * Closes the database connection.
+	 */
+	close(): void {
+		this.db.close();
 	}
 }

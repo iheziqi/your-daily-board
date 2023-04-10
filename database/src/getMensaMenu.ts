@@ -4,12 +4,15 @@ import { Mensa } from './mensa';
 
 const { JSDOM } = jsdom;
 
+/**
+ * Scrapes the menu of given Mensa.
+ */
 export class MenuScraper {
-  private mensa: Mensa;
+	private mensa: Mensa;
 	public mensaID: string;
 
 	constructor(mensa: Mensa) {
-    this.mensa = mensa;
+		this.mensa = mensa;
 		this.mensaID = mensa['id'];
 	}
 
@@ -19,11 +22,16 @@ export class MenuScraper {
 	 * @returns The menu content inside the container if exists.
 	 */
 	public async scrape(): Promise<string | null> {
-		const mensaPage = await this.getMensaMenu(this.mensa);
-		if (!this.hasMenu(mensaPage as string)) {
+		try {
+			const mensaPage = await this.getMensaMenu(this.mensa);
+			if (!this.hasMenu(mensaPage as string)) {
+				return null;
+			}
+			return this.parseMenuHTML(mensaPage);
+		} catch (error) {
+			console.error(error);
 			return null;
 		}
-		return this.parseMenuHTML(mensaPage);
 	}
 
 	/**

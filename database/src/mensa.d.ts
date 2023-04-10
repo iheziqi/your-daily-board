@@ -47,7 +47,7 @@ export type MensaMenu = {
 	menuText: string;
 };
 
-/** The result entry retrieve from the database */
+/** The result entry retrieved from the table mensa_menus */
 export type MenuEntry = { menu: string }[];
 
 /** The interface of class to crud table mensa_menus */
@@ -56,8 +56,12 @@ export interface MensaMenuTableCrud {
 	queryMenu: (category: string, date: string) => Promise<MenuEntry>;
 }
 
+/** The result entry retrieved from the users table */
+export type UsersEntry = { email: string }[];
+
 /** The interface of class to crud users table */
 export interface UserTableCrud {
+	queryUsers: () => Promise<UsersEntry | null>;
 	insertUser: (email: string) => void;
 	deleteUser: (email: string) => void;
 }
