@@ -1,8 +1,8 @@
-import { error } from 'console';
+import { log } from 'console';
 import { UserDB } from '../src/database';
-import { resolve } from 'path';
+import { UsersEntry } from '../src/mensa';
 
-describe('User Table Test', () => {
+describe('User Table Test 1', () => {
 	let userDB: UserDB;
 
 	beforeAll(() => {
@@ -10,35 +10,74 @@ describe('User Table Test', () => {
 	});
 
 	afterAll(async () => {
-    await userDB.clearDatabaseEntries();
-    await userDB.clearDatabaseIndex();
+		await userDB.clearDatabaseEntries();
+		await userDB.clearDatabaseIndex();
 		// Close the connection to database;
 		userDB.close();
+	});
+
+	test('deletes a user', async () => {
+		const email = 'test@example.com';
+		await userDB.insertUser(email);
+		await userDB.deleteUser(email);
+		const users = await userDB.queryUsers();
+		expect(users.length).toBe(0);
 	});
 
 	test('inserts a user', async () => {
 		const email = 'test@example.com';
 		await userDB.insertUser(email);
 		const users = await userDB.queryUsers();
-		console.log(users);
 		expect(users.some((user) => user.email === email)).toBe(true);
 	});
+});
 
-	it('deletes a user', async () => {
-		const email = 'test@example.com';
-		await userDB.insertUser(email);
-		await userDB.deleteUser(email);
-		const users = await userDB.queryUsers();
-		console.log(users);
-		expect(users.some((user) => user.email === email)).toBe(false);
+describe('User Table Test 2', () => {
+	let userDB: UserDB;
+
+	function arraysOfObjectsEqual(arr1: UsersEntry, arr2: UsersEntry) {
+		if (arr1.length !== arr2.length) {
+			return false;
+		}
+
+		const arr1Emails = arr1.map((obj) => obj.email);
+		const arr2Emails = arr2.map((obj) => obj.email);
+
+		return arr1Emails.every((email) => arr2Emails.includes(email));
+	}
+	beforeAll(() => {
+		userDB = new UserDB();
 	});
 
-	// it('returns user subscriptions', async () => {
-	// 	const email = 'test@example.com';
-	// 	const category = 'lunch';
-	// 	await userDB.insertUser(email);
-	// 	await userDB.subscribe(email, category);
-	// 	const subscriptions = await userDB.querySubscriptions(email);
-	// 	expect(subscriptions.some((sub) => sub.category === category)).toBe(true);
-	// });
+	afterAll(async () => {
+		await userDB.clearDatabaseEntries();
+		await userDB.clearDatabaseIndex();
+		// Close the connection to database;
+		userDB.close();
+	});
+
+	const emailAddresses = [
+		{ email: 'testemail001@gmail.com' },
+		{ email: 'mytestemail123@yahoo.com' },
+		{ email: 'dummyemail456@hotmail.com' },
+		{ email: 'trythisemail789@outlook.com' },
+		{ email: 'testaccount999@mail.com' },
+	];
+
+	test('inserts multiple users', async () => {
+		for (let email of emailAddresses) {
+			await userDB.insertUser(email.email);
+		}
+		const users = await userDB.queryUsers();
+		expect(arraysOfObjectsEqual(users, emailAddresses)).toBe(true);
+	});
+
+	test('deletes multiple users', async () => {
+		for (let email of emailAddresses) {
+			log(email);
+			await userDB.deleteUser(email.email);
+		}
+		const users = await userDB.queryUsers();
+		expect(users.length).toBe(0);
+	});
 });

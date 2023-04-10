@@ -124,13 +124,16 @@ export class UserDB {
 	 * @param email The email address of user.
 	 */
 	async insertUser(email: string): Promise<void> {
-		const insert = `INSERT INTO users(email) VALUES(?);`;
-		this.db.run(insert, [email], (err) => {
-			if (err) {
-				console.error(err.message);
-			} else {
-				console.log('User inserted');
-			}
+		return new Promise((resolve, reject) => {
+			const insert = `INSERT INTO users(email) VALUES(?);`;
+			this.db.run(insert, [email], (err) => {
+				if (err) {
+					reject(err);
+				} else {
+					console.log(`${email} inserted!`);
+					resolve();
+				}
+			});
 		});
 	}
 
@@ -139,22 +142,25 @@ export class UserDB {
 	 * @param email The email address of user.
 	 */
 	async deleteUser(email: string): Promise<void> {
-		const del = `DELETE FROM users WHERE email = ?;`;
-		this.db.run(del, [email], (err) => {
-			if (err) {
-				console.error(err.message);
-			} else {
-				console.log('User deleted');
-			}
+		return new Promise((resolve, reject) => {
+			const del = `DELETE FROM users WHERE email = ?;`;
+			this.db.run(del, [email], (err) => {
+				if (err) {
+					reject(err);
+				} else {
+					console.log(`${email} deleted!`);
+					resolve();
+				}
+			});
 		});
 	}
 
-  /**
-   * !!! Dangerous !!!
-   * This is only for test purpose.
-   * You will delete all entries in the user table! 
-   * @returns 
-   */
+	/**
+	 * !!! Dangerous !!!
+	 * This is only for test purpose.
+	 * You will delete all entries in the user table!
+	 * @returns
+	 */
 	async clearDatabaseEntries(): Promise<void> {
 		return new Promise((resolve, reject) => {
 			this.db.run('DELETE FROM users;', (err) => {
@@ -168,12 +174,12 @@ export class UserDB {
 		});
 	}
 
-  /**
-   * !!! Dangerous !!!
-   * This is only for test purpose.
-   * You will delete all indexes in the user table! 
-   * @returns 
-   */
+	/**
+	 * !!! Dangerous !!!
+	 * This is only for test purpose.
+	 * You will delete all indexes in the user table!
+	 * @returns
+	 */
 	async clearDatabaseIndex(): Promise<void> {
 		return new Promise((resolve, reject) => {
 			this.db.run('DELETE FROM sqlite_sequence WHERE name="users";', (err) => {
