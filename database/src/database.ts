@@ -31,9 +31,9 @@ export class MenuDB implements MensaMenuTableCrud {
 		this.db = new sqlite3.Database(this.dbPath);
 	}
 
-  /**
-   * Getter for database instance.
-   */
+	/**
+	 * Getter for database instance.
+	 */
 	public get databaseInstance(): sqlite3.Database {
 		return this.db;
 	}
@@ -196,6 +196,13 @@ export class SubscriptionDB implements SubscriptionTableCrud {
 
 	constructor() {
 		this.db = new sqlite3.Database(this.dbPath);
+	}
+
+  /**
+   * Getter for database instance.
+   */
+	public get databaseInstance(): sqlite3.Database {
+		return this.db;
 	}
 
 	/**
