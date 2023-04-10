@@ -1,10 +1,6 @@
 import { EmailLoader } from './assembleEmail';
-import { MensaMenu } from '../../database/src/mensa';
-import {
-	UserDB,
-	MenuDB,
-	SubscriptionDB,
-} from '../../database/src/database/database';
+import { MensaMenu } from '../database/mensa';
+import { UserDB, MenuDB, SubscriptionDB } from '../database/database';
 
 const myLoader = new EmailLoader();
 const emailAddresses = [

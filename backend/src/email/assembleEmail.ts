@@ -3,12 +3,7 @@ import {
 	UserDB,
 	SubscriptionDB,
 } from '../database/database';
-import {
-	SubscriptionEntry,
-	UsersEntry,
-	MensaID,
-	MenuEntry,
-} from '../../database/src/mensa';
+import { MensaID, UsersEntry, SubscriptionEntry, MenuEntry } from '../database/mensa';
 import { getCurrentDate } from '../utils/utils';
 
 export class EmailLoader {

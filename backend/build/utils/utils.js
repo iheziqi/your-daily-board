@@ -16,3 +16,4 @@ function getCurrentDate() {
     return `${year}-${formattedMonth}-${formattedDay}`;
 }
 exports.getCurrentDate = getCurrentDate;
+//# sourceMappingURL=utils.js.map

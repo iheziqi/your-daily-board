@@ -1,4 +1,4 @@
-import { MensaID, mensaList } from '../../database/src/mensa';
+import { MensaID, mensaList } from '../database/mensa';
 
 const emailSkeleton = `
 <!DOCTYPE html>
