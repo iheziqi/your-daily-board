@@ -1,5 +1,5 @@
-import { MenuDB, clearDatabase } from '../src/database';
-import { MenuEntry, mensaList, MensaMenu } from '../src/mensa';
+import { MenuDB, clearDatabase } from '../src/database/database';
+import { MenuEntry, mensaList, MensaMenu } from '../src/database/mensa';
 
 describe('MenuDB Test 1', () => {
 	let menuDB: MenuDB;

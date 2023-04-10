@@ -1,11 +1,13 @@
-import { UserDB, clearDatabase } from '../src/database';
-import { UsersEntry } from '../src/mensa';
+import { UserDB, clearDatabase } from '../src/database/database';
+import { UsersEntry } from '../src/database/mensa';
 
 describe('User Table Test 1', () => {
 	let userDB: UserDB;
 
-	beforeAll(() => {
+	beforeAll(async () => {
 		userDB = new UserDB();
+		const clear = new clearDatabase(userDB.databaseInstance);
+		await clear.clearDatabaseEntries('users');
 	});
 
 	afterAll(async () => {

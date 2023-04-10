@@ -1,5 +1,10 @@
-import { MenuDB, SubscriptionDB, UserDB, clearDatabase } from '../src/database';
-import { MensaMenu, MenuEntry, SubscriptionEntry } from '../src/mensa';
+import {
+	MenuDB,
+	SubscriptionDB,
+	UserDB,
+	clearDatabase,
+} from '../src/database/database';
+import { MensaMenu, MenuEntry, SubscriptionEntry } from '../src/database/mensa';
 
 const emailAddresses = [
 	{ email: 'testemail001@gmail.com' },

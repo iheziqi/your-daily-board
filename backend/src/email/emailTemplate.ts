@@ -1,3 +1,5 @@
+import { MensaID, mensaList } from '../database/mensa';
+
 const emailSkeleton = `
 <!DOCTYPE html>
 <html
@@ -346,267 +348,6 @@ const emailTitle = `
 <!-- END OF EMAIL TITLE -->
 `;
 
-const menuContainer = `
-<!--[if mso | IE]><table align="center" border="0" cellpadding="0" cellspacing="0" class="gutter-outlook" role="presentation" style="width:600px;" width="600" ><tr><td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;"><![endif]-->
-
-      <!-- MENSA CONTAINER -->
-			<div class="gutter" style="margin: 0px auto; max-width: 600px">
-				<table
-					align="center"
-					border="0"
-					cellpadding="0"
-					cellspacing="0"
-					role="presentation"
-					style="width: 100%"
-				>
-					<tbody>
-						<tr>
-							<td
-								style="
-									border: 1px solid #111;
-									direction: ltr;
-									font-size: 0px;
-									padding: 0px;
-									text-align: center;
-								"
-							>
-								<!--[if mso | IE]><table role="presentation" border="0" cellpadding="0" cellspacing="0"><tr><td class="gutter-outlook" width="600px" ><table align="center" border="0" cellpadding="0" cellspacing="0" class="gutter-outlook" role="presentation" style="width:598px;" width="598" bgcolor="#FFFFFF" ><tr><td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;"><![endif]-->
-
-								<div
-									class="gutter"
-									style="
-										background: #ffffff;
-										background-color: #ffffff;
-										margin: 0px auto;
-										border-radius: 0px;
-										max-width: 598px;
-									"
-								>
-									<table
-										align="center"
-										border="0"
-										cellpadding="0"
-										cellspacing="0"
-										role="presentation"
-										style="
-											background: #ffffff;
-											background-color: #ffffff;
-											width: 100%;
-											border-radius: 0px;
-										"
-									>
-										<tbody>
-											<tr>
-												<td
-													style="
-														direction: ltr;
-														font-size: 0px;
-														padding: 0px;
-														text-align: center;
-													"
-												>
-													<!--[if mso | IE]><table role="presentation" border="0" cellpadding="0" cellspacing="0"><tr><td class="" style="vertical-align:top;width:598px;" ><![endif]-->
-
-													<div
-														class="mj-column-per-100 mj-outlook-group-fix"
-														style="
-															font-size: 0px;
-															text-align: left;
-															direction: ltr;
-															display: inline-block;
-															vertical-align: top;
-															width: 100%;
-														"
-													>
-														<table
-															border="0"
-															cellpadding="0"
-															cellspacing="0"
-															role="presentation"
-															width="100%"
-														>
-															<tbody>
-																<tr>
-																	<td
-																		style="
-																			vertical-align: top;
-																			padding: 0px;
-																			padding-top: 40px;
-																			padding-bottom: 40px;
-																		"
-																	>
-																		<table
-																			border="0"
-																			cellpadding="0"
-																			cellspacing="0"
-																			role="presentation"
-																			style=""
-																			width="100%"
-																		>
-																			<tbody>
-                                        <!-- MENSA TITLE -->
-																				<tr>
-																					<td
-																						align="left"
-																						class="lg-hidden"
-																						style="
-																							font-size: 0px;
-																							padding: 0px;
-																							padding-bottom: 32px;
-																							word-break: break-word;
-																						"
-																					>
-																						<div
-																							style="
-																								font-family: 'Albert Sans',
-																									-apple-system,
-																									BlinkMacSystemFont, 'Segoe UI',
-																									Roboto, sans-serif;
-																								font-size: 30px;
-																								font-weight: 900;
-																								line-height: 115%;
-																								text-align: left;
-																								color: #111111;
-                                                text-transform: capitalize;
-																							"
-																						>
-                                            Mensa Ohm
-																						</div>
-																					</td>
-																				</tr>
-                                        <!-- END OF MENSA TITLE -->
-
-																				<tr>
-																					<td
-																						align="left"
-																						class="sm-hidden"
-																						style="
-																							font-size: 0px;
-																							padding: 0px;
-																							padding-bottom: 32px;
-																							word-break: break-word;
-																						"
-																					>
-																						<div
-																							style="
-																								font-family: 'Albert Sans',
-																									-apple-system,
-																									BlinkMacSystemFont, 'Segoe UI',
-																									Roboto, sans-serif;
-																								font-size: 30px;
-																								font-weight: 900;
-																								line-height: 115%;
-																								text-align: left;
-																								color: #111111;
-                                                text-transform: capitalize;
-																							"
-																						>
-                                            Mensa Ohm
-																						</div>
-																					</td>
-																				</tr>
-                                        
-                                        <!-- MENSA PIC -->
-																				<tr>
-																					<td
-																						align="center"
-																						style="
-																							font-size: 0px;
-																							padding: 0px;
-																							padding-bottom: 28px;
-																							word-break: break-word;
-																						"
-																					>
-																						<table
-																							border="0"
-																							cellpadding="0"
-																							cellspacing="0"
-																							role="presentation"
-																							style="
-																								border-collapse: collapse;
-																								border-spacing: 0px;
-																							"
-																						>
-																							<tbody>
-																								<tr>
-																									<td style="width: 536px">
-																										<img
-																											height="auto"
-																											src="https://bbeam-mailing.vercel.app/assets/placeholder-image.png"
-																											style="
-																												border: 0;
-																												display: block;
-																												outline: none;
-																												text-decoration: none;
-																												height: auto;
-																												width: 100%;
-																												font-size: 16px;
-																											"
-																											width="536"
-																										/>
-																									</td>
-																								</tr>
-																							</tbody>
-																						</table>
-																					</td>
-																				</tr>
-                                        <!-- END OF MENSA PIC -->
-
-                                        <!-- MENSA MENU CONTENT-->
-																				<tr>
-																					<td
-																						align="left"
-																						style="
-																							font-size: 0px;
-																							padding: 0px;
-																							padding-top: 20px;
-																							padding-bottom: 32px;
-																							word-break: break-word;
-																						"
-																					>
-																						<div
-																							style="
-																								font-family: 'Albert Sans',
-																									-apple-system,
-																									BlinkMacSystemFont, 'Segoe UI',
-																									Roboto, sans-serif;
-																								font-size: 18px;
-																								font-weight: 500;
-																								line-height: 155%;
-																								text-align: left;
-																								color: #111111;
-																							"
-																						>
-																							Menu goes here.
-																						</div>
-																					</td>
-																				</tr>
-                                        <!-- END OF MENSA MENU CONTENT-->
-
-																			</tbody>
-																		</table>
-																	</td>
-																</tr>
-															</tbody>
-														</table>
-													</div>
-
-													<!--[if mso | IE]></td></tr></table><![endif]-->
-												</td>
-											</tr>
-										</tbody>
-									</table>
-								</div>
-
-								<!--[if mso | IE]></td></tr></table></td></tr></table><![endif]-->
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-      <!-- END OF MENSA CONTAINER -->
-`;
-
 const blankSpace = `
 <!-- BLANK SPACE -->
 <!--[if mso | IE]></td></tr></table><table align="center" border="0" cellpadding="0" cellspacing="0" class="" role="presentation" style="width:600px;" width="600" ><tr><td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;"><![endif]-->
@@ -706,218 +447,6 @@ const blankSpace = `
 				</table>
 			</div>
 <!-- END OF BLANK SPACE -->
-`;
-
-const exchangeRateContainer = `
-<!-- EXCHANGE RATE -->
-<!--[if mso | IE]></td></tr></table><table align="center" border="0" cellpadding="0" cellspacing="0" class="gutter-outlook" role="presentation" style="width:600px;" width="600" ><tr><td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;"><![endif]-->
-			<div class="gutter" style="margin: 0px auto; max-width: 600px">
-				<table
-					align="center"
-					border="0"
-					cellpadding="0"
-					cellspacing="0"
-					role="presentation"
-					style="width: 100%"
-				>
-					<tbody>
-						<tr>
-							<td
-								style="
-									border: 1px solid #111;
-									direction: ltr;
-									font-size: 0px;
-									padding: 0px;
-									text-align: center;
-								"
-							>
-								<!--[if mso | IE]><table role="presentation" border="0" cellpadding="0" cellspacing="0"><tr><td class="gutter-outlook" width="600px" ><table align="center" border="0" cellpadding="0" cellspacing="0" class="gutter-outlook" role="presentation" style="width:598px;" width="598" bgcolor="#FFFFFF" ><tr><td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;"><![endif]-->
-
-								<div
-									class="gutter"
-									style="
-										background: #ffffff;
-										background-color: #ffffff;
-										margin: 0px auto;
-										border-radius: 0px;
-										max-width: 598px;
-									"
-								>
-									<table
-										align="center"
-										border="0"
-										cellpadding="0"
-										cellspacing="0"
-										role="presentation"
-										style="
-											background: #ffffff;
-											background-color: #ffffff;
-											width: 100%;
-											border-radius: 0px;
-										"
-									>
-										<tbody>
-											<tr>
-												<td
-													style="
-														direction: ltr;
-														font-size: 0px;
-														padding: 0px;
-														text-align: center;
-													"
-												>
-													<!--[if mso | IE]><table role="presentation" border="0" cellpadding="0" cellspacing="0"><tr><td class="" style="vertical-align:top;width:598px;" ><![endif]-->
-
-													<div
-														class="mj-column-per-100 mj-outlook-group-fix"
-														style="
-															font-size: 0px;
-															text-align: left;
-															direction: ltr;
-															display: inline-block;
-															vertical-align: top;
-															width: 100%;
-														"
-													>
-														<table
-															border="0"
-															cellpadding="0"
-															cellspacing="0"
-															role="presentation"
-															width="100%"
-														>
-															<tbody>
-																<tr>
-																	<td
-																		style="
-																			vertical-align: top;
-																			padding: 0px;
-																			padding-top: 40px;
-																			padding-bottom: 40px;
-																		"
-																	>
-																		<table
-																			border="0"
-																			cellpadding="0"
-																			cellspacing="0"
-																			role="presentation"
-																			style=""
-																			width="100%"
-																		>
-																			<tbody>
-																				<tr>
-																					<td
-																						align="left"
-																						class="lg-hidden"
-																						style="
-																							font-size: 0px;
-																							padding: 0px;
-																							padding-bottom: 24px;
-																							padding-left: 8px;
-																							word-break: break-word;
-																						"
-																					>
-																						<div
-																							style="
-																								font-family: 'Albert Sans',
-																									-apple-system,
-																									BlinkMacSystemFont, 'Segoe UI',
-																									Roboto, sans-serif;
-																								font-size: 16px;
-																								font-weight: 900;
-																								line-height: 115%;
-																								text-align: left;
-																								text-transform: uppercase;
-																								color: #111111;
-																							"
-																						>
-																							exchange rate
-																						</div>
-																					</td>
-																				</tr>
-
-																				<tr>
-																					<td
-																						align="left"
-																						class="sm-hidden"
-																						style="
-																							font-size: 0px;
-																							padding: 0px;
-																							padding-bottom: 24px;
-																							word-break: break-word;
-																						"
-																					>
-																						<div
-																							style="
-																								font-family: 'Albert Sans',
-																									-apple-system,
-																									BlinkMacSystemFont, 'Segoe UI',
-																									Roboto, sans-serif;
-																								font-size: 16px;
-																								font-weight: 900;
-																								line-height: 115%;
-																								text-align: left;
-																								text-transform: uppercase;
-																								color: #111111;
-																							"
-																						>
-																							exchange rate
-																						</div>
-																					</td>
-																				</tr>
-
-																			
-
-																				<tr>
-																					<td
-																						align="left"
-																						style="
-																							font-size: 0px;
-																							padding: 0px;
-																							word-break: break-word;
-																						"
-																					>
-																						<div
-																							style="
-																								font-family: 'Albert Sans',
-																									-apple-system,
-																									BlinkMacSystemFont, 'Segoe UI',
-																									Roboto, sans-serif;
-																								font-size: 18px;
-																								font-weight: 500;
-																								line-height: 155%;
-																								text-align: center;
-																								color: #111111;
-																							"
-																						>
-																							EUR to CNY: 7,9999
-																							
-																			
-																						</div>
-																					</td>
-																				</tr>
-																			</tbody>
-																		</table>
-																	</td>
-																</tr>
-															</tbody>
-														</table>
-													</div>
-
-													<!--[if mso | IE]></td></tr></table><![endif]-->
-												</td>
-											</tr>
-										</tbody>
-									</table>
-								</div>
-
-								<!--[if mso | IE]></td></tr></table></td></tr></table><![endif]-->
-							</td>
-						</tr>
-					</tbody>
-				</table>
-			</div>
-<!-- END OF EXCHANGE RATE -->
 `;
 
 const menuJumpLink = `
@@ -1423,12 +952,492 @@ const footer = `
 <!-- END OF FOOTER -->
 `;
 
+function menuLoader(id: MensaID, menuText: string): string {
+	const { name, picture } = mensaList.find((mensa) => mensa.id === id)!;
+	const menuContainer = `
+<!--[if mso | IE]><table align="center" border="0" cellpadding="0" cellspacing="0" class="gutter-outlook" role="presentation" style="width:600px;" width="600" ><tr><td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;"><![endif]-->
+
+      <!-- MENSA CONTAINER -->
+			<div class="gutter" style="margin: 0px auto; max-width: 600px">
+				<table
+					align="center"
+					border="0"
+					cellpadding="0"
+					cellspacing="0"
+					role="presentation"
+					style="width: 100%"
+				>
+					<tbody>
+						<tr>
+							<td
+								style="
+									border: 1px solid #111;
+									direction: ltr;
+									font-size: 0px;
+									padding: 0px;
+									text-align: center;
+								"
+							>
+								<!--[if mso | IE]><table role="presentation" border="0" cellpadding="0" cellspacing="0"><tr><td class="gutter-outlook" width="600px" ><table align="center" border="0" cellpadding="0" cellspacing="0" class="gutter-outlook" role="presentation" style="width:598px;" width="598" bgcolor="#FFFFFF" ><tr><td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;"><![endif]-->
+
+								<div
+									class="gutter"
+									style="
+										background: #ffffff;
+										background-color: #ffffff;
+										margin: 0px auto;
+										border-radius: 0px;
+										max-width: 598px;
+									"
+								>
+									<table
+										align="center"
+										border="0"
+										cellpadding="0"
+										cellspacing="0"
+										role="presentation"
+										style="
+											background: #ffffff;
+											background-color: #ffffff;
+											width: 100%;
+											border-radius: 0px;
+										"
+									>
+										<tbody>
+											<tr>
+												<td
+													style="
+														direction: ltr;
+														font-size: 0px;
+														padding: 0px;
+														text-align: center;
+													"
+												>
+													<!--[if mso | IE]><table role="presentation" border="0" cellpadding="0" cellspacing="0"><tr><td class="" style="vertical-align:top;width:598px;" ><![endif]-->
+
+													<div
+														class="mj-column-per-100 mj-outlook-group-fix"
+														style="
+															font-size: 0px;
+															text-align: left;
+															direction: ltr;
+															display: inline-block;
+															vertical-align: top;
+															width: 100%;
+														"
+													>
+														<table
+															border="0"
+															cellpadding="0"
+															cellspacing="0"
+															role="presentation"
+															width="100%"
+														>
+															<tbody>
+																<tr>
+																	<td
+																		style="
+																			vertical-align: top;
+																			padding: 0px;
+																			padding-top: 40px;
+																			padding-bottom: 40px;
+																		"
+																	>
+																		<table
+																			border="0"
+																			cellpadding="0"
+																			cellspacing="0"
+																			role="presentation"
+																			style=""
+																			width="100%"
+																		>
+																			<tbody>
+                                        <!-- MENSA TITLE -->
+																				<tr>
+																					<td
+																						align="left"
+																						class="lg-hidden"
+																						style="
+																							font-size: 0px;
+																							padding: 0px;
+																							padding-bottom: 32px;
+																							word-break: break-word;
+																						"
+																					>
+																						<div
+																							style="
+																								font-family: 'Albert Sans',
+																									-apple-system,
+																									BlinkMacSystemFont, 'Segoe UI',
+																									Roboto, sans-serif;
+																								font-size: 30px;
+																								font-weight: 900;
+																								line-height: 115%;
+																								text-align: left;
+																								color: #111111;
+                                                text-transform: capitalize;
+																							"
+																						>
+                                            Mensa Ohm
+																						</div>
+																					</td>
+																				</tr>
+                                        <!-- END OF MENSA TITLE -->
+
+																				<tr>
+																					<td
+																						align="left"
+																						class="sm-hidden"
+																						style="
+																							font-size: 0px;
+																							padding: 0px;
+																							padding-bottom: 32px;
+																							word-break: break-word;
+																						"
+																					>
+																						<div
+																							style="
+																								font-family: 'Albert Sans',
+																									-apple-system,
+																									BlinkMacSystemFont, 'Segoe UI',
+																									Roboto, sans-serif;
+																								font-size: 30px;
+																								font-weight: 900;
+																								line-height: 115%;
+																								text-align: left;
+																								color: #111111;
+                                                text-transform: capitalize;
+																							"
+																						>
+                                            ${name}
+																						</div>
+																					</td>
+																				</tr>
+                                        
+                                        <!-- MENSA PIC -->
+																				<tr>
+																					<td
+																						align="center"
+																						style="
+																							font-size: 0px;
+																							padding: 0px;
+																							padding-bottom: 28px;
+																							word-break: break-word;
+																						"
+																					>
+																						<table
+																							border="0"
+																							cellpadding="0"
+																							cellspacing="0"
+																							role="presentation"
+																							style="
+																								border-collapse: collapse;
+																								border-spacing: 0px;
+																							"
+																						>
+																							<tbody>
+																								<tr>
+																									<td style="width: 536px">
+																										<img
+																											height="auto"
+                                                      src="${picture}"
+																											style="
+																												border: 0;
+																												display: block;
+																												outline: none;
+																												text-decoration: none;
+																												height: auto;
+																												width: 100%;
+																												font-size: 16px;
+																											"
+																											width="536"
+																										/>
+																									</td>
+																								</tr>
+																							</tbody>
+																						</table>
+																					</td>
+																				</tr>
+                                        <!-- END OF MENSA PIC -->
+
+                                        <!-- MENSA MENU CONTENT-->
+																				<tr>
+																					<td
+																						align="left"
+																						style="
+																							font-size: 0px;
+																							padding: 0px;
+																							padding-top: 20px;
+																							padding-bottom: 32px;
+																							word-break: break-word;
+																						"
+																					>
+																						<div
+																							style="
+																								font-family: 'Albert Sans',
+																									-apple-system,
+																									BlinkMacSystemFont, 'Segoe UI',
+																									Roboto, sans-serif;
+																								font-size: 18px;
+																								font-weight: 500;
+																								line-height: 155%;
+																								text-align: left;
+																								color: #111111;
+																							"
+																						>
+                                            ${menuText}
+																						</div>
+																					</td>
+																				</tr>
+                                        <!-- END OF MENSA MENU CONTENT-->
+
+																			</tbody>
+																		</table>
+																	</td>
+																</tr>
+															</tbody>
+														</table>
+													</div>
+
+													<!--[if mso | IE]></td></tr></table><![endif]-->
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+
+								<!--[if mso | IE]></td></tr></table></td></tr></table><![endif]-->
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+      <!-- END OF MENSA CONTAINER -->
+`;
+	return menuContainer;
+}
+
+function exchangeRateLoader(exchangeRate: string) {
+	const exchangeRateContainer = `
+<!-- EXCHANGE RATE -->
+<!--[if mso | IE]></td></tr></table><table align="center" border="0" cellpadding="0" cellspacing="0" class="gutter-outlook" role="presentation" style="width:600px;" width="600" ><tr><td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;"><![endif]-->
+			<div class="gutter" style="margin: 0px auto; max-width: 600px">
+				<table
+					align="center"
+					border="0"
+					cellpadding="0"
+					cellspacing="0"
+					role="presentation"
+					style="width: 100%"
+				>
+					<tbody>
+						<tr>
+							<td
+								style="
+									border: 1px solid #111;
+									direction: ltr;
+									font-size: 0px;
+									padding: 0px;
+									text-align: center;
+								"
+							>
+								<!--[if mso | IE]><table role="presentation" border="0" cellpadding="0" cellspacing="0"><tr><td class="gutter-outlook" width="600px" ><table align="center" border="0" cellpadding="0" cellspacing="0" class="gutter-outlook" role="presentation" style="width:598px;" width="598" bgcolor="#FFFFFF" ><tr><td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;"><![endif]-->
+
+								<div
+									class="gutter"
+									style="
+										background: #ffffff;
+										background-color: #ffffff;
+										margin: 0px auto;
+										border-radius: 0px;
+										max-width: 598px;
+									"
+								>
+									<table
+										align="center"
+										border="0"
+										cellpadding="0"
+										cellspacing="0"
+										role="presentation"
+										style="
+											background: #ffffff;
+											background-color: #ffffff;
+											width: 100%;
+											border-radius: 0px;
+										"
+									>
+										<tbody>
+											<tr>
+												<td
+													style="
+														direction: ltr;
+														font-size: 0px;
+														padding: 0px;
+														text-align: center;
+													"
+												>
+													<!--[if mso | IE]><table role="presentation" border="0" cellpadding="0" cellspacing="0"><tr><td class="" style="vertical-align:top;width:598px;" ><![endif]-->
+
+													<div
+														class="mj-column-per-100 mj-outlook-group-fix"
+														style="
+															font-size: 0px;
+															text-align: left;
+															direction: ltr;
+															display: inline-block;
+															vertical-align: top;
+															width: 100%;
+														"
+													>
+														<table
+															border="0"
+															cellpadding="0"
+															cellspacing="0"
+															role="presentation"
+															width="100%"
+														>
+															<tbody>
+																<tr>
+																	<td
+																		style="
+																			vertical-align: top;
+																			padding: 0px;
+																			padding-top: 40px;
+																			padding-bottom: 40px;
+																		"
+																	>
+																		<table
+																			border="0"
+																			cellpadding="0"
+																			cellspacing="0"
+																			role="presentation"
+																			style=""
+																			width="100%"
+																		>
+																			<tbody>
+																				<tr>
+																					<td
+																						align="left"
+																						class="lg-hidden"
+																						style="
+																							font-size: 0px;
+																							padding: 0px;
+																							padding-bottom: 24px;
+																							padding-left: 8px;
+																							word-break: break-word;
+																						"
+																					>
+																						<div
+																							style="
+																								font-family: 'Albert Sans',
+																									-apple-system,
+																									BlinkMacSystemFont, 'Segoe UI',
+																									Roboto, sans-serif;
+																								font-size: 16px;
+																								font-weight: 900;
+																								line-height: 115%;
+																								text-align: left;
+																								text-transform: uppercase;
+																								color: #111111;
+																							"
+																						>
+																							exchange rate
+																						</div>
+																					</td>
+																				</tr>
+
+																				<tr>
+																					<td
+																						align="left"
+																						class="sm-hidden"
+																						style="
+																							font-size: 0px;
+																							padding: 0px;
+																							padding-bottom: 24px;
+																							word-break: break-word;
+																						"
+																					>
+																						<div
+																							style="
+																								font-family: 'Albert Sans',
+																									-apple-system,
+																									BlinkMacSystemFont, 'Segoe UI',
+																									Roboto, sans-serif;
+																								font-size: 16px;
+																								font-weight: 900;
+																								line-height: 115%;
+																								text-align: left;
+																								text-transform: uppercase;
+																								color: #111111;
+																							"
+																						>
+																							exchange rate
+																						</div>
+																					</td>
+																				</tr>
+
+																			
+
+																				<tr>
+																					<td
+																						align="left"
+																						style="
+																							font-size: 0px;
+																							padding: 0px;
+																							word-break: break-word;
+																						"
+																					>
+																						<div
+																							style="
+																								font-family: 'Albert Sans',
+																									-apple-system,
+																									BlinkMacSystemFont, 'Segoe UI',
+																									Roboto, sans-serif;
+																								font-size: 18px;
+																								font-weight: 500;
+																								line-height: 155%;
+																								text-align: center;
+																								color: #111111;
+																							"
+																						>
+																							EUR to CNY: ${exchangeRate}
+																							
+																			
+																						</div>
+																					</td>
+																				</tr>
+																			</tbody>
+																		</table>
+																	</td>
+																</tr>
+															</tbody>
+														</table>
+													</div>
+
+													<!--[if mso | IE]></td></tr></table><![endif]-->
+												</td>
+											</tr>
+										</tbody>
+									</table>
+								</div>
+
+								<!--[if mso | IE]></td></tr></table></td></tr></table><![endif]-->
+							</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+<!-- END OF EXCHANGE RATE -->
+`;
+	return exchangeRateContainer;
+}
+
 export {
 	emailSkeleton,
 	emailTitle,
-	menuContainer,
+	menuLoader,
 	blankSpace,
-	exchangeRateContainer,
+	exchangeRateLoader,
 	menuJumpLink,
 	footer,
 };

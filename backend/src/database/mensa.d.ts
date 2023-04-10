@@ -7,7 +7,11 @@ export type Mensa = {
 	id: string;
 	name: string;
 	url: string;
+	picture?: string;
 };
+
+/** Type of Mensa ID */
+export type MensaID = 'sued' | 'lmpl' | 'mohm' | 'isch';
 
 /** All Mensa Information */
 export const mensaList: Mensa[] = [
@@ -15,21 +19,29 @@ export const mensaList: Mensa[] = [
 		id: 'sued',
 		name: 'Mensa TechFack',
 		url: 'https://www.werkswelt.de/index.php?id=sued',
+		picture:
+			'https://www.werkswelt.de/data/uploads/gastronomie/slideshows/suedmensa-(3).jpg',
 	},
 	{
 		id: 'lmpl',
 		name: 'Mensa Langemarckplatz Erlangen',
 		url: 'https://www.werkswelt.de/index.php?id=lmpl',
+		picture:
+			'https://www.werkswelt.de/data/uploads/gastronomie/slideshows/lmpl-studentenhaus-3-2017.jpg',
 	},
 	{
 		id: 'mohm',
 		name: 'Mensa Ohm Nürnberg',
 		url: 'https://www.werkswelt.de/index.php?id=mohm',
+		picture:
+			'https://www.werkswelt.de/data/uploads/gastronomie/slideshows/hg-mensa-ohm.jpg',
 	},
 	{
 		id: 'isch',
 		name: 'Mensa Insel Schütt',
 		url: 'https://www.werkswelt.de/index.php?id=isch',
+		picture:
+			'https://www.werkswelt.de/data/uploads/gastronomie/slideshows/inselschuett-2016.jpg',
 	},
 ];
 
