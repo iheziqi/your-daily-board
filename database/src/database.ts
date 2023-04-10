@@ -33,16 +33,19 @@ export class MenuDB implements MensaMenuTableCrud {
 
 	/**
 	 * Insert menu into table.
-	 * @param menu Menu object than stores mensa menu.
+	 * @param menu Menu object that stores mensa menu.
 	 */
-	insertMenu(menu: MensaMenu): void {
-		const insert = `INSERT INTO mensa_menus(category, date, menu) VALUES(?, ?, ?);`;
-		this.db.run(insert, [menu.category, menu.date, menu.menuText], (err) => {
-			if (err) {
-				console.error(err.message);
-			} else {
-				console.log('Menu inserted');
-			}
+	async insertMenu(menu: MensaMenu): Promise<void> {
+		return new Promise<void>((resolve, reject) => {
+			const insert = `INSERT INTO mensa_menus(category, date, menu) VALUES(?, ?, ?);`;
+			this.db.run(insert, [menu.category, menu.date, menu.menuText], (err) => {
+				if (err) {
+					reject(err);
+				} else {
+					console.log('Menu inserted!');
+					resolve();
+				}
+			});
 		});
 	}
 
@@ -54,7 +57,7 @@ export class MenuDB implements MensaMenuTableCrud {
 	 * @param category
 	 * @param date
 	 */
-	queryMenu(category: string, date: string): Promise<MenuEntry> {
+	async queryMenu(category: string, date: string): Promise<MenuEntry> {
 		const select = `SELECT menu FROM mensa_menus WHERE category=? AND date=?;`;
 		return new Promise((resolve, reject) => {
 			this.db.all(select, [category, date], (err, rows: MenuEntry) => {
@@ -88,7 +91,7 @@ export class MenuDB implements MensaMenuTableCrud {
  * id INTEGER PRIMARY KEY AUTOINCREMENT,
  * email TEXT NOT NULL);
  */
-export class UserDB {
+export class UserDB implements UserTableCrud {
 	// Database instance
 	private db: sqlite3.Database;
 	// The path of database file
@@ -206,6 +209,16 @@ export class UserDB {
 	}
 }
 
+/**
+ * Controls the subscription table in database.
+ * The schema of the table:
+ * CREATE TABLE subscribe(
+ * email text NOT NULL,
+ * category text NOT NULL,
+ * FOREIGN KEY (email) REFERENCES users(email) ON DELETE CASCADE,
+ * FOREIGN KEY (category) REFERENCES mensa_menu(category) ON DELETE CASCADE,
+ * PRIMARY KEY (email, category));
+ */
 export class SubscriptionDB implements SubscriptionTableCrud {
 	// The database instance
 	private db: sqlite3.Database;
@@ -221,14 +234,17 @@ export class SubscriptionDB implements SubscriptionTableCrud {
 	 * @param email String of email
 	 * @param category The name of mensa
 	 */
-	insertSubscription(email: string, category: string): void {
-		const insert = `INSERT INTO subscribe(email, category) VALUES(?,?); `;
-		this.db.run(insert, [email, category], (err) => {
-			if (err) {
-				console.error(err.message);
-			} else {
-				console.log('Subscription inserted.');
-			}
+	async insertSubscription(email: string, category: string): Promise<void> {
+		return new Promise<void>((resolve, reject) => {
+			const insert = `INSERT INTO subscribe(email, category) VALUES(?,?); `;
+			this.db.run(insert, [email, category], (err) => {
+				if (err) {
+					reject(err);
+				} else {
+					console.log('Subscription inserted.');
+					resolve();
+				}
+			});
 		});
 	}
 
@@ -237,14 +253,17 @@ export class SubscriptionDB implements SubscriptionTableCrud {
 	 * @param email String of email
 	 * @param category The name of mensa
 	 */
-	deleteSubscription(email: string, category: string): void {
-		const del = `DELETE FROM subscribe WHERE email = ? AND category = ?`;
-		this.db.run(del, [email, category], (err) => {
-			if (err) {
-				console.error(err.message);
-			} else {
-				console.log(' deleted');
-			}
+	async deleteSubscription(email: string, category: string): Promise<void> {
+		return new Promise<void>((resolve, reject) => {
+			const del = `DELETE FROM subscribe WHERE email = ? AND category = ?`;
+			this.db.run(del, [email, category], (err) => {
+				if (err) {
+					reject(err);
+				} else {
+					console.log('Subscription deleted.');
+					resolve();
+				}
+			});
 		});
 	}
 
@@ -258,7 +277,7 @@ export class SubscriptionDB implements SubscriptionTableCrud {
 	 * @param email The string of email
 	 * @returns Promise<SubscriptionEntry | null>
 	 */
-	querySubscription(email: string): Promise<SubscriptionEntry> {
+	async querySubscription(email: string): Promise<SubscriptionEntry> {
 		return new Promise((resolve, reject) => {
 			const select = `SELECT * FROM subscribe WHERE email = ?`;
 			this.db.all(select, [email], (err, rows: SubscriptionEntry) => {

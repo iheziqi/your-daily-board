@@ -52,7 +52,7 @@ export type MenuEntry = { menu: string }[];
 
 /** The interface of class to crud table mensa_menus */
 export interface MensaMenuTableCrud {
-	insertMenu: (menu: MensaMenu) => void;
+	insertMenu: (menu: MensaMenu) => Promise<void>;
 	queryMenu: (category: string, date: string) => Promise<MenuEntry>;
 }
 
@@ -71,7 +71,7 @@ export type SubscriptionEntry = { email: string; category: string }[];
 
 /** The interface of class to crud subscribe table */
 export interface SubscriptionTableCrud {
-	insertSubscription: (email: string, category: string) => void;
-	deleteSubscription: (email: string, category: string) => void;
+	insertSubscription: (email: string, category: string) => Promise<void>;
+	deleteSubscription: (email: string, category: string) => Promise<void>;
 	querySubscription: (email: string) => Promise<SubscriptionEntry>;
 }
