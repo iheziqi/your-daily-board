@@ -1,5 +1,4 @@
-import { log } from 'console';
-import { UserDB } from '../src/database';
+import { UserDB, clearDatabase } from '../src/database';
 import { UsersEntry } from '../src/mensa';
 
 describe('User Table Test 1', () => {
@@ -10,9 +9,10 @@ describe('User Table Test 1', () => {
 	});
 
 	afterAll(async () => {
-		await userDB.clearDatabaseEntries();
-		await userDB.clearDatabaseIndex();
-		// Close the connection to database;
+		const clear = new clearDatabase(userDB.databaseInstance);
+		await clear.clearDatabaseEntries('users');
+		await clear.clearDatabaseIndex('users');
+		// close the connection to database;
 		userDB.close();
 	});
 
@@ -50,8 +50,9 @@ describe('User Table Test 2', () => {
 	});
 
 	afterAll(async () => {
-		await userDB.clearDatabaseEntries();
-		await userDB.clearDatabaseIndex();
+		const clear = new clearDatabase(userDB.databaseInstance);
+		await clear.clearDatabaseEntries('users');
+		await clear.clearDatabaseIndex('users');
 		// Close the connection to database;
 		userDB.close();
 	});
@@ -74,7 +75,6 @@ describe('User Table Test 2', () => {
 
 	test('deletes multiple users', async () => {
 		for (let email of emailAddresses) {
-			log(email);
 			await userDB.deleteUser(email.email);
 		}
 		const users = await userDB.queryUsers();

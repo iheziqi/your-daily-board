@@ -31,6 +31,13 @@ export class MenuDB implements MensaMenuTableCrud {
 		this.db = new sqlite3.Database(this.dbPath);
 	}
 
+  /**
+   * Getter for database instance.
+   */
+	public get databaseInstance(): sqlite3.Database {
+		return this.db;
+	}
+
 	/**
 	 * Insert menu into table.
 	 * @param menu Menu object that stores mensa menu.
@@ -159,44 +166,6 @@ export class UserDB implements UserTableCrud {
 	}
 
 	/**
-	 * !!! Dangerous !!!
-	 * This is only for test purpose.
-	 * You will delete all entries in the user table!
-	 * @returns
-	 */
-	async clearDatabaseEntries(): Promise<void> {
-		return new Promise((resolve, reject) => {
-			this.db.run('DELETE FROM users;', (err) => {
-				if (err) {
-					reject(err);
-				} else {
-					console.log('All users have been deleted from users table!');
-					resolve();
-				}
-			});
-		});
-	}
-
-	/**
-	 * !!! Dangerous !!!
-	 * This is only for test purpose.
-	 * You will delete all indexes in the user table!
-	 * @returns
-	 */
-	async clearDatabaseIndex(): Promise<void> {
-		return new Promise((resolve, reject) => {
-			this.db.run('DELETE FROM sqlite_sequence WHERE name="users";', (err) => {
-				if (err) {
-					reject(err);
-				} else {
-					console.log('All indexes have been deleted from users table!');
-					resolve();
-				}
-			});
-		});
-	}
-
-	/**
 	 * Closes the database connection.
 	 */
 	close(): void {
@@ -301,5 +270,60 @@ export class SubscriptionDB implements SubscriptionTableCrud {
 			}
 		});
 		console.log('Database connection has been closed successfully!');
+	}
+}
+
+/**
+ * Clears the entries in given table.
+ * Clears all auto increment indexes.
+ */
+export class clearDatabase {
+	private db: sqlite3.Database;
+
+	constructor(database: sqlite3.Database) {
+		this.db = database;
+	}
+
+	/**
+	 * !!! Dangerous !!!
+	 * This is only for test purpose.
+	 * You will delete all entries in the user table!
+	 * @returns
+	 */
+	async clearDatabaseEntries(tableName: string): Promise<void> {
+		return new Promise((resolve, reject) => {
+			this.db.run(`DELETE FROM ${tableName};`, (err) => {
+				if (err) {
+					reject(err);
+				} else {
+					console.log(`All entries have been deleted from ${tableName} table!`);
+					resolve();
+				}
+			});
+		});
+	}
+
+	/**
+	 * !!! Dangerous !!!
+	 * This is only for test purpose.
+	 * You will delete all indexes in the user table!
+	 * @returns
+	 */
+	async clearDatabaseIndex(tableName: string): Promise<void> {
+		return new Promise((resolve, reject) => {
+			this.db.run(
+				`DELETE FROM sqlite_sequence WHERE name="${tableName}";`,
+				(err) => {
+					if (err) {
+						reject(err);
+					} else {
+						console.log(
+							`All indexes have been deleted from ${tableName} table!`
+						);
+						resolve();
+					}
+				}
+			);
+		});
 	}
 }
