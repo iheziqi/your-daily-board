@@ -14,6 +14,7 @@ import {
 	menuJumpLink,
 	menuLoader,
 } from './emailTemplate';
+import { removeTabs } from '../utils/utils';
 
 /**
  * Load the contents in database into email template.
@@ -24,13 +25,13 @@ export class EmailLoader {
 		const menuIds = Object.keys(menuObject) as MensaID[];
 		const menuHtml = menuIds
 			.map((id) => {
-				return this.removeTabs(menuLoader(id, menuObject[id] as string));
+				return removeTabs(menuLoader(id, menuObject[id] as string));
 			})
 			.join('');
 		const titleHTML = emailTitle();
 		const exchangeRateHTML = exchangeRateLoader('7.9999');
 		const blankSpaceHTML = blankSpace();
-		const jumpLinkHTML = menuJumpLink();
+		// const jumpLinkHTML = menuJumpLink();
 		const footerHTML = footer();
 		const emailHTML = `<!DOCTYPE html>
 <html
@@ -196,7 +197,6 @@ export class EmailLoader {
       ${titleHTML}
       ${exchangeRateHTML}
       ${blankSpaceHTML}
-      ${jumpLinkHTML}
       ${blankSpaceHTML}
       ${menuHtml}
       ${footerHTML}
@@ -207,15 +207,6 @@ export class EmailLoader {
 `;
 
 		return emailHTML;
-	}
-
-	/**
-	 * Removes tabs in string.
-	 * @param input
-	 * @returns
-	 */
-	private removeTabs(input: string): string {
-		return input.replace(/\t/g, '');
 	}
 
 	/**

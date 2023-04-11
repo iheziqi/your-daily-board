@@ -1,6 +1,8 @@
 import axios from 'axios';
 import jsdom from 'jsdom';
 import { Mensa } from './mensa';
+import { removeNewLines } from '../utils/utils';
+import { rejects } from 'assert';
 
 const { JSDOM } = jsdom;
 
@@ -48,9 +50,7 @@ export class MenuScraper {
 			// Return the html page.
 			return data;
 		} catch (error) {
-			return new (Promise as any).reject(
-				new Error('Fail to get Studierendenwerk page.')
-			);
+			return Promise.reject(`Failed to get menu from ${url}`);
 		}
 	}
 
@@ -102,6 +102,6 @@ export class MenuScraper {
 			'div[style*="border-radius: 4px 4px 0px 0px;"]'
 		)!;
 
-		return menuDivElement.innerHTML!;
+		return removeNewLines(menuDivElement.innerHTML!);
 	}
 }
