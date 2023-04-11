@@ -11,7 +11,6 @@ import {
 	emailTitle,
 	exchangeRateLoader,
 	footer,
-	menuJumpLink,
 	menuLoader,
 } from './emailTemplate';
 import { removeTabs } from '../utils/utils';
