@@ -1,7 +1,8 @@
 import axios from 'axios';
 import jsdom from 'jsdom';
-import { Mensa } from './mensa';
-import { removeNewLines } from '../utils/utils';
+import { Mensa, MensaMenu } from './mensa';
+import { removeNewLines, getCurrentDate } from '../utils/utils';
+import { MenuDB } from './database';
 const { JSDOM } = jsdom;
 
 /**
@@ -12,6 +13,26 @@ export class MenuScraper {
 
 	constructor(mensa: Mensa) {
 		this.mensa = mensa;
+	}
+
+	/**
+	 * Loads the menu of give Mensa to database.
+	 * If there is no menu, load null to database.
+	 */
+	public async loadMenuToDatabase(): Promise<void> {
+		try {
+			const menu = await this.scrape();
+			const menuDB = new MenuDB();
+			const mensaMenuObj: MensaMenu = {
+				category: this.mensa.id,
+				date: getCurrentDate(),
+				menuText: menu ? menu : null,
+			};
+			await menuDB.insertMenu(mensaMenuObj);
+			menuDB.close();
+		} catch (error) {
+			console.error(error);
+		}
 	}
 
 	/**

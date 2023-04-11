@@ -21,37 +21,41 @@ export type MenuObject = {
 	isch?: string;
 };
 
+type MensaInfo = {
+	[id in MensaID]: Mensa;
+};
+
 /** All Mensa Information */
-export const mensaList: Mensa[] = [
-	{
+export const mensaInfo: MensaInfo = {
+	sued: {
 		id: 'sued',
 		name: 'Mensa TechFack',
 		url: 'https://www.werkswelt.de/index.php?id=sued',
 		picture:
 			'https://www.werkswelt.de/data/uploads/gastronomie/slideshows/suedmensa-(3).jpg',
 	},
-	{
+	lmpl: {
 		id: 'lmpl',
 		name: 'Mensa Langemarckplatz Erlangen',
 		url: 'https://www.werkswelt.de/index.php?id=lmpl',
 		picture:
 			'https://www.werkswelt.de/data/uploads/gastronomie/slideshows/lmpl-studentenhaus-3-2017.jpg',
 	},
-	{
+	mohm: {
 		id: 'mohm',
 		name: 'Mensa Ohm Nürnberg',
 		url: 'https://www.werkswelt.de/index.php?id=mohm',
 		picture:
 			'https://www.werkswelt.de/data/uploads/gastronomie/slideshows/hg-mensa-ohm.jpg',
 	},
-	{
+	isch: {
 		id: 'isch',
 		name: 'Mensa Insel Schütt',
 		url: 'https://www.werkswelt.de/index.php?id=isch',
 		picture:
 			'https://www.werkswelt.de/data/uploads/gastronomie/slideshows/inselschuett-2016.jpg',
 	},
-];
+};
 
 /**
  * Types related to database functionality.
@@ -64,7 +68,7 @@ export type MensaMenu = {
 	// The current data in format of YYYY-MM-DD.
 	date: string;
 	// The string of menu.
-	menuText: string;
+	menuText: string | null;
 };
 
 /** The result entry retrieved from the table mensa_menus */

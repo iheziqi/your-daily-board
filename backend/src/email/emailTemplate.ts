@@ -1,5 +1,4 @@
-import { MensaID, mensaList } from '../database/mensa';
-
+import { MensaID, mensaInfo } from '../database/mensa';
 
 function emailSkeleton(): string {
 	const emailSkeleton = `<!DOCTYPE html>
@@ -968,7 +967,7 @@ function footer() {
 }
 
 function menuLoader(id: MensaID, menuText: string): string {
-	const { name, picture } = mensaList.find((mensa) => mensa.id === id)!;
+	const { name, picture } = mensaInfo[id];
 	const menuContainer = `<!--[if mso | IE]><table align="center" border="0" cellpadding="0" cellspacing="0" class="gutter-outlook" role="presentation" style="width:600px;" width="600" ><tr><td style="line-height:0px;font-size:0px;mso-line-height-rule:exactly;"><![endif]-->
 
       <!-- MENSA CONTAINER -->
