@@ -20,12 +20,8 @@ function getMenusToDatabase() {
 	const mohmMenu = mohmScraper.scrape();
 	const ischMenu = ischScraper.scrape();
 
-	return Promise.all([suedMenu, lmplMenu, mohmMenu, ischMenu]);
+	Promise.all([suedMenu, lmplMenu, mohmMenu, ischMenu]).then(data => {
+    const menuDB = new MenuDB();
+  }).catch(err => console.error(err));
 }
 
-getMenusToDatabase()
-	.then((data) => {
-		console.log('Got all Mensa menu!');
-		console.log(data);
-	})
-	.catch((err) => console.error(err));

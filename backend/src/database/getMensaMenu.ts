@@ -2,8 +2,6 @@ import axios from 'axios';
 import jsdom from 'jsdom';
 import { Mensa } from './mensa';
 import { removeNewLines } from '../utils/utils';
-import { rejects } from 'assert';
-
 const { JSDOM } = jsdom;
 
 /**
@@ -11,11 +9,9 @@ const { JSDOM } = jsdom;
  */
 export class MenuScraper {
 	private mensa: Mensa;
-	public mensaID: string;
 
 	constructor(mensa: Mensa) {
 		this.mensa = mensa;
-		this.mensaID = mensa['id'];
 	}
 
 	/**
