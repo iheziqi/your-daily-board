@@ -23,7 +23,7 @@ export async function sendEmail(receivers: string, emailContent: string) {
 
 		// send mail with defined transport object
 		let info = await transporter.sendMail({
-			from: `"Your Everyday Menu Board" <${process.env.SMTP_USER}>`, // sender address
+			from: `"Your everyday Menu Board" <${process.env.SMTP_USER}>`, // sender address
 			to: receivers, // list of receivers
 			subject: 'Check out all menus of mensa ✔', // Subject line
 			html: emailContent, // html body

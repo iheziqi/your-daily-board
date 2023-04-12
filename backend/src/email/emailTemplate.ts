@@ -1091,7 +1091,7 @@ function menuLoader(id: MensaID, menuText: string): string {
                                                 text-transform: capitalize;
 																							"
 																						>
-                                            Mensa Ohm
+                                            ${name}
 																						</div>
 																					</td>
 																				</tr>

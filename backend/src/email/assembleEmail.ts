@@ -19,7 +19,12 @@ import { removeTabs } from '../utils/utils';
  * Load the contents in database into email template.
  */
 export class EmailLoader {
-	public async assembleEmailForUser(email: string) {
+  /**
+   * Generates the board HTML based on the user's subscription. 
+   * @param email The email address of user.
+   * @returns The generated board HTML for this user. 
+   */
+	public async assembleEmailForUser(email: string): Promise<string> {
 		const menuObject = await this.getMenuForUser(email);
 		const menuIds = Object.keys(menuObject) as MensaID[];
 		const menuHtml = menuIds
@@ -226,7 +231,7 @@ export class EmailLoader {
 
 	/**
 	 * Gets all users in database in array format.
-	 * @returns Array of user object. ['example@mail.com', 'example2@mail.com']...
+	 * @returns Array of users. ['example@mail.com', 'example2@mail.com']...
 	 */
 	public async getAllUsers(): Promise<string[]> {
 		const usersArray = [];

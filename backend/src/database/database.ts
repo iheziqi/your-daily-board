@@ -49,7 +49,7 @@ export class MenuDB implements MensaMenuTableCrud {
 				if (err) {
 					reject(err);
 				} else {
-					console.log('Menu inserted!');
+					console.log(`Menu for ${menu.category} inserted!`);
 					resolve();
 				}
 			});
@@ -198,9 +198,9 @@ export class SubscriptionDB implements SubscriptionTableCrud {
 		this.db = new sqlite3.Database(this.dbPath);
 	}
 
-  /**
-   * Getter for database instance.
-   */
+	/**
+	 * Getter for database instance.
+	 */
 	public get databaseInstance(): sqlite3.Database {
 		return this.db;
 	}

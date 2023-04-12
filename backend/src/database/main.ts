@@ -1,7 +1,7 @@
 import { mensaInfo } from './mensa';
 import { MenuScraper } from './getMensaMenu';
 
-function getMenusToDatabase() {
+function loadMenusToDatabase() {
 	const suedScraper = new MenuScraper(mensaInfo.sued);
 	const lmplScraper = new MenuScraper(mensaInfo.lmpl);
 	const mohmScraper = new MenuScraper(mensaInfo.mohm);
@@ -12,7 +12,7 @@ function getMenusToDatabase() {
 	const mohmMenu = mohmScraper.loadMenuToDatabase();
 	const ischMenu = ischScraper.loadMenuToDatabase();
 
-	return Promise.all([suedMenu, lmplMenu, mohmMenu, ischMenu]);
+	Promise.all([suedMenu, lmplMenu, mohmMenu, ischMenu]);
 }
 
-getMenusToDatabase();
+loadMenusToDatabase();

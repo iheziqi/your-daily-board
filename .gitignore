@@ -107,3 +107,6 @@ dist
 /backend/build
 
 .DS_Store
+
+# sqlite3 files
+/backend/*.sqlite3
