@@ -1,7 +1,9 @@
 import type {Knex} from 'knex';
 import {knex} from 'knex';
 import {config} from './knexfile';
-// require('dotenv').config();
+import {loadEnv} from '../utils/loadEnv';
+
+loadEnv();
 
 /**
  * A service class for managing the Knex instance.

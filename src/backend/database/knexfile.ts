@@ -4,7 +4,7 @@ import {loadEnv} from '../utils/loadEnv';
 
 loadEnv();
 
-const config: {[key: string]: Knex.Config} = {
+export const config: {[key: string]: Knex.Config} = {
   development: {
     client: 'mysql2',
     connection: {
@@ -17,6 +17,7 @@ const config: {[key: string]: Knex.Config} = {
       directory: './database/seeds',
     },
     migrations: {
+      extension: 'ts',
       tableName: 'knex_migrations',
       directory: ['./migrations'],
     },
