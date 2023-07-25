@@ -10,6 +10,8 @@ class Scraper {
 
   /**
    * Sends a GET request to target website and gets the raw HTML.
+   * This method will automatically retry 2 more times when the initial fetching fails.
+   * Throws an error after all retries fail.
    * @param url The URL of target website
    * @param maxRetries The maximum number of retries (default: 3)
    * @param retryDelay The delay in milliseconds between retries (default: 1000)
@@ -34,11 +36,11 @@ class Scraper {
             `Request to ${this.url} failed with status code ${response.status}.`
           );
         }
-      } catch (error) {
+      } catch (error: any) {
         // Log the error for debugging purposes.
         console.error(
           `Error fetching the ${this.url} page (Attempt ${retry + 1}): \n`,
-          error
+          error.message
         );
 
         // Wait for the specified delay before retrying the request.
