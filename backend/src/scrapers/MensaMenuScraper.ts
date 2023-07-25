@@ -21,7 +21,7 @@ class MensaMenuScraper extends Scraper {
       if (!this.hasMenu(mensaPage)) {
         return null;
       }
-      return this.parseMenuHTML(mensaPage);
+      return this.extractMenu(mensaPage);
     } catch (error) {
       console.error(error);
       return null;
@@ -55,11 +55,11 @@ class MensaMenuScraper extends Scraper {
   }
 
   /**
-   * Parses the html page got from mensa website and returns the menu html element.
+   * Extracts the html page got from mensa website and returns the menu html element.
    * @param htmlPage The Mensa html page got from http request.
    * @returns The innerHTML inside the container of html the menu.
    */
-  private parseMenuHTML(htmlPage: string): string {
+  private extractMenu(htmlPage: string): string {
     // Use JSDOM to get the menu div element.
     const {window} = new JSDOM(htmlPage, {runScripts: 'outside-only'});
 
