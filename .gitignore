@@ -104,6 +104,6 @@ dist
 .tern-port
 
 # Compiled JS files
-/build
+build/
 
 .DS_Store

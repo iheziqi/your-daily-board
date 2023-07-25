@@ -15,14 +15,13 @@ class Scraper {
    * @param retryDelay The delay in milliseconds between retries (default: 1000)
    * @returns String of raw HTML page.
    */
-  public static async fetchRawHTML(
-    url: string,
+  public async fetchRawHTML(
     maxRetries = 3,
     retryDelay = 1000
   ): Promise<string> {
     for (let retry = 0; retry < maxRetries; retry++) {
       try {
-        const response: AxiosResponse<string> = await axios.get(url);
+        const response: AxiosResponse<string> = await axios.get(this.url);
 
         // Check if the response status code indicates success (2xx).
         if (response.status >= 200 && response.status < 300) {
@@ -32,13 +31,13 @@ class Scraper {
         } else {
           // If the response status code is not within the success range, throw an error.
           throw new Error(
-            `Request to ${url} failed with status code ${response.status}.`
+            `Request to ${this.url} failed with status code ${response.status}.`
           );
         }
       } catch (error) {
         // Log the error for debugging purposes.
         console.error(
-          `Error fetching the HTML page (Attempt ${retry + 1}):`,
+          `Error fetching the ${this.url} page (Attempt ${retry + 1}): \n`,
           error
         );
 
@@ -49,7 +48,7 @@ class Scraper {
 
     // If all retries fail, throw an error.
     throw new Error(
-      `Failed to get menu from ${url} after ${maxRetries} retries.`
+      `Failed to get menu from ${this.url} after ${maxRetries} retries.`
     );
   }
 }

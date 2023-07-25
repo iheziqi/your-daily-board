@@ -17,7 +17,7 @@ class MensaMenuScraper extends Scraper {
    */
   public async getMenu(): Promise<string | null> {
     try {
-      const mensaPage = await MensaMenuScraper.fetchRawHTML(this.url);
+      const mensaPage = await this.fetchRawHTML();
       if (!this.hasMenu(mensaPage)) {
         return null;
       }
