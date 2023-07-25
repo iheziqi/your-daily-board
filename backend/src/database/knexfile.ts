@@ -14,7 +14,7 @@ export const config: {[key: string]: Knex.Config} = {
       password: process.env.MYSQL_PASSWORD,
     },
     seeds: {
-      directory: './database/seeds',
+      directory: './seeds',
     },
     migrations: {
       extension: 'ts',

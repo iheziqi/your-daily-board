@@ -5,6 +5,7 @@ export async function up(knex: Knex): Promise<void> {
     .createTable('mensa_info', table => {
       table.string('id').primary();
       table.string('name').notNullable();
+      table.string('url').notNullable();
     })
     .createTable('mensa_menu', table => {
       table.increments('id');
