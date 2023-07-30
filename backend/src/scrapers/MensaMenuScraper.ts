@@ -5,23 +5,21 @@ import Scraper from './Scraper';
 /**
  * Scrapes the menu of given Mensa.
  */
-class MensaMenuScraper extends Scraper {
-  constructor(url: string) {
-    super(url);
-  }
-
+class MensaMenuScraper {
   /**
    * Gets the menu of given Mensa.
    * If there is no menu today, returns null.
+   * @param url The url of Mensa website
    * @returns The menu content inside the container if exists.
    */
-  public async getMenu(): Promise<string | null> {
+  public async getMenu(url: string): Promise<string | null> {
     try {
-      const mensaPage = await this.fetchRawHTML();
-      if (!this.hasMenu(mensaPage)) {
+      const myScraper = new Scraper(url);
+      const mensaPage = await myScraper.fetchRawHTML();
+      if (!MensaMenuScraper.hasMenu(mensaPage)) {
         return null;
       }
-      return this.extractMenu(mensaPage);
+      return MensaMenuScraper.extractMenu(mensaPage);
     } catch (error) {
       console.error(error);
       return null;
@@ -34,7 +32,7 @@ class MensaMenuScraper extends Scraper {
    * @param htmlPage The Mensa html page got from http request.
    * @returns A boolean value of whether or not the menu exists.
    */
-  private hasMenu(htmlPage: string): boolean {
+  private static hasMenu(htmlPage: string): boolean {
     // Use JSDOM to get the html document object.
     const {document} = new JSDOM(htmlPage).window;
     const menuDivElement = document.querySelector(
@@ -55,11 +53,11 @@ class MensaMenuScraper extends Scraper {
   }
 
   /**
-   * Extracts the html page got from mensa website and returns the menu html element.
+   * Parses the html page got from mensa website and returns the menu html element.
    * @param htmlPage The Mensa html page got from http request.
    * @returns The innerHTML inside the container of html the menu.
    */
-  private extractMenu(htmlPage: string): string {
+  private static extractMenu(htmlPage: string): string {
     // Use JSDOM to get the menu div element.
     const {window} = new JSDOM(htmlPage, {runScripts: 'outside-only'});
 
