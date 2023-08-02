@@ -1,6 +1,6 @@
 import type {Knex} from 'knex';
 import {knex} from 'knex';
-import {config} from './knexfile';
+// import {config} from './knexfile';
 import {loadEnv} from '../utils/loadEnv';
 
 loadEnv();
@@ -22,11 +22,20 @@ class KnexService {
   static getInstance(): Knex {
     if (!KnexService.knexInstance) {
       KnexService.knexInstance = knex(
-        config[process.env.DATABASE_TYPE as string]
+        require('./knexfile')[process.env.DATABASE_TYPE as string]
       );
     }
 
     return KnexService.knexInstance;
+  }
+
+  /**
+   * Close the Knex instance.
+   */
+  static destroyInstance() {
+    if (KnexService.knexInstance) {
+      KnexService.knexInstance.destroy();
+    }
   }
 }
 

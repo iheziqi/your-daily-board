@@ -4,7 +4,7 @@ import {loadEnv} from '../utils/loadEnv';
 
 loadEnv();
 
-export const config: {[key: string]: Knex.Config} = {
+const config: {[key: string]: Knex.Config} = {
   development: {
     client: 'mysql2',
     connection: {
