@@ -15,7 +15,7 @@ class MensaMenuRepository implements IMensaMenuRepository {
    * @returns loaded menu html
    */
   public async loadMensaMenuOfToday(
-    menu: string | null,
+    menu: string,
     mensaId: MensaID
   ): Promise<string | null> {
     try {
