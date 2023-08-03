@@ -1,7 +1,7 @@
 import {JSDOM} from 'jsdom';
 import Scraper from './Scraper';
 
-export async function eurToCnyCurrencyRate(from_to: string) {
+export async function fetchExchangeRate(from_to: string) {
   try {
     const url = `https://www.google.com/finance/quote/${from_to}`;
     // Gets the raw html of the website.
