@@ -5,6 +5,7 @@ export async function up(knex: Knex): Promise<void> {
     table.string('from_to').primary();
     table.date('date');
     table.float('exchange_rate');
+    table.float('change_from_yesterday');
   });
 }
 
