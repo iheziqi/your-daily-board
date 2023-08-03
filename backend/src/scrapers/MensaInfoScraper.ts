@@ -2,7 +2,7 @@ import {JSDOM} from 'jsdom';
 import Scraper from './Scraper';
 
 class MensaInfoScraper extends Scraper {
-  private mensaInfoList: MensaDetailedInfo[] = [];
+  private mensaInfoList: MensaInfo[] = [];
 
   constructor(
     url = 'https://www.werkswelt.de/index.php?id=mensen-cafeterien-cafebars'
