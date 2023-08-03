@@ -10,7 +10,6 @@ describe('MenuScraper', () => {
   // Arrange
   const mockedResponseData = '<html><body>Mocked HTML</body></html>';
   const url = 'https://example.com/mensa';
-  const myScraper = new Scraper(url);
 
   it('should fetch the menu successfully', async () => {
     // Set up the mocked axios.get behavior.
@@ -20,7 +19,7 @@ describe('MenuScraper', () => {
     });
 
     // Act
-    const html = await myScraper.fetchRawHTML();
+    const html = await Scraper.fetchRawHTML(url);
 
     // Assert
     expect(mockedAxios.get).toHaveBeenCalledTimes(1);
@@ -43,10 +42,10 @@ describe('MenuScraper', () => {
     });
 
     // Retry 3 times with a delay of 1000ms between retries.
-    const menu = await myScraper.fetchRawHTML(3, 100);
+    const menu = await Scraper.fetchRawHTML(url, 3, 100);
 
     // Assert that the menu contains the expected HTML content after retries.
-    expect(menu).toContain('<html><body>Mocked HTML</body></html>');
+    expect(menu).toContain(mockedResponseData);
 
     // Ensure that the axios.get function was called exactly 3 times (initial attempt + 2 retries).
     expect(mockedAxios.get).toHaveBeenCalledTimes(4);
@@ -57,8 +56,8 @@ describe('MenuScraper', () => {
     mockedAxios.get.mockRejectedValue(new Error('Request failed'));
 
     // Ensure that the function throws an error after all retries fail.
-    await expect(myScraper.fetchRawHTML(3, 100)).rejects.toThrowError(
-      'Failed to get menu from https://example.com/mensa after 3 retries.'
+    await expect(Scraper.fetchRawHTML(url, 3, 100)).rejects.toThrowError(
+      `Failed to get menu from ${url} after 3 retries.`
     );
 
     // Ensure that the axios.get function was called exactly 3 times (maximum retries).

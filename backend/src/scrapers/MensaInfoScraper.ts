@@ -1,13 +1,14 @@
 import {JSDOM} from 'jsdom';
 import Scraper from './Scraper';
 
-class MensaInfoScraper extends Scraper {
+class MensaInfoScraper {
+  private url: string;
   private mensaInfoList: MensaInfo[] = [];
 
   constructor(
     url = 'https://www.werkswelt.de/index.php?id=mensen-cafeterien-cafebars'
   ) {
-    super(url);
+    this.url = url;
   }
 
   /**
@@ -16,7 +17,7 @@ class MensaInfoScraper extends Scraper {
    */
   public async getAllMensaInfo() {
     try {
-      const html = await this.fetchRawHTML();
+      const html = await Scraper.fetchRawHTML(this.url);
 
       if (!this.hasMensaInfo(html)) {
         return null;
@@ -62,7 +63,7 @@ class MensaInfoScraper extends Scraper {
   }
 
   /**
-   * Extracts the all Mensens information and stores them in mensaInfo array.
+   * Extracts the all Mensa information and stores them in mensaInfo array.
    * @param htmlPage The raw html page.
    */
   private extractMensaInfo(htmlPage: string) {

@@ -14,8 +14,7 @@ class MensaMenuScraper {
    */
   public async getMenu(url: string): Promise<string | null> {
     try {
-      const myScraper = new Scraper(url);
-      const mensaPage = await myScraper.fetchRawHTML();
+      const mensaPage = await Scraper.fetchRawHTML(url);
       if (!MensaMenuScraper.hasMenu(mensaPage)) {
         return null;
       }
