@@ -117,9 +117,12 @@ class MensaInfoRepository implements IMensaInfoRepository {
       const allMensaInfo = await myMensaInfoScraper.getAllMensaInfo();
 
       if (allMensaInfo) {
-        for await (const mensaInfo of allMensaInfo) {
-          this.db('mensa_info').insert(mensaInfo);
-        }
+        // Ensure promises are resolved before proceeding.
+        const promises = allMensaInfo.map(mensaInfo =>
+          this.db('mensa_info').insert(mensaInfo)
+        );
+        await Promise.all(promises);
+
         return allMensaInfo;
       } else {
         console.log('Mensa info array is null!');
