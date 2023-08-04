@@ -10,11 +10,11 @@ jobs:
       mysql:
         image: mysql:latest
         env:
-          MYSQL_ROOT_PASSWORD: rootpassword
-          MYSQL_DATABASE: your_daily_board
-          MYSQL_USER: testuser
-          MYSQL_PASSWORD: testpassword
-          MYSQL_HOST: localhost
+          DB_DATABASE: your_daily_board
+          DB_USER: root
+          DB_PASSWORD: root
+          DB_HOST: 127.0.0.1
+          DB_PORT: 3306
           DATABASE_TYPE: development
         ports:
           - 3306:3306
