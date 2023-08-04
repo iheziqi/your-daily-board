@@ -44,6 +44,28 @@ class UserRepository implements IUserRepository {
   }
 
   /**
+   * Gets user's id by email address.
+   * @param email Email address of user
+   * @returns User's id in database
+   */
+  public async getUserIdByEmail(
+    email: string
+  ): Promise<Pick<DUser, 'id'> | undefined> {
+    try {
+      const user = await this.db
+        .select('id')
+        .from<DUser>('users')
+        .where({email})
+        .first();
+
+      return user;
+    } catch (error) {
+      console.error("An error occurred when getting user's id.", error);
+      return;
+    }
+  }
+
+  /**
    * Updates a user's email to database.
    * @param userData oldEmail and newEmail
    * @returns updated email address
@@ -79,29 +101,6 @@ class UserRepository implements IUserRepository {
     } catch (error) {
       console.error(
         'An error occurred when deleting a user from database.',
-        error
-      );
-      return;
-    }
-  }
-
-  /**
-   * Gets corresponding subscriptions of given user.
-   * @param email email address of user
-   * @returns subscription in array
-   */
-  public async getMenuSubscriptionByUserEmail(
-    email: string
-  ): Promise<MensaID[] | undefined> {
-    try {
-      const subscriptions = await this.db()
-        .select()
-        .from('subscriptions')
-        .where('email', '=', email);
-      return subscriptions;
-    } catch (error) {
-      console.error(
-        `An error occurred when getting the subscriptions for user ${email} from database.`,
         error
       );
       return;

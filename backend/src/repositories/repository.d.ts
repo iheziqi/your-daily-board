@@ -1,10 +1,10 @@
 /** This file contains type for database layer. */
 
-type DUser = {
-  id?: string;
+interface DUser {
+  id?: number;
   email: string;
   admin?: boolean;
-};
+}
 
 interface DMensaMenu {
   id: number;
@@ -25,10 +25,14 @@ interface DExchangeRate {
   change_from_yesterday: number;
 }
 
-interface DSubscription {
-  user_id?: string;
-  menu_sub?: string;
-  exchange_rate_sub?: string;
+interface DMensaMenuSubscription {
+  user_id: number;
+  menu_sub: string;
+}
+
+interface DExchangeRateSubscription {
+  user_id: number;
+  exchange_rate_sub: from_to;
 }
 
 interface IMensaInfoRepository {
@@ -63,6 +67,9 @@ interface IUserRepository {
   // Gets all users' email from database.
   getAllUsersEmail(): Promise<DUser[] | undefined>;
 
+  // Gets user's id by email.
+  getUserIdByEmail(email: string): Promise<Pick<DUser, 'id'> | undefined>;
+
   // Updates a user's email.
   updateUserEmail(userData: {
     oldEmail: string;
@@ -71,9 +78,6 @@ interface IUserRepository {
 
   // Deletes a user from database.
   deleteUser(email: string): Promise<string | undefined>;
-
-  // Gets menu subscriptions for given user.
-  getMenuSubscriptionByUserEmail(email: string): Promise<MensaID[] | undefined>;
 }
 
 interface IExchangeRateRepository {
@@ -93,24 +97,24 @@ interface IExchangeRateRepository {
 
 interface ISubscriptionRepository {
   // Creates new Mensa menu subscription for given user into database.
-  createMensaMenuSubscriptionOfUser(
+  createMensaMenuSubscription(
     email: string,
     mensaId: MensaID
-  ): Promise<void>;
+  ): Promise<DMensaMenuSubscription | null>;
 
   // Creates new exchange rate subscription for given user into database.
-  createExchangeRateSubscriptionOfUser(
+  createExchangeRateSubscription(
     email: string,
     from_to: from_to
-  ): Promise<void>;
+  ): Promise<DExchangeRateSubscription | null>;
 
   // Gets menu subscription of given user from database.
   getMensaMenuSubscriptionsByUserEmail(
     email: string
-  ): Promise<DSubscription[] | undefined>;
+  ): Promise<MensaID[] | undefined>;
 
   // Gets exchange rate subscription of given user from database.
   getExchangeRateSubscriptionsByUserEmail(
     email: string
-  ): Promise<DExchangeRate[] | undefined>;
+  ): Promise<from_to[] | undefined>;
 }

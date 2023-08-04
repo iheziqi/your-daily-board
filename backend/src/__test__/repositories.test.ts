@@ -93,6 +93,13 @@ describe('user repository unit tests', () => {
     }
   });
 
+  it("should get user's id by email", async () => {
+    const userId = await myUserRepo.getUserIdByEmail(exampleEmail2);
+
+    expect(Object.keys(userId!).length).toBe(1);
+    expect(userId?.id).toBe(2);
+  });
+
   it('should update the user', async () => {
     const returnedValue = await myUserRepo.updateUserEmail({
       oldEmail: exampleEmail1,
