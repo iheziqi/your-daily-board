@@ -1,7 +1,7 @@
 import UserRepository from '../repositories/UserRepository';
 import MensaMenuRepository from '../repositories/MensaMenuRepository';
-import MensaInfoRepository from '../repositories/MensaInfoRepository';
 import ExchangeRepository from '../repositories/ExchangeRepository';
+import SubscriptionRepository from '../repositories/SubscriptionRepository';
 import KnexService from '../database/KnexService';
 import {getCurrentDate} from '../utils/helpers';
 
@@ -14,8 +14,10 @@ const exampleEmail2 = 'demo@test.email';
 const exampleEmail3 = 'test@test.email';
 
 const exampleMenu1 = 'test menu1';
-const exampleMenu2 = 'test menu2';
-const exampleMenu3 = 'test menu3';
+
+const exchangeRate = 7.9999;
+const changeFromYesterday = 0.02;
+const exchangeType = 'EUR-CNY';
 
 beforeAll(async () => {
   // loads a mensa info into database.
@@ -33,6 +35,12 @@ beforeAll(async () => {
 
   // deletes all entries in exchange_rate table.
   await knexInstance('exchange_rate').del();
+
+  // deletes all entries in exchange_rate_subscriptions table.
+  await knexInstance('exchange_rate_subscriptions').del();
+
+  // deletes all entries in menu_subscriptions table.
+  await knexInstance('menu_subscriptions').del();
 });
 
 afterAll(async () => {
@@ -48,10 +56,15 @@ afterAll(async () => {
   // deletes all entries in exchange_rate table.
   await knexInstance('exchange_rate').del();
 
+  // deletes all entries in exchange_rate_subscriptions table.
+  await knexInstance('exchange_rate_subscriptions').del();
+
+  // deletes all entries in menu_subscriptions table.
+  await knexInstance('menu_subscriptions').del();
+
   // resets increments to 1.
   await knexInstance.raw('ALTER TABLE users AUTO_INCREMENT = 1');
   await knexInstance.raw('ALTER TABLE mensa_menu AUTO_INCREMENT = 1');
-  await knexInstance.raw('ALTER TABLE mensa_info AUTO_INCREMENT = 1');
 
   // closes the knex connection to database.
   KnexService.destroyInstance();
@@ -98,6 +111,12 @@ describe('user repository unit tests', () => {
 
     expect(Object.keys(userId!).length).toBe(1);
     expect(userId?.id).toBe(2);
+  });
+
+  it('should return undefined when getting the id of a not-existed user', async () => {
+    const userId = await myUserRepo.getUserIdByEmail('notexisted@email.test');
+
+    expect(userId).toBeUndefined();
   });
 
   it('should update the user', async () => {
@@ -185,32 +204,30 @@ describe('mensa menu repository unit tests', () => {
 
 describe('exchange rate repository unit tests', () => {
   const myExchangeRateRepo = new ExchangeRepository(knexInstance);
-  const exchangeRate = 7.9999;
-  const changeFromYesterday = 0.02;
 
   it('should load exchange rate of given date', async () => {
     const returnedValue = await myExchangeRateRepo.loadExchangeRateOfToday(
       exchangeRate,
-      'EUR-CNY',
+      exchangeType,
       changeFromYesterday
     );
 
     expect(returnedValue?.change_from_yesterday).toBe(changeFromYesterday);
     expect(returnedValue?.exchange_rate).toBe(exchangeRate);
     expect(returnedValue?.date).toBe(getCurrentDate());
-    expect(returnedValue?.from_to).toBe('EUR-CNY');
+    expect(returnedValue?.from_to).toBe(exchangeType);
   });
 
   it('should get exchange rate of given date and from_to', async () => {
     const returnedValue = await myExchangeRateRepo.getExchangeRateByDate(
       getCurrentDate(),
-      'EUR-CNY'
+      exchangeType
     );
 
     expect(returnedValue?.change_from_yesterday).toBe(changeFromYesterday);
     expect(returnedValue?.exchange_rate).toBe(exchangeRate);
     expect(returnedValue?.date).toBe(getCurrentDate());
-    expect(returnedValue?.from_to).toBe('EUR-CNY');
+    expect(returnedValue?.from_to).toBe(exchangeType);
   });
 
   it('should return undefined when there is no exchange rate of given date', async () => {
@@ -220,5 +237,50 @@ describe('exchange rate repository unit tests', () => {
     );
 
     expect(returnedValue).toBeUndefined();
+  });
+});
+
+describe('subscriptions repository unit tests', () => {
+  const mySubRepo = new SubscriptionRepository(knexInstance);
+
+  it('should create exchange rate subscription for given user', async () => {
+    // the id of exampleEmail2 in database now it 2.
+    await mySubRepo.createExchangeRateSubscription(exampleEmail2, exchangeType);
+
+    const subQuery = await knexInstance('exchange_rate_subscriptions').select();
+
+    expect(subQuery.length).toBe(1);
+    expect(subQuery[0].user_id).toBe(2);
+    expect(subQuery[0].from_to).toBe(exchangeType);
+  });
+
+  it('should create menu subscription for given user', async () => {
+    await mySubRepo.createMensaMenuSubscription(exampleEmail2, 'lmpl');
+
+    const subQuery = await knexInstance('menu_subscriptions').select();
+
+    expect(subQuery.length).toBe(1);
+    expect(subQuery[0].user_id).toBe(2);
+    expect(subQuery[0].mensa_id).toBe('lmpl');
+  });
+
+  it('should get exchange rate subscriptions for given user', async () => {
+    const userExchangeSubs =
+      await mySubRepo.getExchangeRateSubscriptionsByUserEmail(exampleEmail2);
+
+    console.log(userExchangeSubs);
+    expect(Array.isArray(userExchangeSubs)).toBeTruthy();
+    expect(userExchangeSubs?.length).toBe(1);
+    expect(userExchangeSubs![0]).toBe(exchangeType);
+  });
+
+  it('should get menu subscriptions for given user', async () => {
+    const userMenuSubs = await mySubRepo.getMensaMenuSubscriptionsByUserEmail(
+      exampleEmail2
+    );
+
+    expect(Array.isArray(userMenuSubs)).toBeTruthy();
+    expect(userMenuSubs?.length).toBe(1);
+    expect(userMenuSubs![0]).toBe('lmpl');
   });
 });

@@ -27,12 +27,12 @@ interface DExchangeRate {
 
 interface DMensaMenuSubscription {
   user_id: number;
-  menu_sub: string;
+  mensa_id: string;
 }
 
 interface DExchangeRateSubscription {
   user_id: number;
-  exchange_rate_sub: from_to;
+  from_to: from_to;
 }
 
 interface IMensaInfoRepository {
