@@ -28,17 +28,19 @@ export async function up(knex: Knex): Promise<void> {
         .onDelete('CASCADE');
       table;
 
-      table.string('exchange_rate_sub');
+      table.string('from_to');
       table
-        .foreign('exchange_rate_sub')
+        .foreign('from_to')
         .references('exchange_rate.from_to')
         .onDelete('CASCADE')
         .onUpdate('CASCADE');
 
-      table.primary(['user_id', 'exchange_rate_sub']);
+      table.primary(['user_id', 'from_to']);
     });
 }
 
 export async function down(knex: Knex): Promise<void> {
-  return knex.schema.dropTable('subscriptions');
+  return knex.schema
+    .dropTable('menu_subscriptions')
+    .dropTable('exchange_rate_subscription');
 }
