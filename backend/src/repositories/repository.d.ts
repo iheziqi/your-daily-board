@@ -53,7 +53,7 @@ interface IMensaMenuRepository {
   getMenuByMensaIdAndDate(
     mensaId: MensaID,
     date: string
-  ): Promise<string | null>;
+  ): Promise<string | undefined>;
 }
 
 interface IUserRepository {

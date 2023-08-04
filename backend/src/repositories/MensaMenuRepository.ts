@@ -38,29 +38,30 @@ class MensaMenuRepository implements IMensaMenuRepository {
    * Gets menu of given Mensa and date.
    * @param mensaId id of Mensa
    * @param date date in format YYYY-MM-DD
-   * @returns menu html of given Mensa, null if there is no menu of the given date
+   * @returns menu html of given Mensa, undefined if there is no menu of the given date
    */
   public async getMenuByMensaIdAndDate(
     mensaId: MensaID,
     date: string
-  ): Promise<string | null> {
+  ): Promise<string | undefined> {
     try {
-      const {menu} = await this.db
+      const queryResult = await this.db
         .select('menu')
         .from<DMensaMenu>('mensa_menu')
         .where({mensa_id: mensaId, date: date})
         .first();
 
-      if (menu) {
-        return menu;
+      if (!queryResult) {
+        return;
       }
-      return null;
+
+      return queryResult.menu;
     } catch (error) {
       console.error(
         `An error ocurred when getting menu of mensa ${mensaId} on ${date}.`,
         error
       );
-      return null;
+      return;
     }
   }
 }

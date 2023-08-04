@@ -1,14 +1,12 @@
 import UserRepository from '../repositories/UserRepository';
 import MensaMenuRepository from '../repositories/MensaMenuRepository';
 import MensaInfoRepository from '../repositories/MensaInfoRepository';
+import ExchangeRepository from '../repositories/ExchangeRepository';
 import KnexService from '../database/KnexService';
 import {getCurrentDate} from '../utils/helpers';
 
 // Initial classes
 const knexInstance = KnexService.getInstance();
-const myUserRepo = new UserRepository(knexInstance);
-const myMensaMenuRepo = new MensaMenuRepository(knexInstance);
-const myMensaInfoRepo = new MensaInfoRepository(knexInstance);
 
 // test data
 const exampleEmail1 = 'example@test.email';
@@ -20,14 +18,21 @@ const exampleMenu2 = 'test menu2';
 const exampleMenu3 = 'test menu3';
 
 beforeAll(async () => {
-  // loads mensa info into database.
-  await myMensaInfoRepo.loadAllMensaInfo();
+  // loads a mensa info into database.
+  await knexInstance('mensa_info').insert({
+    id: 'lmpl',
+    name: 'Erlangen Langemarckplatz',
+    url: 'https://www.werkswelt.de/index.php?id=lmpl',
+  });
 
   // deletes all entries in users table.
   await knexInstance('users').del();
 
   // deletes all entries in mensa_menu table.
   await knexInstance('mensa_menu').del();
+
+  // deletes all entries in exchange_rate table.
+  await knexInstance('exchange_rate').del();
 });
 
 afterAll(async () => {
@@ -40,16 +45,21 @@ afterAll(async () => {
   // deletes all entries in mensa_info table.
   await knexInstance('mensa_info').del();
 
+  // deletes all entries in exchange_rate table.
+  await knexInstance('exchange_rate').del();
+
   // resets increments to 1.
   await knexInstance.raw('ALTER TABLE users AUTO_INCREMENT = 1');
   await knexInstance.raw('ALTER TABLE mensa_menu AUTO_INCREMENT = 1');
-  // await knexInstance.raw('ALTER TABLE mensa_info AUTO_INCREMENT = 1');
+  await knexInstance.raw('ALTER TABLE mensa_info AUTO_INCREMENT = 1');
 
   // closes the knex connection to database.
   KnexService.destroyInstance();
 });
 
 describe('user repository unit tests', () => {
+  const myUserRepo = new UserRepository(knexInstance);
+
   it('should create user into database', async () => {
     const user = await myUserRepo.createUser({email: exampleEmail1});
     const queryResult = await knexInstance
@@ -117,6 +127,8 @@ describe('user repository unit tests', () => {
 });
 
 describe('mensa menu repository unit tests', () => {
+  const myMensaMenuRepo = new MensaMenuRepository(knexInstance);
+
   it('should load menu of given Mensa', async () => {
     const returnedValue = await myMensaMenuRepo.loadMensaMenuOfToday(
       exampleMenu1,
@@ -143,5 +155,63 @@ describe('mensa menu repository unit tests', () => {
 
     // returned value should be the menu of last test
     expect(todayMenuOfLmpl).toBe(exampleMenu1);
+  });
+
+  it('should return null if there is no menu of given date', async () => {
+    const menu = await myMensaMenuRepo.getMenuByMensaIdAndDate(
+      'lmpl',
+      '1999-01-01'
+    );
+
+    expect(menu).toBeUndefined();
+  });
+
+  it('should return null if there is no menu of given Mensa', async () => {
+    const menu = await myMensaMenuRepo.getMenuByMensaIdAndDate(
+      'ansb',
+      getCurrentDate()
+    );
+
+    expect(menu).toBeUndefined();
+  });
+});
+
+describe('exchange rate repository unit tests', () => {
+  const myExchangeRateRepo = new ExchangeRepository(knexInstance);
+  const exchangeRate = 7.9999;
+  const changeFromYesterday = 0.02;
+
+  it('should load exchange rate of given date', async () => {
+    const returnedValue = await myExchangeRateRepo.loadExchangeRateOfToday(
+      exchangeRate,
+      'EUR-CNY',
+      changeFromYesterday
+    );
+
+    expect(returnedValue?.change_from_yesterday).toBe(changeFromYesterday);
+    expect(returnedValue?.exchange_rate).toBe(exchangeRate);
+    expect(returnedValue?.date).toBe(getCurrentDate());
+    expect(returnedValue?.from_to).toBe('EUR-CNY');
+  });
+
+  it('should get exchange rate of given date and from_to', async () => {
+    const returnedValue = await myExchangeRateRepo.getExchangeRateByDate(
+      getCurrentDate(),
+      'EUR-CNY'
+    );
+
+    expect(returnedValue?.change_from_yesterday).toBe(changeFromYesterday);
+    expect(returnedValue?.exchange_rate).toBe(exchangeRate);
+    expect(returnedValue?.date).toBe(getCurrentDate());
+    expect(returnedValue?.from_to).toBe('EUR-CNY');
+  });
+
+  it('should return undefined when there is no exchange rate of given date', async () => {
+    const returnedValue = await myExchangeRateRepo.getExchangeRateByDate(
+      '1999-01-01',
+      'EUR-CNY'
+    );
+
+    expect(returnedValue).toBeUndefined();
   });
 });
