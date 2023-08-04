@@ -10,12 +10,12 @@ class MensaMenuRepository implements IMensaMenuRepository {
 
   /**
    * Loads menu for given Mensa into database.
-   * @param menu the html of menu
+   * @param menu the html of menu, it could be null because sometimes there is no menu.
    * @param mensaId the id of Mensa
    * @returns loaded menu html
    */
   public async loadMensaMenuOfToday(
-    menu: string,
+    menu: string | null,
     mensaId: MensaID
   ): Promise<string | null> {
     try {
@@ -38,7 +38,7 @@ class MensaMenuRepository implements IMensaMenuRepository {
    * Gets menu of given Mensa and date.
    * @param mensaId id of Mensa
    * @param date date in format YYYY-MM-DD
-   * @returns menu html of given Mensa
+   * @returns menu html of given Mensa, null if there is no menu of the given date
    */
   public async getMenuByMensaIdAndDate(
     mensaId: MensaID,

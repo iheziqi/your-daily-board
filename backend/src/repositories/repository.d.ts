@@ -44,7 +44,10 @@ interface IMensaInfoRepository {
 
 interface IMensaMenuRepository {
   // Loads menu to given Mensa.
-  loadMensaMenuOfToday(menu: string, mensaId: MensaID): Promise<string | null>;
+  loadMensaMenuOfToday(
+    menu: string | null,
+    mensaId: MensaID
+  ): Promise<string | null>;
 
   // Gets menu from database.
   getMenuByMensaIdAndDate(
