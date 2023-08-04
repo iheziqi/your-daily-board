@@ -1,46 +1,26 @@
 name: test-backend
 
-on:
-  push:
-    branches: [master, main]
-  pull_request:
-    branches: [master, main]
-
-env:
-  DB_DATABASE: your_daily_board
-  DB_USER: root
-  DB_PASSWORD: root
+on: push
 
 jobs:
-  lint:
-    runs-on: ubuntu-20.04
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Use Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18'
-
-      - name: Install dependencies
-        run: npm install
-        working-directory: ./backend
-
-      - name: Run lint
-        run: npm run lint
-        working-directory: ./backend
-
   jest:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:latest
+        env:
+          MYSQL_ROOT_PASSWORD: rootpassword
+          MYSQL_DATABASE: your_daily_board
+          MYSQL_USER: testuser
+          MYSQL_PASSWORD: testpassword
+          MYSQL_HOST: localhost
+          DATABASE_TYPE: development
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
 
     steps:
-      - name: Prepare database
-        run: |
-          sudo systemctl start mysql
-          mysql -e 'CREATE DATABASE ${{ env.DB_DATABASE }};' -u${{ env.DB_USER }} -p${{ env.DB_PASSWORD }}
-
       - name: Checkout
         uses: actions/checkout@v3
 
@@ -59,4 +39,24 @@ jobs:
 
       - name: Run jest
         run: npm test
+        working-directory: ./backend
+
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Use Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Install dependencies
+        run: npm install
+        working-directory: ./backend
+
+      - name: Run lint
+        run: npm run lint
         working-directory: ./backend
