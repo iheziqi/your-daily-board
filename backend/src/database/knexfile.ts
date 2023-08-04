@@ -8,10 +8,10 @@ const config: {[key: string]: Knex.Config} = {
   development: {
     client: 'mysql2',
     connection: {
-      host: process.env.MYSQL_HOST,
-      database: process.env.MYSQL_DATABASE,
-      user: process.env.MYSQL_USER,
-      password: process.env.MYSQL_PASSWORD,
+      host: process.env.DB_HOST,
+      database: process.env.DB_DATABASE,
+      user: process.env.DB_USER,
+      password: process.env.DB_PASSWORD,
     },
     seeds: {
       directory: './seeds',

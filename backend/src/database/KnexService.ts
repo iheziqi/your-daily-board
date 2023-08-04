@@ -22,7 +22,7 @@ class KnexService {
   static getInstance(): Knex {
     if (!KnexService.knexInstance) {
       KnexService.knexInstance = knex(
-        require('./knexfile')[process.env.DATABASE_TYPE as string]
+        require('./knexfile')[process.env.DB_TYPE as string]
       );
     }
 
