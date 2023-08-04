@@ -3,6 +3,23 @@ name: test-backend
 on: push
 
 jobs:
+  build-database:
+    runs-on: ubuntu-latest
+
+    services:
+      mysql:
+        image: mysql:latest
+        env:
+          MYSQL_ROOT_PASSWORD: rootpassword
+          MYSQL_DATABASE: your_daily_board
+          MYSQL_USER: testuser
+          MYSQL_PASSWORD: testpassword
+          MYSQL_HOST: localhost
+          DATABASE_TYPE: development
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
   jest:
     runs-on: ubuntu-latest
 
@@ -16,7 +33,11 @@ jobs:
           node-version: '18'
 
       - name: Install dependencies
-        run: npm install
+        run: npm ci
+        working-directory: ./backend
+
+      - name: Run database migrations
+        run: npm run knex migrate:latest
         working-directory: ./backend
 
       - name: Run jest
@@ -40,5 +61,5 @@ jobs:
         working-directory: ./backend
 
       - name: Run lint
-        run: npm lint
+        run: npm run lint
         working-directory: ./backend
