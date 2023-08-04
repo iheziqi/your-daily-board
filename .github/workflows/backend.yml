@@ -3,7 +3,7 @@ name: test-backend
 on: push
 
 jobs:
-  build-database:
+  build:
     runs-on: ubuntu-latest
 
     services:
