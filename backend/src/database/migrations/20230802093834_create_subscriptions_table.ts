@@ -10,14 +10,14 @@ export async function up(knex: Knex): Promise<void> {
         .onUpdate('CASCADE')
         .onDelete('CASCADE');
 
-      table.string('menu_sub');
+      table.string('mensa_id');
       table
-        .foreign('menu_sub')
+        .foreign('mensa_id')
         .references('mensa_info.id')
         .onUpdate('CASCADE')
         .onDelete('CASCADE');
 
-      table.primary(['user_id', 'menu_sub']);
+      table.primary(['user_id', 'mensa_id']);
     })
     .createTable('exchange_rate_subscriptions', table => {
       table.integer('user_id').unsigned();
