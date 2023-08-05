@@ -2,25 +2,24 @@ name: test-backend
 
 on: push
 
+env:
+  DB_DATABASE: test
+  DB_HOST: 127.0.0.1
+  DB_PORT: 3306
+  DB_USER: root
+  DB_PASSWORD: root
+  DB_TYPE: development
+
 jobs:
   jest:
     runs-on: ubuntu-latest
 
-    services:
-      mysql:
-        image: mysql:latest
-        env:
-          DB_DATABASE: your_daily_board
-          DB_USER: root
-          DB_PASSWORD: root
-          DB_HOST: 127.0.0.1
-          DB_PORT: 3306
-          DATABASE_TYPE: development
-        ports:
-          - 3306:3306
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
-
     steps:
+      - name: Set up database
+        uses: samin/mysql-action@v1
+        with:
+          mysql root password: root
+
       - name: Checkout
         uses: actions/checkout@v3
 
