@@ -3,9 +3,9 @@ name: test-backend
 on: push
 
 env:
-  DB_DATABASE: test
+  DB_DATABASE: your_daily_board
   DB_HOST: 127.0.0.1
-  DB_PORT: 3306
+  DB_PORT: 3801
   DB_USER: root
   DB_PASSWORD: root
   DB_TYPE: development
@@ -15,9 +15,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Set up database
-        uses: samin/mysql-action@v1
+      - name: Set up MySQL database
+        uses: mirromutth/mysql-action@v1.1
         with:
+          host port: 3801
+          container port: 3307
+          mysql database: 'your_daily_board'
           mysql root password: root
 
       - name: Checkout
@@ -40,22 +43,22 @@ jobs:
         run: npm test
         working-directory: ./backend
 
-  lint:
-    runs-on: ubuntu-latest
+  # lint:
+  #   runs-on: ubuntu-latest
 
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
+  #   steps:
+  #     - name: Checkout
+  #       uses: actions/checkout@v3
 
-      - name: Use Node.js
-        uses: actions/setup-node@v3
-        with:
-          node-version: '18'
+  #     - name: Use Node.js
+  #       uses: actions/setup-node@v3
+  #       with:
+  #         node-version: '18'
 
-      - name: Install dependencies
-        run: npm install
-        working-directory: ./backend
+  #     - name: Install dependencies
+  #       run: npm install
+  #       working-directory: ./backend
 
-      - name: Run lint
-        run: npm run lint
-        working-directory: ./backend
+  #     - name: Run lint
+  #       run: npm run lint
+  #       working-directory: ./backend

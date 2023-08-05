@@ -268,7 +268,6 @@ describe('subscriptions repository unit tests', () => {
     const userExchangeSubs =
       await mySubRepo.getExchangeRateSubscriptionsByUserEmail(exampleEmail2);
 
-    console.log(userExchangeSubs);
     expect(Array.isArray(userExchangeSubs)).toBeTruthy();
     expect(userExchangeSubs?.length).toBe(1);
     expect(userExchangeSubs![0]).toBe(exchangeType);
