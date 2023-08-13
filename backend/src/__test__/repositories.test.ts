@@ -1,7 +1,9 @@
-import UserRepository from '../repositories/UserRepository';
-import MensaMenuRepository from '../repositories/MensaMenuRepository';
-import ExchangeRepository from '../repositories/ExchangeRepository';
-import SubscriptionRepository from '../repositories/SubscriptionRepository';
+import {
+  UserRepository,
+  MensaMenuRepository,
+  ExchangeRepository,
+  SubscriptionRepository,
+} from '../repositories/index';
 import KnexService from '../database/KnexService';
 import {getCurrentDate} from '../utils/helpers';
 
