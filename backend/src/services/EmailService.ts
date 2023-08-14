@@ -15,9 +15,6 @@ class EmailService {
     const host = process.env.SMTP_HOST || 'localhost';
     // SMTP port
     const port = Number(process.env.SMTP_PORT || 7777);
-    console.log(host);
-    console.log(port);
-    console.log(process.env.SMTP_USER);
 
     // creates reusable transporter object using the default SMTP transport.
     this.transporter = nodemailer.createTransport({
