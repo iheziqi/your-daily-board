@@ -149,6 +149,51 @@ class SubscriptionRepository implements ISubscriptionRepository {
       return;
     }
   }
+
+  /**
+   * Gets all subscribed exchange rates of the given user.
+   * @param email The Email address of user
+   * @returns
+   */
+  public async getUserSubscribedExchangeRates(
+    email: string
+  ): Promise<DExchangeRate[]> {
+    const exchangeRatesQuery = this.db
+      .select(
+        'er.from_to',
+        'er.date',
+        'er.exchange_rate',
+        'er.change_from_yesterday'
+      )
+      .from<DExchangeRate>('exchange_rate AS er')
+      .join(
+        'exchange_rate_subscriptions AS ers',
+        'er.from_to',
+        '=',
+        'ers.from_to'
+      )
+      .join('users AS u', 'ers.user_id', '=', 'u.id')
+      .where('u.email', email);
+
+    return exchangeRatesQuery;
+  }
+
+  /**
+   * Gets all subscribed mensa menus of the given user.
+   * @param email The email address of user
+   */
+  public async getUserSubscribedMensaMenusOfToday(
+    email: string
+  ): Promise<DMensaMenu[]> {
+    const mensaMenusQuery = this.db
+      .select('mm.mensa_id', 'mm.date', 'mm.menu')
+      .from<DMensaMenu>('mensa_menu as mm')
+      .join('menu_subscriptions as ms', 'mm.mensa_id', '=', 'ms.mensa_id')
+      .join('users as u', 'ms.user_id', 'u.id')
+      .where('u.email', email);
+
+    return mensaMenusQuery;
+  }
 }
 
 export default SubscriptionRepository;

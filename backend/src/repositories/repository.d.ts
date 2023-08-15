@@ -7,8 +7,8 @@ interface DUser {
 }
 
 interface DMensaMenu {
-  id: number;
-  mensa_id: string;
+  id?: number;
+  mensa_id: MensaID;
   date: string;
   menu: string | null;
 }
@@ -117,4 +117,10 @@ interface ISubscriptionRepository {
   getExchangeRateSubscriptionsByUserEmail(
     email: string
   ): Promise<from_to[] | undefined>;
+
+  // Gets all subscribed exchange rates of the given user.
+  getUserSubscribedExchangeRates(email: string): Promise<DExchangeRate[]>;
+
+  // Gets all subscribed mensa menus of the given user.
+  getUserSubscribedMensaMenusOfToday(email: string): Promise<DMensaMenu[]>;
 }
