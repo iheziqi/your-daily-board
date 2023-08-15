@@ -444,14 +444,19 @@
 
             <%- include('/blankRowSection.ejs') %>
 
+						<% if (exchangeRates.length > 0) { %>
+							<%- include('/exchangeRateSection.ejs', {exchangeRates: exchangeRates}) %>
+						<% } %>
 
-						<%- include('/exchangeRateSection.ejs', {exchangeRates: exchangeRates}) %>
+						<% if (mensaMenus.length > 0) { %>
+							<%- include('/mensaLinkSection.ejs', {mensaMenus: mensaMenus}) %>
+						<% } %>
 
-						<%- include('/mensaLinkSection.ejs', {mensaLinks: mensaLinks}) %>
-
-						<% mensaMenus.forEach((e) => { %>
-							<%- include("/mensaMenuSection.ejs", {mensaName: e.mensaName, jumpLinkId: e.jumpLinkId, mensaMenu: e.mensaMenu}); %>
-						<% }); %>
+						<% if (mensaMenus.length > 0) { %>
+							<% mensaMenus.forEach((e) => { %>
+								<%- include("/mensaMenuSection.ejs", {mensaName: e.mensaName, jumpLinkId: e.jumpLinkId, mensaMenu: e.mensaMenu}); %>
+							<% }); %>
+						<% } %>
 
             <!-- Footer -->
 

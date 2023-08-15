@@ -3,6 +3,7 @@ import {
   MensaMenuRepository,
   ExchangeRepository,
   SubscriptionRepository,
+  MensaInfoRepository,
 } from '../repositories/index';
 import KnexService from '../database/KnexService';
 import {getCurrentDate} from '../utils/helpers';
@@ -21,13 +22,17 @@ const exchangeRate = 7.9999;
 const changeFromYesterday = 0.02;
 const exchangeType = 'EUR-CNY';
 
+const lmpl = {
+  id: 'lmpl',
+  name: 'Erlangen Langemarckplatz',
+  url: 'https://www.werkswelt.de/index.php?id=lmpl',
+};
+
 beforeAll(async () => {
+  await knexInstance('mensa_info').del();
+
   // loads a mensa info into database.
-  await knexInstance('mensa_info').insert({
-    id: 'lmpl',
-    name: 'Erlangen Langemarckplatz',
-    url: 'https://www.werkswelt.de/index.php?id=lmpl',
-  });
+  await knexInstance('mensa_info').insert(lmpl);
 
   // deletes all entries in users table.
   await knexInstance('users').del();
@@ -69,7 +74,7 @@ afterAll(async () => {
   await knexInstance.raw('ALTER TABLE mensa_menu AUTO_INCREMENT = 1');
 
   // closes the knex connection to database.
-  KnexService.destroyInstance();
+  return KnexService.destroyInstance();
 });
 
 describe('user repository unit tests', () => {
@@ -283,5 +288,58 @@ describe('subscriptions repository unit tests', () => {
     expect(Array.isArray(userMenuSubs)).toBeTruthy();
     expect(userMenuSubs?.length).toBe(1);
     expect(userMenuSubs![0]).toBe('lmpl');
+  });
+
+  it('should get subscribed exchange rates of given user', async () => {
+    const queryResult = await mySubRepo.getUserSubscribedExchangeRates(
+      exampleEmail2
+    );
+
+    expect(Array.isArray(queryResult)).toBeTruthy();
+    expect(queryResult.length).toBe(1);
+    expect(queryResult[0].change_from_yesterday).toBe(changeFromYesterday);
+    expect(queryResult[0].exchange_rate).toBe(exchangeRate);
+    expect(queryResult[0].from_to).toBe(exchangeType);
+  });
+
+  it('should return empty array when get subscribed exchange rates of given user that do not have any subscription', async () => {
+    const queryResult = await mySubRepo.getUserSubscribedExchangeRates(
+      exampleEmail3
+    );
+
+    expect(Array.isArray(queryResult)).toBeTruthy();
+    expect(queryResult.length).toBe(0);
+  });
+
+  it('should return empty array when the user does not exist', async () => {
+    const queryResult = await mySubRepo.getUserSubscribedExchangeRates(
+      'mailneverexist@test.email'
+    );
+
+    expect(Array.isArray(queryResult)).toBeTruthy();
+    expect(queryResult.length).toBe(0);
+  });
+
+  it('should get subscribed mensa menus of given user', async () => {
+    const queryResult = await mySubRepo.getUserSubscribedMensaMenusOfToday(
+      exampleEmail2
+    );
+
+    expect(Array.isArray(queryResult)).toBeTruthy();
+    expect(queryResult.length).toBe(1);
+    expect(queryResult[0].mensa_id).toBe('lmpl');
+    expect(queryResult[0].menu).toBe(exampleMenu1);
+    expect(queryResult[0].date).toBe(getCurrentDate());
+  });
+});
+
+describe('mensa info repository unit tests', () => {
+  const mensaInfoRepo = new MensaInfoRepository(knexInstance);
+
+  it('should get mensa name and url given by id', async () => {
+    const queryResult = await mensaInfoRepo.getMensaInfoById('lmpl');
+
+    expect(queryResult?.name).toBe(lmpl.name);
+    expect(queryResult?.url).toBe(lmpl.url);
   });
 });

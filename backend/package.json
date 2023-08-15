@@ -10,7 +10,7 @@
   "license": "Apache-2.0",
   "keywords": [],
   "scripts": {
-    "test": "jest",
+    "test": "jest -i",
     "lint": "gts lint",
     "clean": "gts clean",
     "compile": "tsc",

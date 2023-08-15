@@ -15,11 +15,16 @@ export async function up(knex: Knex): Promise<void> {
         .references('mensa_info.id')
         .onUpdate('CASCADE')
         .onDelete('SET NULL');
-      table.date('date').notNullable();
+      // use string to store date for convenience.
+      // the date is in format YYYY-MM-DD, so the length is 10.
+      table.string('date', 10).notNullable();
       table.text('menu').nullable();
     });
 }
 
 export async function down(knex: Knex): Promise<void> {
+  await knex.schema.table('mensa_menu', table => {
+    table.dropForeign('mensa_id');
+  });
   return knex.schema.dropTable('mensa_info').dropTable('mensa_menu');
 }
