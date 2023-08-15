@@ -99,8 +99,8 @@
                           <i class="fa-solid fa-link fa-xs"></i>
                         </span>
                       </p>
-											<% mensaLinks.forEach((e) => { %>
-                      	<%- include("/mensaLink.ejs", {jumpLink: e.jumpLink, mensaName: e.mensaName}); %>
+											<% mensaMenus.forEach((e) => { %>
+                      	<%- include("/mensaLink.ejs", {jumpLinkId: e.jumpLinkId, mensaName: e.mensaName}); %>
 											<% }); %>
                     </div>
                   </td>
