@@ -8,7 +8,6 @@ export async function up(knex: Knex): Promise<void> {
       table.string('url').notNullable();
     })
     .createTable('mensa_menu', table => {
-      table.increments('id');
       table.string('mensa_id');
       table
         .foreign('mensa_id')
@@ -19,6 +18,7 @@ export async function up(knex: Knex): Promise<void> {
       // the date is in format YYYY-MM-DD, so the length is 10.
       table.string('date', 10).notNullable();
       table.text('menu').nullable();
+      table.primary(['mensa_id', 'date']);
     });
 }
 
