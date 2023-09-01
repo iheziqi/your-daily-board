@@ -36,14 +36,17 @@ class MensaMenuScraper {
     const {document} = new JSDOM(htmlPage).window;
     const menuDivElement = document.querySelector(
       'div[style*="border-radius: 4px 4px 0px 0px;"]'
-    )!;
+    );
 
     // Get the first child node of the menuDivElement.
     // Here childNodes[1] because the first one is textNode
     // created by line break in HTML structure file.
     // If the first element is a form, it demonstrates that
     // there is no menu today.
-    const firstChild = menuDivElement.childNodes[1]!;
+    if (!menuDivElement) {
+      return false;
+    }
+    const firstChild = menuDivElement.childNodes[1];
     if (firstChild.nodeName === 'FORM') {
       return false;
     }
