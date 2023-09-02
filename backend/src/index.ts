@@ -1,24 +1,34 @@
-console.log('Try npm run lint/fix!');
+import KnexService from './database/KnexService';
+import {RepoScheduledTasks} from './repositories/index';
+import {ServiceScheduledTasks} from './services/index';
+import {getCurrentDate} from './utils/helpers';
 
-const longString =
-  'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer ut aliquet diam.';
-
-const trailing = 'Semicolon';
-
-const why = 'am I tabbed?';
-
-export function doSomeStuff(
-  withThis: string,
-  andThat: string,
-  andThose: string[]
-) {
-  //function on one line
-  if (!andThose.length) {
-    return false;
+async function doScheduledTask(type: string) {
+  switch (type) {
+    case 'FETCH_DATA':
+      await Promise.all([
+        RepoScheduledTasks.saveExchangeRateToDatabase,
+        RepoScheduledTasks.saveMensaMenusToDatabase,
+      ]);
+      break;
+    case 'SEND_EMAIL':
+      await ServiceScheduledTasks.sendDailyBoardEmails('0.0.1');
   }
-  console.log(withThis);
-  console.log(andThat);
-  console.dir(andThose);
-  return;
 }
-// TODO: more examples
+
+const TASK_TYPE = process.env.TASK_TYPE;
+
+if (!TASK_TYPE) {
+  throw new Error('Please enter the right task type.');
+}
+
+doScheduledTask(TASK_TYPE)
+  .then(() => {
+    console.log(`${TASK_TYPE} for ${getCurrentDate()} done!`);
+  })
+  .catch(e => {
+    console.log(e);
+  })
+  .finally(() => {
+    KnexService.destroyInstance();
+  });
