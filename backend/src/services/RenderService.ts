@@ -47,7 +47,7 @@ class RenderService {
       };
 
       return this.renderTemplate('boardSkeleton', emailProps);
-    } catch (error: any) {
+    } catch (error) {
       console.error('Error rendering email:', error);
       throw new Error(
         'An error occurred while rendering your daily board email.'
