@@ -15,6 +15,7 @@ const knexInstance = KnexService.getInstance();
 const exampleEmail1 = 'example@test.email';
 const exampleEmail2 = 'demo@test.email';
 const exampleEmail3 = 'test@test.email';
+const exampleEmail4 = 'user@test.email';
 
 const exampleMenu1 = 'test menu1';
 
@@ -37,6 +38,9 @@ beforeAll(async () => {
   // deletes all entries in users table.
   await knexInstance('users').del();
 
+  // deletes all entries in users_verifying table.
+  await knexInstance('users_verifying').del();
+
   // deletes all entries in mensa_menu table.
   await knexInstance('mensa_menu').del();
 
@@ -53,6 +57,9 @@ beforeAll(async () => {
 afterAll(async () => {
   // deletes all entries in users table.
   await knexInstance('users').del();
+
+  // deletes all entries in users_verifying table.
+  await knexInstance('users_verifying').del();
 
   // deletes all entries in mensa_menu table.
   await knexInstance('mensa_menu').del();
@@ -155,6 +162,42 @@ describe('user repository unit tests', () => {
     // returned value should be the email of deleted user
     expect(returnedValue).toEqual(exampleEmail3);
     // deleted user shouldn't exist in database
+    expect(queryResult).toBeUndefined();
+  });
+
+  it('should create to-be-verified user', async () => {
+    await knexInstance('users').insert({email: exampleEmail4});
+    const token = await myUserRepo.createToBeVerifiedUser(exampleEmail4);
+
+    const queryResult = await knexInstance('users_verifying')
+      .select()
+      .where({email: exampleEmail4})
+      .first();
+
+    expect(token).toBe(queryResult?.token);
+    expect(queryResult?.email).toBe(exampleEmail4);
+    // expect(queryResult?.token).toBe(encryptString(exampleEmail4));
+  });
+
+  it('should get token of given user from table users_verifying', async () => {
+    const token = await myUserRepo.getVerifyingTokenByUserEmail(exampleEmail4);
+    const queryResult = await knexInstance('users_verifying')
+      .select()
+      .where({email: exampleEmail4})
+      .first();
+
+    expect(token).toBe(queryResult?.token);
+  });
+
+  it('should delete to be verified user', async () => {
+    const email = await myUserRepo.deleteToBeVerifiedUser(exampleEmail4);
+
+    const queryResult = await knexInstance('users_verifying')
+      .select()
+      .where({email})
+      .first();
+
+    expect(email).toBe(exampleEmail4);
     expect(queryResult).toBeUndefined();
   });
 });

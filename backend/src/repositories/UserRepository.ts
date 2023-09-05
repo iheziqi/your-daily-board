@@ -1,4 +1,5 @@
 import {Knex} from 'knex';
+import {encryptString, decryptString} from '../utils/crypto';
 
 class UserRepository implements IUserRepository {
   private db: Knex;
@@ -101,6 +102,74 @@ class UserRepository implements IUserRepository {
     } catch (error) {
       console.error(
         'An error occurred when deleting a user from database.',
+        error
+      );
+      return;
+    }
+  }
+
+  /**
+   * Adds an entry to users_verifying table.
+   * This table stores to be confirmed email address and a token to verify it.
+   * @param email
+   * @returns generated token
+   */
+  public async createToBeVerifiedUser(
+    email: string
+  ): Promise<string | undefined> {
+    try {
+      // Gets a long string by encrypting the email address.
+      const token = encryptString(email);
+
+      await this.db('users_verifying').insert({email, token});
+
+      return token;
+    } catch (error) {
+      console.log(
+        'An error occurred when adding an entry to users_verifying',
+        error
+      );
+      return;
+    }
+  }
+
+  /**
+   * Gets verifying token in table users_verifying.
+   * @param email
+   * @returns token
+   */
+  public async getVerifyingTokenByUserEmail(
+    email: string
+  ): Promise<string | undefined> {
+    try {
+      const queryResult = await this.db('users_verifying')
+        .select('token')
+        .where({email})
+        .first();
+      return queryResult.token;
+    } catch (error) {
+      console.log(
+        'An error occurred when getting token from users_verifying',
+        error
+      );
+      return;
+    }
+  }
+
+  /**
+   * Deletes verified use in table users_verifying.
+   * @param email
+   * @returns deleted email address in table users_verifying
+   */
+  public async deleteToBeVerifiedUser(
+    email: string
+  ): Promise<string | undefined> {
+    try {
+      await this.db('users_verifying').where('email', '=', email).del();
+      return email;
+    } catch (error) {
+      console.error(
+        'An error occurred when deleting a user from users_verifying.',
         error
       );
       return;

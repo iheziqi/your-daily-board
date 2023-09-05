@@ -4,6 +4,7 @@ interface DUser {
   id?: number;
   email: string;
   admin?: boolean;
+  verified?: boolean;
 }
 
 interface DMensaMenu {
@@ -78,6 +79,15 @@ interface IUserRepository {
 
   // Deletes a user from database.
   deleteUser(email: string): Promise<string | undefined>;
+
+  // Creates verifying token to confirm the email address.
+  createToBeVerifiedUser(email: string): Promise<string | undefined>;
+
+  // Gets verifying token
+  getVerifyingTokenByUserEmail(email: string): Promise<string | undefined>;
+
+  // Deletes verified use in table users_verifying.
+  deleteToBeVerifiedUser(email: string): Promise<string | undefined>;
 }
 
 interface IExchangeRateRepository {
