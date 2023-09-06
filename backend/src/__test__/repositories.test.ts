@@ -199,7 +199,7 @@ describe('user repository unit tests', () => {
     expect(email).toBe(exampleEmail4);
   });
 
-  it('should delete to be verified user', async () => {
+  it('should delete to-be-verified user', async () => {
     const email = await myUserRepo.deleteToBeVerifiedUser(exampleEmail4);
 
     const queryResult = await knexInstance('users_verifying')

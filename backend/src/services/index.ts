@@ -35,7 +35,7 @@ export class ServiceScheduledTasks {
 
       // Filters email addresses that has been confirmed.
       usersData = usersData.filter(user => {
-        return user.isVerified === 1;
+        return user.is_verified === 1;
       });
 
       // Batch users for email sending.

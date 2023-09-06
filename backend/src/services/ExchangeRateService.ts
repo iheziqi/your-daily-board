@@ -21,22 +21,24 @@ class ExchangeRateService {
     try {
       const currentDate = getCurrentDate();
 
+      // Gets the exchange rate of previous day.
       const exchangeRateYesterdayQuery =
         await this.exchangeRateRepo.getExchangeRateByDate(
           getPreviousDay(currentDate),
           fromTo
         );
 
-      if (exchangeRateYesterdayQuery) {
-        const volatility =
-          exchangeRateOfToday - exchangeRateYesterdayQuery.exchange_rate;
-        return parseFloat(volatility.toFixed(4));
-      } else {
-        throw new Error('failed to get exchange rate from database');
+      if (!exchangeRateYesterdayQuery) {
+        return;
       }
+
+      const volatility =
+        exchangeRateOfToday - exchangeRateYesterdayQuery.exchange_rate;
+
+      return parseFloat(volatility.toFixed(4));
     } catch (error) {
       console.log(
-        `An error occurred when calculating the volatility of exchange rate ${fromTo} on ${getCurrentDate()} or ${getPreviousDay(
+        `An error occurred when calculating the volatility of exchange rates ${fromTo} between ${getCurrentDate()} and ${getPreviousDay(
           getCurrentDate()
         )}`,
         error

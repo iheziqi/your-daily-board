@@ -78,6 +78,8 @@ class RenderService {
 
   /**
    * Gets all mensa menu subscriptions of the given user.
+   * This method is to construct data used by render service,
+   * it uses getUserSubscribedMensaMenuOfToday in SubscriptionRepository.
    * @param userEmail The email address of user
    * @returns
    */

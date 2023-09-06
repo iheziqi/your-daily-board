@@ -53,21 +53,12 @@ class ExchangeRepository implements IExchangeRateRepository {
     date: string,
     from_to: from_to
   ): Promise<DExchangeRate | undefined> {
-    try {
-      const exchangeRate = await this.db
-        .select()
-        .from<DExchangeRate>('exchange_rate')
-        .where({date, from_to})
-        .first();
+    const exchangeRate = await this.db<DExchangeRate>('exchange_rate')
+      .select()
+      .where({date, from_to})
+      .first();
 
-      return exchangeRate;
-    } catch (error) {
-      console.error(
-        `An error occurred when getting exchange rate of ${from_to} on ${date}`,
-        error
-      );
-      return;
-    }
+    return exchangeRate;
   }
 }
 

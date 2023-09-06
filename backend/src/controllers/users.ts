@@ -22,7 +22,10 @@ async function register(req: Request, res: Response, next: NextFunction) {
     // creates an entry in verifying table
     const token = await userRepo.createToBeVerifiedUser(email);
     if (!token) {
-      throw createError(500);
+      throw createError(
+        500,
+        `Adding ${email} to table users_verifying failed.`
+      );
     }
 
     // sends confirmation email to the email address
