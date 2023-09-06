@@ -105,7 +105,7 @@ describe('user repository unit tests', () => {
   it('should get all users from database', async () => {
     await knexInstance('users').insert({email: exampleEmail2});
 
-    const allUsers = await myUserRepo.getAllUsersEmail();
+    const allUsers = await myUserRepo.getAllUsersData();
 
     // Returned value should be an array.
     expect(Array.isArray(allUsers)).toBeTruthy();
@@ -189,6 +189,16 @@ describe('user repository unit tests', () => {
     expect(token).toBe(queryResult?.token);
   });
 
+  it('should get email address by given token', async () => {
+    const queryResult = await knexInstance('users_verifying')
+      .select('token')
+      .where({email: exampleEmail4})
+      .first();
+    const email = await myUserRepo.getEmailByVerifyingToken(queryResult.token);
+
+    expect(email).toBe(exampleEmail4);
+  });
+
   it('should delete to be verified user', async () => {
     const email = await myUserRepo.deleteToBeVerifiedUser(exampleEmail4);
 
@@ -197,8 +207,14 @@ describe('user repository unit tests', () => {
       .where({email})
       .first();
 
+    const queryResultUserTable = await knexInstance('users')
+      .select('is_verified')
+      .where({email})
+      .first();
+
     expect(email).toBe(exampleEmail4);
     expect(queryResult).toBeUndefined();
+    expect(queryResultUserTable.is_verified).toBeTruthy();
   });
 });
 

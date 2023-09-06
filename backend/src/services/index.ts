@@ -26,12 +26,17 @@ export class ServiceScheduledTasks {
       const emailService = new EmailService();
 
       // Gets all users' email in database.
-      const usersData = await userRepo.getAllUsersEmail();
+      let usersData = await userRepo.getAllUsersData();
 
       if (!usersData || usersData.length === 0) {
         console.warn('No users found in the database. No emails will be sent.');
         return; // Return early if there are no users.
       }
+
+      // Filters email addresses that has been confirmed.
+      usersData = usersData.filter(user => {
+        return user.isVerified === 1;
+      });
 
       // Batch users for email sending.
       const batchSize = 10;

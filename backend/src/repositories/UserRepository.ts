@@ -1,5 +1,5 @@
 import {Knex} from 'knex';
-import {encryptString, decryptString} from '../utils/crypto';
+import crypto from 'crypto';
 
 class UserRepository implements IUserRepository {
   private db: Knex;
@@ -31,7 +31,7 @@ class UserRepository implements IUserRepository {
    * Gets all users' information from database.
    * @returns all users' information in an array.
    */
-  public async getAllUsersEmail(): Promise<DUser[] | undefined> {
+  public async getAllUsersData(): Promise<DUser[] | undefined> {
     try {
       const allUsers = await this.db.select().from('users');
       return allUsers;
@@ -110,7 +110,7 @@ class UserRepository implements IUserRepository {
 
   /**
    * Adds an entry to users_verifying table.
-   * This table stores to be confirmed email address and a token to verify it.
+   * This table stores to-be-confirmed email address and a token to verify it.
    * @param email
    * @returns generated token
    */
@@ -118,8 +118,8 @@ class UserRepository implements IUserRepository {
     email: string
   ): Promise<string | undefined> {
     try {
-      // Gets a long string by encrypting the email address.
-      const token = encryptString(email);
+      // Gets a long random string
+      const token = crypto.randomUUID();
 
       await this.db('users_verifying').insert({email, token});
 
@@ -157,7 +157,31 @@ class UserRepository implements IUserRepository {
   }
 
   /**
-   * Deletes verified use in table users_verifying.
+   * Gets email address by the given token.
+   * @param token
+   * @returns email address
+   */
+  public async getEmailByVerifyingToken(
+    token: string
+  ): Promise<string | undefined> {
+    try {
+      const queryResult = await this.db('users_verifying')
+        .select('email')
+        .where({token})
+        .first();
+      return queryResult.email;
+    } catch (error) {
+      console.log(
+        'An error occurred when getting email from users_verifying',
+        error
+      );
+      return;
+    }
+  }
+
+  /**
+   * Deletes verified use in table users_verifying
+   * Changes is_verified to true in table users.
    * @param email
    * @returns deleted email address in table users_verifying
    */
@@ -165,11 +189,35 @@ class UserRepository implements IUserRepository {
     email: string
   ): Promise<string | undefined> {
     try {
-      await this.db('users_verifying').where('email', '=', email).del();
+      await this.db.transaction(async trx => {
+        await trx('users_verifying').where({email}).del();
+        await trx('users').where({email}).update({is_verified: true});
+      });
       return email;
     } catch (error) {
       console.error(
         'An error occurred when deleting a user from users_verifying.',
+        error
+      );
+      return;
+    }
+  }
+
+  /**
+   * Gets is_verified from users table.
+   * @param email
+   * @returns
+   */
+  public async isVerifiedEmail(email: string): Promise<boolean | undefined> {
+    try {
+      const isVerified = await this.db('users')
+        .select('is_verified')
+        .where({email})
+        .first();
+      return isVerified;
+    } catch (error) {
+      console.log(
+        'An error occurred when getting is_verified from users table.',
         error
       );
       return;

@@ -7,11 +7,15 @@ export async function up(knex: Knex): Promise<void> {
       table.string('email').notNullable();
       table.unique('email');
       table.boolean('admin').defaultTo(false);
-      table.boolean('verified').defaultTo(false);
+      table.boolean('is_verified').defaultTo(false);
     })
     .createTable('users_verifying', table => {
       table.string('email').primary();
-      table.foreign('email').references('users.email');
+      table
+        .foreign('email')
+        .references('users.email')
+        .onDelete('CASCADE')
+        .onUpdate('CASCADE');
       table.string('token');
     });
 }

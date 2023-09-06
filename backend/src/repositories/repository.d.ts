@@ -3,8 +3,8 @@
 interface DUser {
   id?: number;
   email: string;
-  admin?: boolean;
-  verified?: boolean;
+  admin?: number;
+  isVerified?: number;
 }
 
 interface DMensaMenu {
@@ -65,8 +65,8 @@ interface IUserRepository {
   // Creates a new user.
   createUser(userData: DUser): Promise<DUser | undefined>;
 
-  // Gets all users' email from database.
-  getAllUsersEmail(): Promise<DUser[] | undefined>;
+  // Gets all users' data from database.
+  getAllUsersData(): Promise<DUser[] | undefined>;
 
   // Gets user's id by email.
   getUserIdByEmail(email: string): Promise<Pick<DUser, 'id'> | undefined>;
@@ -85,6 +85,9 @@ interface IUserRepository {
 
   // Gets verifying token
   getVerifyingTokenByUserEmail(email: string): Promise<string | undefined>;
+
+  // Gets email address by token
+  getEmailByVerifyingToken(token: string): Promise<string | undefined>;
 
   // Deletes verified use in table users_verifying.
   deleteToBeVerifiedUser(email: string): Promise<string | undefined>;
