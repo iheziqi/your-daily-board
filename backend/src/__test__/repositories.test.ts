@@ -307,7 +307,8 @@ describe('exchange rate repository unit tests', () => {
 });
 
 describe('subscriptions repository unit tests', () => {
-  const mySubRepo = new SubscriptionRepository(knexInstance);
+  const userRepo = new UserRepository(knexInstance);
+  const mySubRepo = new SubscriptionRepository(knexInstance, userRepo);
 
   it('should create exchange rate subscription for given user', async () => {
     // the id of exampleEmail2 in database now it 2.

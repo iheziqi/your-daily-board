@@ -5,9 +5,9 @@ class SubscriptionRepository implements ISubscriptionRepository {
   private db: Knex;
   private userRepo: UserRepository;
 
-  constructor(knexInstance: Knex) {
+  constructor(knexInstance: Knex, userRepository: UserRepository) {
     this.db = knexInstance;
-    this.userRepo = new UserRepository(knexInstance);
+    this.userRepo = userRepository;
   }
 
   /**

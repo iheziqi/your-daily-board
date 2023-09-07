@@ -5,7 +5,11 @@ import ExchangeRateService from './ExchangeRateService';
 export {RenderService, EmailService, ExchangeRateService};
 
 import KnexService from '../database/KnexService';
-import {UserRepository} from '../repositories/index';
+import {
+  MensaInfoRepository,
+  SubscriptionRepository,
+  UserRepository,
+} from '../repositories/index';
 import {getDirPathOfEmailTemplate} from '../views/emails/v1/render';
 
 export class ServiceScheduledTasks {
@@ -17,11 +21,15 @@ export class ServiceScheduledTasks {
   public static async sendDailyBoardEmails(versionNumber: string) {
     try {
       // Initializes repo.
-      const userRepo = new UserRepository(KnexService.getInstance());
+      const knexInstance = KnexService.getInstance();
+      const userRepo = new UserRepository(knexInstance);
+      const subRepo = new SubscriptionRepository(knexInstance, userRepo);
+      const mensaInfoRepo = new MensaInfoRepository(knexInstance);
       // Initializes services.
       const renderService = new RenderService(
         getDirPathOfEmailTemplate(),
-        KnexService.getInstance()
+        subRepo,
+        mensaInfoRepo
       );
       const emailService = new EmailService();
 

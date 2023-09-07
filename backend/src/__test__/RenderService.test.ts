@@ -2,6 +2,11 @@ import {RenderService} from '../services';
 import KnexService from '../database/KnexService';
 import {getTestData} from './test.data';
 import {getDirPathOfEmailTemplate} from '../views/emails/v1/render';
+import {
+  MensaInfoRepository,
+  SubscriptionRepository,
+  UserRepository,
+} from '../repositories/index';
 
 /** Initial database connection instance */
 const knexInstance = KnexService.getInstance();
@@ -67,7 +72,10 @@ afterAll(async () => {
  */
 class TestRenderService extends RenderService {
   constructor() {
-    super(getDirPathOfEmailTemplate(), knexInstance);
+    const userRepo = new UserRepository(knexInstance);
+    const subRepo = new SubscriptionRepository(knexInstance, userRepo);
+    const mensaInfoRepo = new MensaInfoRepository(knexInstance);
+    super(getDirPathOfEmailTemplate(), subRepo, mensaInfoRepo);
   }
 
   public testGetUserMensaMenu(email: string) {
