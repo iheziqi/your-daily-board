@@ -43,7 +43,7 @@ async function register(req: Request, res: Response, next: NextFunction) {
 		<a href="${verifyLink}" style="color:#ff0066;text-decoration:underline" title="" target="_blank"><span style="color:#ff0066;font-size:15px">Link to confirm email</span></a>`;
     emailService.sendEmail(email, subject, content);
 
-    res.status(200).json({msg: 'Verification email sent.'});
+    res.status(201).json({msg: 'Verification email sent.'});
   } catch (error) {
     next(error);
   }
@@ -74,4 +74,25 @@ async function verify(req: Request, res: Response, next: NextFunction) {
   }
 }
 
-export {register, verify};
+async function unsubscribe(req: Request, res: Response, next: NextFunction) {
+  try {
+    const email = req.params.email;
+    if (!email) {
+      throw createError(400, 'Missing required parameter: email address');
+    }
+
+    const userRepo = new UserRepository(KnexService.getInstance());
+
+    await userRepo.deleteUser(email);
+
+    res
+      .status(200)
+      .send(
+        '<h3 style="font: Sans-Serif">You have unsubscribed. Sorry to see you go.</h3>'
+      );
+  } catch (error) {
+    next(error);
+  }
+}
+
+export {register, verify, unsubscribe};
