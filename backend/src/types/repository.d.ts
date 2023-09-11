@@ -194,4 +194,9 @@ interface ISubscriptionRepository {
     email: string,
     mensaMenuSubscription: MensaID[]
   ): Promise<MensaID[]>;
+
+  updateExchangeRateSubscription(
+    email: string,
+    exchangeRateSubscription: from_to[]
+  ): Promise<from_to[]>;
 }

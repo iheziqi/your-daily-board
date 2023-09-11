@@ -21,7 +21,8 @@ const exampleMenu1 = 'test menu1';
 
 const exchangeRate = 7.9999;
 const changeFromYesterday = 0.02;
-const exchangeType = 'EUR-CNY';
+const exchangeType1 = 'EUR-CNY';
+const exchangeType2 = 'USD-CNY';
 
 const lmpl = {
   id: 'lmpl',
@@ -286,26 +287,26 @@ describe('exchange rate repository unit tests', () => {
   it('should load exchange rate of given date', async () => {
     const returnedValue = await myExchangeRateRepo.loadExchangeRateOfToday(
       exchangeRate,
-      exchangeType,
+      exchangeType1,
       changeFromYesterday
     );
 
     expect(returnedValue?.change_from_yesterday).toBe(changeFromYesterday);
     expect(returnedValue?.exchange_rate).toBe(exchangeRate);
     expect(returnedValue?.date).toBe(getCurrentDate());
-    expect(returnedValue?.from_to).toBe(exchangeType);
+    expect(returnedValue?.from_to).toBe(exchangeType1);
   });
 
   it('should get exchange rate of given date and from_to', async () => {
     const returnedValue = await myExchangeRateRepo.getExchangeRateByDate(
       getCurrentDate(),
-      exchangeType
+      exchangeType1
     );
 
     expect(returnedValue?.change_from_yesterday).toBe(changeFromYesterday);
     expect(returnedValue?.exchange_rate).toBe(exchangeRate);
     expect(returnedValue?.date).toBe(getCurrentDate());
-    expect(returnedValue?.from_to).toBe(exchangeType);
+    expect(returnedValue?.from_to).toBe(exchangeType1);
   });
 
   it('should return undefined when there is no exchange rate of given date', async () => {
@@ -324,13 +325,16 @@ describe('subscriptions repository unit tests', () => {
 
   it('should create exchange rate subscription for given user', async () => {
     // the id of exampleEmail2 in database now it 2.
-    await mySubRepo.createExchangeRateSubscription(exampleEmail2, exchangeType);
+    await mySubRepo.createExchangeRateSubscription(
+      exampleEmail2,
+      exchangeType1
+    );
 
     const subQuery = await knexInstance('exchange_rate_subscriptions').select();
 
     expect(subQuery.length).toBe(1);
     expect(subQuery[0].user_id).toBe(2);
-    expect(subQuery[0].from_to).toBe(exchangeType);
+    expect(subQuery[0].from_to).toBe(exchangeType1);
   });
 
   it('should create menu subscription for given user', async () => {
@@ -349,7 +353,7 @@ describe('subscriptions repository unit tests', () => {
 
     expect(Array.isArray(userExchangeSubs)).toBeTruthy();
     expect(userExchangeSubs?.length).toBe(1);
-    expect(userExchangeSubs![0]).toBe(exchangeType);
+    expect(userExchangeSubs![0]).toBe(exchangeType1);
   });
 
   it('should get menu subscriptions for given user', async () => {
@@ -371,7 +375,7 @@ describe('subscriptions repository unit tests', () => {
     expect(queryResult.length).toBe(1);
     expect(queryResult[0].change_from_yesterday).toBe(changeFromYesterday);
     expect(queryResult[0].exchange_rate).toBe(exchangeRate);
-    expect(queryResult[0].from_to).toBe(exchangeType);
+    expect(queryResult[0].from_to).toBe(exchangeType1);
   });
 
   it('should return empty array when get subscribed exchange rates of given user that do not have any subscription', async () => {
@@ -425,6 +429,36 @@ describe('subscriptions repository unit tests', () => {
     await mySubRepo.updateMensaMenuSubscription(exampleEmail2, []);
 
     const queryResult = await knexInstance('menu_subscriptions')
+      .select()
+      .where({user_id: 2});
+
+    expect(queryResult.length).toBe(0);
+  });
+
+  it('should update user exchange rate subscription', async () => {
+    await knexInstance('exchange_rate').insert({
+      from_to: exchangeType2,
+      date: getCurrentDate(),
+    });
+    await mySubRepo.updateExchangeRateSubscription(exampleEmail2, [
+      'EUR-CNY',
+      'USD-CNY',
+    ]);
+
+    const queryResult = await knexInstance('exchange_rate_subscriptions')
+      .select()
+      .where({user_id: 2});
+
+    expect(queryResult.length).toBe(2);
+    queryResult.forEach(e =>
+      expect(['EUR-CNY', 'USD-CNY'].includes(e.from_to)).toBeTruthy()
+    );
+  });
+
+  it('should delete all user exchange rate subscription when the array is empty', async () => {
+    await mySubRepo.updateExchangeRateSubscription(exampleEmail2, []);
+
+    const queryResult = await knexInstance('exchange_rate_subscriptions')
       .select()
       .where({user_id: 2});
 

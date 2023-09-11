@@ -209,6 +209,43 @@ class SubscriptionRepository implements ISubscriptionRepository {
 
     return mensaMenuSubscription;
   }
+
+  /**
+   * Updates exchange rate subscription of given user in database.
+   * This method update the menu subscription in a immutable way.
+   * It means that this method first deletes all subscriptions of the user,
+   * then insert all received subscriptions
+   * @param email
+   * @param exchangeRateSubscription
+   */
+  public async updateExchangeRateSubscription(
+    email: string,
+    exchangeRateSubscription: from_to[]
+  ): Promise<from_to[]> {
+    // Gets user id by email.
+    const user = await this.getUserDataByEmail(email);
+
+    // Uses transaction to delete and insert
+    await this.db.transaction(async trx => {
+      // Deletes existing menu subscriptions for the user.
+      await trx<DExchangeRateSubscription>('exchange_rate_subscriptions')
+        .del()
+        .where({user_id: user!.id});
+
+      // Inserts new menu subscriptions based on latestMensaIds.
+      const insertPromises = exchangeRateSubscription.map(async fromTo => {
+        await trx<DExchangeRateSubscription>(
+          'exchange_rate_subscriptions'
+        ).insert({
+          user_id: user!.id,
+          from_to: fromTo,
+        });
+      });
+      await Promise.all(insertPromises);
+    });
+
+    return exchangeRateSubscription;
+  }
 }
 
 export default SubscriptionRepository;

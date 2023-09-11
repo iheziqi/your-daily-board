@@ -5,7 +5,7 @@ import {
   unsubscribe,
   issueAuthCode,
   logInWithAuthCode,
-} from '../controllers/users';
+} from '../controllers';
 import {
   validateAuthCode,
   validateEmailInRequestBody,
