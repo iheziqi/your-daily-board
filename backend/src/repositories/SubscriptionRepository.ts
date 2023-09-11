@@ -1,13 +1,23 @@
 import {Knex} from 'knex';
-import UserRepository from './UserRepository';
 
 class SubscriptionRepository implements ISubscriptionRepository {
   private db: Knex;
-  private userRepo: UserRepository;
 
-  constructor(knexInstance: Knex, userRepository: UserRepository) {
+  constructor(knexInstance: Knex) {
     this.db = knexInstance;
-    this.userRepo = userRepository;
+  }
+
+  /**
+   * Helper method of getting data in users table by email.
+   * @param email
+   * @returns
+   */
+  private async getUserDataByEmail(email: string) {
+    const user = await this.db<DUser>('users')
+      .select('id')
+      .where({email})
+      .first();
+    return user;
   }
 
   /**
@@ -21,7 +31,7 @@ class SubscriptionRepository implements ISubscriptionRepository {
     from_to: from_to
   ): Promise<DExchangeRateSubscription | undefined> {
     // Gets user id by email.
-    const user = await this.userRepo.getUserIdByEmail(email);
+    const user = await this.getUserDataByEmail(email);
 
     // Inserts subscription.
     if (user) {
@@ -47,7 +57,7 @@ class SubscriptionRepository implements ISubscriptionRepository {
     mensaId: MensaID
   ): Promise<DMensaMenuSubscription | undefined> {
     // Gets user id by email.
-    const user = await this.userRepo.getUserIdByEmail(email);
+    const user = await this.getUserDataByEmail(email);
 
     // Inserts subscription.
     if (user) {
@@ -71,7 +81,7 @@ class SubscriptionRepository implements ISubscriptionRepository {
     email: string
   ): Promise<from_to[] | undefined> {
     // Gets user id by email.
-    const user = await this.userRepo.getUserIdByEmail(email);
+    const user = await this.getUserDataByEmail(email);
 
     if (user) {
       const queryResult = await this.db<DExchangeRateSubscription>(
@@ -100,7 +110,7 @@ class SubscriptionRepository implements ISubscriptionRepository {
     email: string
   ): Promise<MensaID[] | undefined> {
     // Gets user id by email.
-    const user = await this.userRepo.getUserIdByEmail(email);
+    const user = await this.getUserDataByEmail(email);
 
     if (user) {
       const queryResult = await this.db<DMensaMenuSubscription>(
@@ -163,6 +173,41 @@ class SubscriptionRepository implements ISubscriptionRepository {
       .where('u.email', email);
 
     return mensaMenusQuery;
+  }
+
+  /**
+   * Updates mensa menu subscription of given user in database.
+   * This method update the menu subscription in a immutable way.
+   * It means that this method first deletes all subscriptions of the user,
+   * then insert all received subscriptions
+   * @param email
+   * @param mensaMenuSubscription
+   */
+  public async updateMensaMenuSubscription(
+    email: string,
+    mensaMenuSubscription: MensaID[]
+  ): Promise<MensaID[]> {
+    // Gets user id by email.
+    const user = await this.getUserDataByEmail(email);
+
+    // Uses transaction to delete and insert
+    await this.db.transaction(async trx => {
+      // Deletes existing menu subscriptions for the user.
+      await trx<DMensaMenuSubscription>('menu_subscriptions')
+        .del()
+        .where({user_id: user!.id});
+
+      // Inserts new menu subscriptions based on latestMensaIds.
+      const insertPromises = mensaMenuSubscription.map(async mensaId => {
+        await trx<DMensaMenuSubscription>('menu_subscriptions').insert({
+          user_id: user!.id,
+          mensa_id: mensaId,
+        });
+      });
+      await Promise.all(insertPromises);
+    });
+
+    return mensaMenuSubscription;
   }
 }
 

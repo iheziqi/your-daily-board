@@ -28,12 +28,24 @@ const lmpl = {
   name: 'Erlangen Langemarckplatz',
   url: 'https://www.werkswelt.de/index.php?id=lmpl',
 };
+const sued = {
+  id: 'sued',
+  name: 'tech',
+  url: 'https://www.werkswelt.de/index.php?id=sued',
+};
+const mohm = {
+  id: 'mohm',
+  name: 'th',
+  url: 'https://www.werkswelt.de/index.php?id=mohm',
+};
 
 beforeAll(async () => {
   await knexInstance('mensa_info').del();
 
   // loads a mensa info into database.
   await knexInstance('mensa_info').insert(lmpl);
+  await knexInstance('mensa_info').insert(sued);
+  await knexInstance('mensa_info').insert(mohm);
 
   // deletes all entries in users table.
   await knexInstance('users').del();
@@ -307,8 +319,8 @@ describe('exchange rate repository unit tests', () => {
 });
 
 describe('subscriptions repository unit tests', () => {
-  const userRepo = new UserRepository(knexInstance);
-  const mySubRepo = new SubscriptionRepository(knexInstance, userRepo);
+  // const userRepo = new UserRepository(knexInstance);
+  const mySubRepo = new SubscriptionRepository(knexInstance);
 
   it('should create exchange rate subscription for given user', async () => {
     // the id of exampleEmail2 in database now it 2.
@@ -390,6 +402,33 @@ describe('subscriptions repository unit tests', () => {
     expect(queryResult[0].mensa_id).toBe('lmpl');
     expect(queryResult[0].menu).toBe(exampleMenu1);
     expect(queryResult[0].date).toBe(getCurrentDate());
+  });
+
+  it('should update user mensa menu subscription', async () => {
+    await mySubRepo.updateMensaMenuSubscription(exampleEmail2, [
+      'lmpl',
+      'mohm',
+      'sued',
+    ]);
+
+    const queryResult = await knexInstance('menu_subscriptions')
+      .select()
+      .where({user_id: 2});
+
+    expect(queryResult.length).toBe(3);
+    queryResult.forEach(e =>
+      expect(['lmpl', 'mohm', 'sued'].includes(e.mensa_id)).toBeTruthy()
+    );
+  });
+
+  it('should delete all user mensa menu subscription when the array is empty', async () => {
+    await mySubRepo.updateMensaMenuSubscription(exampleEmail2, []);
+
+    const queryResult = await knexInstance('menu_subscriptions')
+      .select()
+      .where({user_id: 2});
+
+    expect(queryResult.length).toBe(0);
   });
 });
 

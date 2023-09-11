@@ -107,7 +107,7 @@ export class ServiceScheduledTasks {
       // Initializes repo.
       const knexInstance = KnexService.getInstance();
       const userRepo = new UserRepository(knexInstance);
-      const subRepo = new SubscriptionRepository(knexInstance, userRepo);
+      const subRepo = new SubscriptionRepository(knexInstance);
       const mensaInfoRepo = new MensaInfoRepository(knexInstance);
       // Initializes services.
       const renderService = new RenderService(

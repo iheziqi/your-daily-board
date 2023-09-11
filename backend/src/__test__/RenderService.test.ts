@@ -5,7 +5,6 @@ import {getDirPathOfEmailTemplate} from '../views/emails/v1/render';
 import {
   MensaInfoRepository,
   SubscriptionRepository,
-  UserRepository,
 } from '../repositories/index';
 
 /** Initial database connection instance */
@@ -58,6 +57,7 @@ afterAll(async () => {
   await knexInstance('exchange_rate').del();
   await knexInstance('exchange_rate_subscriptions').del();
   await knexInstance('menu_subscriptions').del();
+  await knexInstance('mensa_info').del();
 
   // resets increments to 1.
   await knexInstance.raw('ALTER TABLE users AUTO_INCREMENT = 1');
@@ -72,8 +72,7 @@ afterAll(async () => {
  */
 class TestRenderService extends RenderService {
   constructor() {
-    const userRepo = new UserRepository(knexInstance);
-    const subRepo = new SubscriptionRepository(knexInstance, userRepo);
+    const subRepo = new SubscriptionRepository(knexInstance);
     const mensaInfoRepo = new MensaInfoRepository(knexInstance);
     super(getDirPathOfEmailTemplate(), subRepo, mensaInfoRepo);
   }
