@@ -19,6 +19,15 @@ interface DUserVerifying {
 }
 
 /**
+ * users_authentication table
+ */
+interface DUserAuthentication {
+  email: string;
+  authentication_code: number;
+  expiration_timestamp: number;
+}
+
+/**
  * mensa_menu table
  */
 interface DMensaMenu {
@@ -179,4 +188,10 @@ interface ISubscriptionRepository {
 
   // Gets all subscribed mensa menus of the given user.
   getUserSubscribedMensaMenusOfToday(email: string): Promise<DMensaMenu[]>;
+
+  // Updates mensa menu subscription of given user
+  updateMensaMenuSubscription(
+    email: string,
+    mensaMenuSubscription: MensaID[]
+  ): Promise<MensaID[]>;
 }

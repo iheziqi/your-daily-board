@@ -38,3 +38,25 @@ export function getPreviousDay(dateString: string): string {
 
   return `${year}-${month}-${day}`;
 }
+
+/**
+ * Converts a Unix timestamp to a JavaScript Date object.
+ *
+ * @param {number} unixTimestamp - The Unix timestamp in seconds.
+ * @returns {Date} The corresponding JavaScript Date object.
+ */
+export function unixTimestampToDate(unixTimestamp: number): Date {
+  const timestampInMilliseconds = unixTimestamp * 1000;
+  return new Date(timestampInMilliseconds);
+}
+
+/**
+ * Converts a JavaScript Date object to a Unix timestamp.
+ *
+ * @param {Date} date - The JavaScript Date object.
+ * @returns {number} The Unix timestamp in seconds.
+ */
+export function dateToUnixTimestamp(date: Date): number {
+  const timestampInSeconds = date.getTime() / 1000;
+  return Math.floor(timestampInSeconds);
+}

@@ -5,6 +5,7 @@ import {
   RepoScheduledTasks,
   ServiceScheduledTasks,
 } from './ScheduledTaskService';
+import UserAuthService from './UserAuthService';
 
 export {
   RenderService,
@@ -12,4 +13,5 @@ export {
   ExchangeRateService,
   RepoScheduledTasks,
   ServiceScheduledTasks,
+  UserAuthService,
 };

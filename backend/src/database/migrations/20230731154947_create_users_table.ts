@@ -17,9 +17,22 @@ export async function up(knex: Knex): Promise<void> {
         .onDelete('CASCADE')
         .onUpdate('CASCADE');
       table.string('token');
+    })
+    .createTable('users_authentication', table => {
+      table.string('email').primary();
+      table
+        .foreign('email')
+        .references('users.email')
+        .onDelete('CASCADE')
+        .onUpdate('CASCADE');
+      table.integer('authentication_code');
+      table.integer('expiration_timestamp');
     });
 }
 
 export async function down(knex: Knex): Promise<void> {
-  return knex.schema.dropTable('users');
+  return knex.schema
+    .dropTable('users_authentication')
+    .dropTable('users_verifying')
+    .dropTable('users');
 }
