@@ -19,7 +19,7 @@ class MensaMenuRepository implements IMensaMenuRepository {
     mensaId: MensaID
   ): Promise<string | null> {
     try {
-      await this.db('mensa_menu').insert({
+      await this.db<DMensaMenu>('mensa_menu').insert({
         mensa_id: mensaId,
         date: getCurrentDate(),
         menu: menu,
@@ -43,19 +43,14 @@ class MensaMenuRepository implements IMensaMenuRepository {
   public async getMenuByMensaIdAndDate(
     mensaId: MensaID,
     date: string
-  ): Promise<string | undefined> {
+  ): Promise<string | undefined | null> {
     try {
-      const queryResult = await this.db
+      const queryResult = await this.db<DMensaMenu>('mensa_menu')
         .select('menu')
-        .from<DMensaMenu>('mensa_menu')
         .where({mensa_id: mensaId, date: date})
         .first();
 
-      if (!queryResult) {
-        return;
-      }
-
-      return queryResult.menu;
+      return queryResult?.menu;
     } catch (error) {
       console.error(
         `An error ocurred when getting menu of mensa ${mensaId} on ${date}.`,

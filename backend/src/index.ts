@@ -1,6 +1,5 @@
 import KnexService from './database/KnexService';
-import {RepoScheduledTasks} from './repositories/index';
-import {ServiceScheduledTasks} from './services/index';
+import {RepoScheduledTasks, ServiceScheduledTasks} from './services/index';
 import {getCurrentDate} from './utils/helpers';
 
 async function doScheduledTask(type: string) {

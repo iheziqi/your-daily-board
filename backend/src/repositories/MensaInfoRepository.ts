@@ -88,54 +88,36 @@ class MensaInfoRepository implements IMensaInfoRepository {
    * @returns Mensa information containing name and url
    */
   public async getMensaInfoById(id: MensaID): Promise<DMensaInfo | undefined> {
-    try {
-      const mensaInfo = await this.db
-        .select('name', 'url')
-        .from('mensa_info')
-        .where('id', id)
-        .first();
-      return mensaInfo;
-    } catch (error) {
-      console.error(
-        'An error occurred while getting Mensa info by ID from database',
-        error
-      );
-      return;
-    }
+    const mensaInfo = await this.db<DMensaInfo>('mensa_info')
+      .select('name', 'url')
+      .where('id', id)
+      .first();
+    return mensaInfo;
   }
 
   /**
    * Loads all Mensa information to database.
    * @returns All Mensa information in an array
    */
-  public async loadAllMensaInfo(): Promise<MensaInfo[] | null> {
-    try {
-      // Initialize scraper.
-      const myMensaInfoScraper = new MensaInfoScraper();
+  public async loadAllMensaInfo(): Promise<MensaInfo[] | undefined> {
+    // Initialize scraper.
+    const myMensaInfoScraper = new MensaInfoScraper();
 
-      // Fetch all mensa info from website.
-      const allMensaInfo = await myMensaInfoScraper.getAllMensaInfo();
+    // Fetch all mensa info from website.
+    const allMensaInfo = await myMensaInfoScraper.getAllMensaInfo();
 
-      if (allMensaInfo) {
-        // Ensure promises are resolved before proceeding.
-        const promises = allMensaInfo.map(mensaInfo =>
-          this.db('mensa_info').insert(mensaInfo)
-        );
-        await Promise.all(promises);
-
-        return allMensaInfo;
-      } else {
-        console.log('Mensa info array is null!');
-        return null;
-      }
-    } catch (error) {
-      // Handle the error.
-      console.error(
-        'An error occurred while loading Mensa info to database:',
-        error
-      );
-      return null;
+    if (!allMensaInfo) {
+      console.log('Mensa info array is null!');
+      return;
     }
+
+    // Uses Promise.all to resolve promises concurrently.
+    const promises = allMensaInfo.map(mensaInfo =>
+      this.db('mensa_info').insert(mensaInfo)
+    );
+    await Promise.all(promises);
+
+    return allMensaInfo;
   }
 }
 

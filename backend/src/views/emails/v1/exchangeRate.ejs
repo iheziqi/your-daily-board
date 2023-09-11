@@ -8,9 +8,9 @@
 >
   <%= from_to %>: <%= exchange_rate %>
   <span style="float: right">
-		<% if(change_from_yesterday >= 0) { %>
+		<% if (change_from_yesterday >= 0) { %>
 			+<%= change_from_yesterday %>
-		<% } else { %>
+		<% } else if (change_from_yesterday < 0) { %>
 			<%= change_from_yesterday %>
 		<% } %>
 	</span>

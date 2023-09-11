@@ -4,22 +4,26 @@ import {
   SubscriptionRepository,
   MensaInfoRepository,
 } from '../repositories/index';
-import {Knex} from 'knex';
 
 /**
  * Service for rendering email template.
  */
 class RenderService {
   /** the path of email template folder. */
-  private templatesPath: string;
+  private readonly templatesPath: string;
   /** Repositories. */
-  private subscriptionRepo: SubscriptionRepository;
-  private mensaInfoRepo: MensaInfoRepository;
+  private readonly subscriptionRepo: SubscriptionRepository;
+  private readonly mensaInfoRepo: MensaInfoRepository;
 
-  constructor(templatesPath: string, knexInstance: Knex) {
+  constructor(
+    templatesPath: string,
+    subscriptionRepository: SubscriptionRepository,
+    mensaInfoRepository: MensaInfoRepository
+  ) {
+    //inject dependencies
     this.templatesPath = templatesPath;
-    this.subscriptionRepo = new SubscriptionRepository(knexInstance);
-    this.mensaInfoRepo = new MensaInfoRepository(knexInstance);
+    this.subscriptionRepo = subscriptionRepository;
+    this.mensaInfoRepo = mensaInfoRepository;
   }
 
   /**
@@ -78,6 +82,8 @@ class RenderService {
 
   /**
    * Gets all mensa menu subscriptions of the given user.
+   * This method is to construct data used by render service,
+   * it uses getUserSubscribedMensaMenuOfToday in SubscriptionRepository.
    * @param userEmail The email address of user
    * @returns
    */
@@ -110,7 +116,7 @@ class RenderService {
         mensaMenus.push({
           mensaName: mensaInfo.name,
           mensaMenu:
-            'No menu today or closed. Please go to the website of StudierendenWerk for more information.',
+            'No menu today or Mensa is closed. Please go to the website of StudierendenWerk for more information.',
           jumpLinkId: subscribedMenu.mensa_id,
         });
       }
