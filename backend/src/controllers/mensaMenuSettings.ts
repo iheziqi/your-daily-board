@@ -22,17 +22,16 @@ async function getMensaMenuSubscription(
     const knexInstance = KnexService.getInstance();
     const subscriptionRepo = new SubscriptionRepository(knexInstance);
 
-    const mensaMenuSubscription =
+    const mensaMenuSubscriptions =
       await subscriptionRepo.getMensaMenuSubscriptionsByUserEmail(email);
-    console.log(mensaMenuSubscription);
 
-    if (!mensaMenuSubscription) {
+    if (!mensaMenuSubscriptions) {
       throw createHttpError.InternalServerError(
         'Failed to get user mensa menu subscription'
       );
     }
 
-    res.status(200).json({email, mensaMenuSubscription});
+    res.status(200).json({email, mensaMenuSubscriptions});
   } catch (error) {
     next(error);
   }
@@ -54,9 +53,7 @@ async function setMensaMenuSubscription(
 
     const mensaIds: MensaID[] | undefined = req.body.mensaIds;
     if (!mensaIds) {
-      throw createHttpError.BadRequest(
-        'Missing required parameter:  mensa_ids'
-      );
+      throw createHttpError.BadRequest('Missing required parameter:  mensaIds');
     }
 
     const knexInstance = KnexService.getInstance();
