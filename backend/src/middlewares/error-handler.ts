@@ -9,6 +9,7 @@ export function errorHandler(
 ) {
   if (err instanceof createError.HttpError) {
     // Handle HTTP errors with specific status codes and messages
+    console.error(err);
     return res.status(err.statusCode).json({
       error: true,
       errorCode: err.status,
