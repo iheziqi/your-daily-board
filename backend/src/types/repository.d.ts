@@ -41,6 +41,7 @@ interface DMensaMenu {
  * mensa_info table
  */
 interface DMensaInfo {
+  id: MensaID;
   name: string;
   url: string;
 }
@@ -76,10 +77,10 @@ interface DExchangeRateSubscription {
  */
 interface IMensaInfoRepository {
   // Gets all Mensa information from database.
-  getAllMensaInfo(): Record<MensaID, DMensaInfo>;
+  getAllMensaInfo(): Promise<Record<MensaID, MensaInfo>>;
 
   // Gets information of given Mensa ID.
-  getMensaInfoById(id: MensaID): Promise<DMensaInfo | undefined>;
+  getMensaInfoById(id: MensaID): Promise<MensaInfo | undefined>;
 
   // Loads information of all Mensa.
   loadAllMensaInfo(): Promise<MensaInfo[] | undefined>;
