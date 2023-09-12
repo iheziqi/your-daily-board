@@ -2,7 +2,6 @@
 
 /** Type of Mensa object */
 interface MensaInfo {
-  id: string;
   name: string;
   url: string;
 }

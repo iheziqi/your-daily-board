@@ -27,7 +27,7 @@ export class RepoScheduledTasks {
 
     try {
       //Gets all names and urls of mensa.
-      const mensaInfo = mensaInfoRepo.getAllMensaInfo();
+      const mensaInfo = await mensaInfoRepo.getAllMensaInfo();
       const mensaIds = Object.keys(mensaInfo) as MensaID[];
 
       // Fetches menus on mensa websites and save them into database.

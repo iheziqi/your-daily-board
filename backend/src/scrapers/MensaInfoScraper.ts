@@ -3,7 +3,7 @@ import Scraper from './Scraper';
 
 class MensaInfoScraper {
   private url: string;
-  private mensaInfoList: MensaInfo[] = [];
+  private mensaInfoList: DMensaInfo[] = [];
 
   constructor(
     url = 'https://www.werkswelt.de/index.php?id=mensen-cafeterien-cafebars'
@@ -82,7 +82,9 @@ class MensaInfoScraper {
     liElements.forEach(li => {
       const linkElement = li.querySelector('a[role="menuitem"]')!;
       // Extract the id value after "?id="
-      const idAttribute = linkElement.getAttribute('href')!.substring(4);
+      const idAttribute = linkElement
+        .getAttribute('href')!
+        .substring(4) as MensaID;
       // Get the text content inside the <a> tag and remove leading/trailing spaces
       const textContentName = linkElement.textContent!.trim();
       // Create an object with id and name properties and push it to the mensaInfoList array

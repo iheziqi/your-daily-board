@@ -10,76 +10,22 @@ class MensaInfoRepository implements IMensaInfoRepository {
   }
 
   /**
-   * Gets all Mensa information.
-   * @returns All Mensa information in a array.
+   * Gets all Mensa information object.
+   * @returns All Mensa information in an object with MensaID as the key.
    */
-  public getAllMensaInfo(): Record<MensaID, DMensaInfo> {
-    return {
-      lmpl: {
-        name: 'Erlangen Langemarckplatz',
-        url: 'https://www.werkswelt.de/index.php?id=lmpl',
-      },
-      sued: {
-        name: 'Erlangen Südmensa',
-        url: 'https://www.werkswelt.de/index.php?id=sued',
-      },
-      'cafeteria-kochstrasse': {
-        name: 'Erlangen Kochstraße',
-        url: 'https://www.werkswelt.de/index.php?id=cafeteria-kochstrasse',
-      },
-      isch: {
-        name: 'Nürnberg Insel Schütt',
-        url: 'https://www.werkswelt.de/index.php?id=isch',
-      },
-      regb: {
-        name: 'Nürnberg Regensburger Straße',
-        url: 'https://www.werkswelt.de/index.php?id=regb',
-      },
-      spau: {
-        name: 'Nürnberg St. Paul',
-        url: 'https://www.werkswelt.de/index.php?id=spau',
-      },
-      mohm: {
-        name: 'Nürnberg Mensateria Ohm',
-        url: 'https://www.werkswelt.de/index.php?id=mohm',
-      },
-      'cafeteria-veilstr': {
-        name: 'Nürnberg Veilhofstraße',
-        url: 'https://www.werkswelt.de/index.php?id=cafeteria-veilstr',
-      },
-      hohf: {
-        name: 'Nürnberg Hohfederstraße',
-        url: 'https://www.werkswelt.de/index.php?id=hohf',
-      },
-      'cafeteria-langegasse': {
-        name: 'Nürnberg Lange Gasse',
-        url: 'https://www.werkswelt.de/index.php?id=cafeteria-langegasse',
-      },
-      baer: {
-        name: 'Nürnberg Bärenschanzstraße',
-        url: 'https://www.werkswelt.de/index.php?id=baer',
-      },
-      bingstrasse: {
-        name: 'Nürnberg Bingstraße',
-        url: 'https://www.werkswelt.de/index.php?id=bingstrasse',
-      },
-      eich: {
-        name: 'Eichstätt',
-        url: 'https://www.werkswelt.de/index.php?id=eich',
-      },
-      ingo: {
-        name: 'Ingolstadt',
-        url: 'https://www.werkswelt.de/index.php?id=ingo',
-      },
-      ansb: {
-        name: 'Ansbach',
-        url: 'https://www.werkswelt.de/index.php?id=ansb',
-      },
-      trie: {
-        name: 'Triesdorf',
-        url: 'https://www.werkswelt.de/index.php?id=trie',
-      },
-    };
+  public async getAllMensaInfo(): Promise<Record<MensaID, MensaInfo>> {
+    const mensaInfoArr = await this.db<DMensaInfo>('mensa_info').select();
+    const mensaInfoObj = {} as Record<MensaID, MensaInfo>;
+
+    for (const mensa of mensaInfoArr) {
+      // Use the 'id' property as the key in the output object
+      mensaInfoObj[mensa.id] = {
+        name: mensa.name,
+        url: mensa.url,
+      };
+    }
+
+    return mensaInfoObj;
   }
 
   /**
@@ -87,7 +33,7 @@ class MensaInfoRepository implements IMensaInfoRepository {
    * @param id Mensa id
    * @returns Mensa information containing name and url
    */
-  public async getMensaInfoById(id: MensaID): Promise<DMensaInfo | undefined> {
+  public async getMensaInfoById(id: MensaID): Promise<MensaInfo | undefined> {
     const mensaInfo = await this.db<DMensaInfo>('mensa_info')
       .select('name', 'url')
       .where('id', id)
@@ -113,7 +59,7 @@ class MensaInfoRepository implements IMensaInfoRepository {
 
     // Uses Promise.all to resolve promises concurrently.
     const promises = allMensaInfo.map(mensaInfo =>
-      this.db('mensa_info').insert(mensaInfo)
+      this.db<DMensaInfo>('mensa_info').insert(mensaInfo)
     );
     await Promise.all(promises);
 
