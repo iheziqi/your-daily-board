@@ -13,6 +13,8 @@ import {
   getExchangeRateSubscription,
   setExchangeRateSubscription,
 } from './exchangeRateSettings';
+import {getMensaInfo} from './mensaInfo';
+import {getExchangeRateInfo} from './exchangeRateInfo';
 
 export {
   register,
@@ -24,4 +26,6 @@ export {
   setMensaMenuSubscription,
   getExchangeRateSubscription,
   setExchangeRateSubscription,
+  getMensaInfo,
+  getExchangeRateInfo,
 };

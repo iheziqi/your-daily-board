@@ -17,6 +17,7 @@ import {errorHandler} from './middlewares/error-handler';
 // routes
 import users from './routes/users';
 import settings from './routes/settings';
+import info from './routes/info';
 
 // make PROCESS.ENV available
 loadEnv();
@@ -47,6 +48,7 @@ app.use(xss());
 // api routes
 app.use('/api/v1/users', users);
 app.use('/api/v1/settings', settings);
+app.use('/api/v1/info', info);
 
 // catch 404 and forward to error handler
 app.use((_req, _res, next) => {
