@@ -1,8 +1,10 @@
 import express from 'express';
-import {getMensaInfo} from '../controllers';
+import {getExchangeRateInfo, getMensaInfo} from '../controllers';
 
 const router = express.Router();
 
 router.get('/mensa', getMensaInfo);
+
+router.get('/exchange_rate', getExchangeRateInfo);
 
 export default router;
