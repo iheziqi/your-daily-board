@@ -1,0 +1,3 @@
+interface EmailInput {
+  email: string;
+}
