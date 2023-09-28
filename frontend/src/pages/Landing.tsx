@@ -1,12 +1,26 @@
-import { ChangeEvent, FormEvent, useState, useRef } from 'react';
-import { Form } from 'react-router-dom';
-import { useErrorBoundary } from 'react-error-boundary';
+import { useRef } from 'react';
+import {
+  ActionFunction,
+  Form,
+  useActionData,
+  useNavigation,
+} from 'react-router-dom';
 import { Typewriter } from 'react-simple-typewriter';
 
 import Footer from '../components/Footer';
 import InfoModal from '../components/InfoModal';
-import { validEmailAddress } from '../utils/helpers';
 import { submitEmailAddress } from '../utils/ajax';
+
+/**
+ * Action function of react router in landing page.
+ */
+export const action: ActionFunction = async ({ request }) => {
+  const formData = await request.formData();
+  const data = Object.fromEntries(formData);
+  const { email } = data;
+  const status = await submitEmailAddress(email as string);
+  return status;
+};
 
 /**
  * Landing page.
@@ -24,77 +38,23 @@ Speiseplan <br><h4>Donnerstag 21.09.2023</h4>Aktionsessen 1<br>Currywurst mit So
 
 </div>`;
 
-  // email input value
-  const [email, setEmail] = useState('');
-  // whether a valid email address
-  const [isValid, setIsValid] = useState(true);
-  // state of submitting email address to server
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  // reference to modal element
+  // reference to the modal element
   const infoModal = useRef<HTMLDialogElement>(null);
-  // use showBoundary to render error page when fetching error occurs.
-  const { showBoundary } = useErrorBoundary();
 
-  /**
-   * Email input handler, checks whether is a valid email address.
-   * @param event
-   */
-  const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const inputEmail = event.target.value;
-    setEmail(inputEmail);
-    setIsValid(validEmailAddress(inputEmail));
-  };
+  // current navigation of react router
+  const navigation = useNavigation();
 
-  /**
-   * Opens information modal.
-   * The modal is a dialog element, so it calls showModal()
-   */
-  const openModal = () => {
+  // returned response from action function
+  const actionResponse = useActionData();
+
+  if (navigation.state === 'idle' && actionResponse === 201) {
+    // Opens information modal.
+    // The modal is a dialog element, so it calls showModal()
     infoModal.current?.showModal();
-  };
-
-  /**
-   * Email submitting handler.
-   * Submits the email to backend server by calling corresponding api.
-   * @param e
-   */
-  const handleClick = async (e: FormEvent) => {
-    e.preventDefault();
-
-    // handles invalid email address.
-    if (!isValid) {
-      // opens modal for invalid email address.
-      openModal();
-      return;
-    }
-
-    // handle valid email address.
-    setIsValid(true);
-    // set the content on button to 'submitting'
-    setIsSubmitting(true);
-    try {
-      // submit email address to backend
-      const response = await submitEmailAddress(email);
-      if (response.status !== 201) {
-        throw new Error('Failed to submit the email address to the server');
-      }
-      // open modal for success
-      openModal();
-      setIsSubmitting(false);
-    } catch (error) {
-      setIsSubmitting(false);
-      // show error page
-      showBoundary(error);
-    }
-  };
+  }
 
   return (
     <>
-      <InfoModal
-        title="Ooops..."
-        content="Something went wrong, please try again later"
-        buttonContent="close"
-      />
       <div className="hero min-h-screen bg-base-200">
         <div className="hero-content flex-col lg:flex-row">
           <div className="text-center lg:text-left">
@@ -118,39 +78,24 @@ Speiseplan <br><h4>Donnerstag 21.09.2023</h4>Aktionsessen 1<br>Currywurst mit So
             </p>
             <Form method="POST">
               <input
-                onChange={handleChange}
-                value={email}
                 name="email"
                 type="email"
                 placeholder="Email Address"
-                className={`input input-bordered w-full max-w-xs mr-5 mb-2 ${
-                  isValid ? 'input-primary' : 'input-error'
-                }`}
+                className="input input-bordered w-full max-w-xs mr-5 mb-2"
                 required
               />
-              <button
-                className="btn btn-primary"
-                type="submit"
-                onClick={handleClick}
-              >
-                {isSubmitting ? 'submitting' : 'sign me up'}
+              <button className="btn btn-primary" type="submit">
+                {navigation.state === 'submitting'
+                  ? 'submitting'
+                  : 'sign me up'}
               </button>
             </Form>
-            {isValid ? (
-              <InfoModal
-                title="You are so closed!"
-                content="An Email verification has been sent to you, please check your email inbox."
-                buttonContent="close"
-                ref={infoModal}
-              />
-            ) : (
-              <InfoModal
-                title="Sorry!"
-                content="Please enter a valid email address."
-                buttonContent="close"
-                ref={infoModal}
-              />
-            )}
+            <InfoModal
+              title="You are so closed!"
+              content="An email has been sent to you to verify your email address, please check your email inbox. The link in the email will expire in 15 minutes"
+              buttonContent="close"
+              ref={infoModal}
+            />
             <p className="py-3 text-sm max-md:text-sm text-neutral-400">
               By choosing to sign up, a newsletter email will be sent to you on
               a daily basis.

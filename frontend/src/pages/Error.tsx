@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useRouteError, isRouteErrorResponse, Link } from 'react-router-dom';
 
 /**
@@ -14,7 +15,9 @@ function Error() {
       <div className="hero min-h-screen bg-base-200">
         <div className="hero-content text-center">
           <div className="max-w-md">
-            <h1 className="text-4xl font-bold">404 Not Found</h1>
+            <h1 className="text-3xl font-bold">
+              {error.data.message || '404 Not Found'}
+            </h1>
             <Link to="/" className="btn btn-primary my-6">
               Back Home
             </Link>
@@ -28,7 +31,7 @@ function Error() {
     <div className="hero min-h-screen bg-base-200">
       <div className="hero-content text-center">
         <div className="max-w-md">
-          <h1 className="text-4xl font-bold">
+          <h1 className="text-3xl font-bold">
             Something went wrong :( Please try again later
           </h1>
           <Link to="/" className="btn btn-primary my-6">

@@ -1,4 +1,4 @@
-import YourDailyBoardIcon from './YourDailyBoardIcon';
+import YourDailyBoardIcon from './icons/YourDailyBoardIcon';
 
 /**
  * Page footer.

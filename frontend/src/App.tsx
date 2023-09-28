@@ -1,16 +1,16 @@
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { ErrorBoundary } from 'react-error-boundary';
 
-import Landing from './pages/Landing';
+import Landing, { action as newsletterAction } from './pages/Landing';
 import Error from './pages/Error';
-import EmailSubmittingError from './components/EmailSubmittingError';
+import EmailSubmittingError from './components/errors/ErrorBoundary';
 
 const router = createBrowserRouter([
   {
     path: '/',
     element: <Landing />,
     errorElement: <Error />,
-    // action: newsletterAction,
+    action: newsletterAction,
   },
 ]);
 
@@ -21,7 +21,7 @@ function App() {
 function WrappedApp() {
   return (
     <ErrorBoundary FallbackComponent={EmailSubmittingError}>
-      <App />;
+      <App />
     </ErrorBoundary>
   );
 }
