@@ -24,3 +24,19 @@ export async function submitEmailAddress(email: string) {
 
   return response.status;
 }
+
+export async function getMensaInfo() {
+  const url = `${BASEURL}/info/mensa`;
+  const response = await fetch(url);
+  const data = (await response.json()) as MensaInfo;
+
+  return data;
+}
+
+export async function getExchangeRateInfo() {
+  const url = `${BASEURL}/info/exchange_rate`;
+  const response = await fetch(url);
+  const data = (await response.json()) as FromTo[];
+
+  return data;
+}

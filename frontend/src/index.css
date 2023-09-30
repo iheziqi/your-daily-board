@@ -5,3 +5,7 @@
 .mockup-phone .display {
   @apply overflow-scroll;
 }
+
+.label {
+  @apply justify-start;
+}

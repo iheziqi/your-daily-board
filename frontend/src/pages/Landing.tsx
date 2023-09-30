@@ -91,7 +91,7 @@ Speiseplan <br><h4>Donnerstag 21.09.2023</h4>Aktionsessen 1<br>Currywurst mit So
               </button>
             </Form>
             <InfoModal
-              title="You are so closed!"
+              title="You are so close!"
               content="An email has been sent to you to verify your email address, please check your email inbox. The link in the email will expire in 15 minutes"
               buttonContent="close"
               ref={infoModal}

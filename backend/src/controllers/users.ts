@@ -53,7 +53,7 @@ async function register(req: Request, res: Response, next: NextFunction) {
 		<p style="font-family:Helvetica,Arial,sans-serif;font-size:15px;color:#455463;line-height:20px;margin:0 0 1em 0">Thank you for subscribing to Your Daily Board</p>
 		<p style="font-family:Helvetica,Arial,sans-serif;font-size:15px;color:#455463;line-height:20px;margin:0 0 1em 0">Click the below link to confirm your email.</p>
 		<a href="${verifyLink}" style="color:#ff0066;text-decoration:underline" title="" target="_blank"><span style="color:#ff0066;font-size:15px">Link to confirm email</span></a>`;
-    // emailService.sendEmail(email, subject, content);
+    emailService.sendEmail(email, subject, content);
 
     res.status(201).json({message: 'Verification email sent.'});
   } catch (error) {
