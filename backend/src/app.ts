@@ -42,8 +42,12 @@ app.use(
 );
 // security libraries
 app.use(helmet());
-app.use(cors());
 app.use(xss());
+const corsConfig = {
+  credentials: true,
+  origin: true,
+};
+app.use(cors(corsConfig));
 
 // api routes
 app.use('/api/v1/users', users);
