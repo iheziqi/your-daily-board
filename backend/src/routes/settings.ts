@@ -22,7 +22,7 @@ router.post(
 );
 
 router.get(
-  'exchange_rate_subscription',
+  '/exchange_rate_subscription',
   authenticateJwtToken,
   getExchangeRateSubscription
 );
