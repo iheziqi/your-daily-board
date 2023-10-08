@@ -1,6 +1,6 @@
 import {Request, Response, NextFunction} from 'express';
 import createError from 'http-errors';
-import {UserRepository} from '../repositories/index';
+import {SubscriptionRepository, UserRepository} from '../repositories/index';
 import {EmailService, UserAuthService} from '../services/index';
 import KnexService from '../database/KnexService';
 import {loadEnv} from '../utils/loadEnv';
@@ -29,6 +29,18 @@ async function register(req: Request, res: Response, next: NextFunction) {
 
     // adds the email address to database
     await userRepo.createUser({email});
+
+    // initialize subscription repository
+    const subscriptionRepo = new SubscriptionRepository(
+      KnexService.getInstance()
+    );
+    // when user register, create the following 4 menu subscriptions.
+    await subscriptionRepo.updateMensaMenuSubscription(email, [
+      'sued',
+      'lmpl',
+      'mohm',
+      'isch',
+    ]);
 
     // creates an entry in verifying table
     const token = await userRepo.createToBeVerifiedUser(email);
