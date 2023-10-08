@@ -57,7 +57,7 @@ Speiseplan <br><h4>Donnerstag 21.09.2023</h4>Aktionsessen 1<br>Currywurst mit So
     <>
       <div className="hero min-h-screen bg-base-200">
         <div className="hero-content flex-col lg:flex-row">
-          <div className="text-center lg:text-left">
+          <div className="text-center lg:text-left lg:mr-10">
             <h1 className="md:text-5xl font-bold text-4xl h-20">
               Your Daily{' '}
               <span className="text-secondary">
@@ -98,8 +98,8 @@ Speiseplan <br><h4>Donnerstag 21.09.2023</h4>Aktionsessen 1<br>Currywurst mit So
               ref={infoModal}
             />
             <p className="py-3 text-sm md:text-base text-neutral-400">
-              Sign up to get a email newsletter containing all Mensa menus you
-              want to know on a daily basis.
+              Sign up to get a daily email newsletter about all Mensa menus you
+              want to know.
               <br /> You can unsubscribe at any time.
             </p>
           </div>
