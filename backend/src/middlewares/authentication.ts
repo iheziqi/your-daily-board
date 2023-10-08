@@ -161,11 +161,11 @@ export function authenticateJwtToken(
       // Attaches the payload in the request parameter so that
       // next middleware or controller in the call stack can have access to it
       (req as CustomRequest).decodedPayload = decoded as jwt.JwtPayload;
+
+      next();
     };
 
     jwt.verify(token, secretKey, verifyCallback);
-
-    next();
   } catch (error) {
     next(error);
   }

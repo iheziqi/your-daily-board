@@ -149,6 +149,7 @@ async function logInWithAuthCode(req: Request, res: Response) {
   res.cookie('authentication_token', jwtToken, {
     httpOnly: true,
     maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days in milliseconds
+    path: '/',
   });
   res.sendStatus(200);
 }
