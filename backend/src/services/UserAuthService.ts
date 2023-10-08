@@ -11,11 +11,12 @@ loadEnv();
 class UserAuthService {
   /**
    * Generates random 4 digits integer as authentication code.
-   * @returns 4-digits random code from  0 to 9999
+   * @returns 4-digits random code from  1000 to 9999
    */
   private static generateAuthCode() {
     // randomInt(max), max <integer> End of random range (exclusive).
-    return crypto.randomInt(10000);
+    // Return a random integer n such that min <= n < max.
+    return crypto.randomInt(1000, 10000);
   }
 
   /**
