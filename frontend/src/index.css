@@ -9,3 +9,7 @@
 .label {
   @apply justify-start;
 }
+
+.input:focus {
+  @apply outline-none;
+}

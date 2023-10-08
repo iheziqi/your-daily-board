@@ -37,3 +37,19 @@ type SubscriptionsLoaderData = {
   exchangeRateInfo: FromTo[];
   mensaInfo: MensaInfo;
 };
+
+type UserMensaMenuSubscriptions = {
+  email: string;
+  mensaMenuSubscriptions: MensaID[];
+};
+
+type UserExchangeRateSubscriptions = {
+  email: string;
+  exchangeRateSubscriptions: FromTo[];
+};
+
+type UserSubscriptions = {
+  // email: string;
+  mensaMenuSubscriptions: MensaID[];
+  exchangeRateSubscriptions: FromTo[];
+};

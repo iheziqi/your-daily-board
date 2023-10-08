@@ -1,12 +1,15 @@
+import { Suspense } from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { ErrorBoundary } from 'react-error-boundary';
 
 import Landing, { action as newsletterAction } from './pages/Landing';
 import Error from './pages/Error';
-import EmailSubmittingError from './components/errors/ErrorBoundary';
+import ErrorBoundaryFallback from './components/errors/ErrorBoundary';
 import NewsletterSettings, {
   loader as settingsLoader,
 } from './pages/NewsletterSettings';
+import LoginForm, { action as loginFormAction } from './components/LoginForm';
+import LoadingModal from './components/LoadingModal';
 
 const router = createBrowserRouter([
   {
@@ -22,6 +25,13 @@ const router = createBrowserRouter([
     loader: settingsLoader,
     id: 'subscriptions',
   },
+  {
+    path: '/login',
+    element: <LoginForm />,
+    errorElement: <Error />,
+    action: loginFormAction,
+    id: 'login',
+  },
 ]);
 
 function App() {
@@ -30,9 +40,11 @@ function App() {
 
 function WrappedApp() {
   return (
-    <ErrorBoundary FallbackComponent={EmailSubmittingError}>
-      <App />
-    </ErrorBoundary>
+    <Suspense fallback={<LoadingModal />}>
+      <ErrorBoundary FallbackComponent={ErrorBoundaryFallback}>
+        <App />
+      </ErrorBoundary>
+    </Suspense>
   );
 }
 

@@ -18,9 +18,15 @@ function Error() {
             <h1 className="text-3xl font-bold">
               {error.data.message || '404 Not Found'}
             </h1>
-            <Link to="/" className="btn btn-primary my-6">
-              Back Home
-            </Link>
+            {error.status === 401 ? (
+              <Link to="/login" className="btn btn-primary my-6">
+                Back to login page
+              </Link>
+            ) : (
+              <Link to="/" className="btn btn-primary my-6">
+                Back Home
+              </Link>
+            )}
           </div>
         </div>
       </div>
@@ -31,8 +37,8 @@ function Error() {
     <div className="hero min-h-screen bg-base-200">
       <div className="hero-content text-center">
         <div className="max-w-md">
-          <h1 className="text-3xl font-bold">
-            Something went wrong :( Please try again later
+          <h1 className="text-xl font-bold sm:text-3xl">
+            Something went wrong :( <br /> Please try again later
           </h1>
           <Link to="/" className="btn btn-primary my-6">
             Back Home

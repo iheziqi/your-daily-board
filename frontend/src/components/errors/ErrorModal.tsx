@@ -1,22 +1,23 @@
-import { forwardRef } from 'react';
+import { ReactElement, forwardRef } from 'react';
 
-interface InfoModalProps {
+interface ErrorModalProps {
   title: string;
   content: string | null;
-  buttonContent: string;
+  button: ReactElement<HTMLButtonElement>;
 }
 
 /**
- * Information modal.
+ * Error modal.
  * Uses forwardRef to let parent component get the reference of this modal.
  * @param {Object} InfoModalProps
  * @param InfoModalProps.title the title of the modal
  * @param InfoModalProps.content the content of the modal
- * @param InfoModalProps.buttonContent the content on the button
+ * @param InfoModalProps.button a button that will close the modal and
+ * 															maybe other functionalities
  * @returns
  */
-const InfoModal = forwardRef<HTMLDialogElement, InfoModalProps>(
-  function InfoModal({ title, content, buttonContent }: InfoModalProps, ref) {
+const ErrorModal = forwardRef<HTMLDialogElement, ErrorModalProps>(
+  function ErrorModal({ title, content, button }: ErrorModalProps, ref) {
     return (
       <dialog id={title} className="modal" ref={ref}>
         <div className="modal-box">
@@ -24,9 +25,10 @@ const InfoModal = forwardRef<HTMLDialogElement, InfoModalProps>(
           {content && <p className="py-4">{content}</p>}
           <div className="modal-action">
             <form method="dialog">
-              <button className="btn" type="submit">
+              {/* <button className="btn" type="submit">
                 {buttonContent}
-              </button>
+              </button> */}
+              {button}
             </form>
           </div>
         </div>
@@ -35,4 +37,4 @@ const InfoModal = forwardRef<HTMLDialogElement, InfoModalProps>(
   }
 );
 
-export default InfoModal;
+export default ErrorModal;

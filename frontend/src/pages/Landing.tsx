@@ -58,7 +58,7 @@ Speiseplan <br><h4>Donnerstag 21.09.2023</h4>Aktionsessen 1<br>Currywurst mit So
       <div className="hero min-h-screen bg-base-200">
         <div className="hero-content flex-col lg:flex-row">
           <div className="text-center lg:text-left">
-            <h1 className="text-5xl font-bold max-md:text-4xl">
+            <h1 className="md:text-5xl font-bold text-4xl h-20">
               Your Daily{' '}
               <span className="text-secondary">
                 <Typewriter
@@ -72,16 +72,17 @@ Speiseplan <br><h4>Donnerstag 21.09.2023</h4>Aktionsessen 1<br>Currywurst mit So
                 />
               </span>
             </h1>
-            <p className="py-3 text-lg font-bold max-md:text-base  text-neutral-500">
-              Stay informed about Studierendenwerk Erlangen-Nürnberg&apos;s
-              Mensa menus with the email newsletter.
+            <p className="py-3 text-base md:text-lg font-bold text-neutral-500">
+              Stay informed about{' '}
+              <span className="text-secondary">what to eat</span> at
+              Studierendenwerk Erlangen-Nürnberg&apos;s Mensa!
             </p>
             <Form method="POST">
               <input
                 name="email"
                 type="email"
                 placeholder="Email Address"
-                className="input input-bordered w-full max-w-xs mr-5 mb-2"
+                className=" input input-bordered w-full max-w-xs mr-5 mb-2 focus:valid:border-primary-focus focus:invalid:border-secondary"
                 required
               />
               <button className="btn btn-primary" type="submit">
@@ -96,10 +97,10 @@ Speiseplan <br><h4>Donnerstag 21.09.2023</h4>Aktionsessen 1<br>Currywurst mit So
               buttonContent="close"
               ref={infoModal}
             />
-            <p className="py-3 text-sm max-md:text-sm text-neutral-400">
-              By choosing to sign up, a newsletter email will be sent to you on
-              a daily basis.
-              <br /> You can opt out at any time.
+            <p className="py-3 text-sm md:text-base text-neutral-400">
+              Sign up to get a email newsletter containing all Mensa menus you
+              want to know on a daily basis.
+              <br /> You can unsubscribe at any time.
             </p>
           </div>
 
