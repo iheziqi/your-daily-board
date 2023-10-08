@@ -48,6 +48,8 @@ class RenderService {
 
       // Gets root url of backend for unsubscribe link.
       const rootUrl = process.env.ROOT_URL;
+      // Gets frontend url for updating subscription and share link.
+      const frontendUrl = process.env.FRONTEND_URL;
 
       // Put together email props for email template.
       const emailProps: VEmailProps = {
@@ -55,6 +57,7 @@ class RenderService {
         mensaMenus,
         versionNumber,
         rootUrl,
+        frontendUrl,
       };
 
       return this.renderTemplate('boardSkeleton', emailProps);

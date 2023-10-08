@@ -16,4 +16,5 @@ interface VEmailProps {
   mensaMenus: VMensaMenu[];
   versionNumber: string;
   rootUrl: string | undefined;
+  frontendUrl: string | undefined;
 }
