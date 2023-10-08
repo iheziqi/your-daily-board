@@ -1,5 +1,6 @@
 // dependencies
 import express from 'express';
+import path from 'path';
 import {loadEnv} from './utils/loadEnv';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
@@ -18,11 +19,17 @@ import {errorHandler} from './middlewares/error-handler';
 import users from './routes/users';
 import settings from './routes/settings';
 import info from './routes/info';
+import admin from './routes/admin';
 
 // make PROCESS.ENV available
 loadEnv();
 
 const app = express();
+
+// Set EJS as the view engine
+app.set('view engine', 'ejs');
+// Set the views directory
+app.set('views', path.join(__dirname, 'views'));
 
 app.use(logger('combined'));
 app.use(express.json());
@@ -42,6 +49,15 @@ app.use(
 );
 // security libraries
 app.use(helmet());
+app.use(
+  // set up a basic CSP policy
+  helmet.contentSecurityPolicy({
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'", 'cdn.jsdelivr.net'],
+    },
+  })
+);
 app.use(xss());
 const corsConfig = {
   credentials: true,
@@ -53,6 +69,9 @@ app.use(cors(corsConfig));
 app.use('/api/v1/users', users);
 app.use('/api/v1/settings', settings);
 app.use('/api/v1/info', info);
+
+// admin pages routes
+app.use('/admin', admin);
 
 // catch 404 and forward to error handler
 app.use((_req, _res, next) => {
