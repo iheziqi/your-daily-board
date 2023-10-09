@@ -47,11 +47,6 @@ Speiseplan <br><h4>Donnerstag 21.09.2023</h4>Aktionsessen 1<br>Currywurst mit So
   // returned response from action function
   const actionResponse = useActionData();
 
-  // if (navigation.state === 'idle' && actionResponse === 201) {
-  //   // Opens information modal.
-  //   // The modal is a dialog element, so it calls showModal()
-  //   infoModal.current?.showModal();
-  // }
   useEffect(() => {
     if (
       navigation.state === 'idle' &&
@@ -61,8 +56,6 @@ Speiseplan <br><h4>Donnerstag 21.09.2023</h4>Aktionsessen 1<br>Currywurst mit So
       infoModal.current.showModal();
     }
   }, [navigation.state, actionResponse]);
-
-  console.log(infoModal);
 
   return (
     <>
