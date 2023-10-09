@@ -1,4 +1,4 @@
-import { useRef } from 'react';
+import { useRef, useEffect } from 'react';
 import {
   ActionFunction,
   Form,
@@ -47,11 +47,22 @@ Speiseplan <br><h4>Donnerstag 21.09.2023</h4>Aktionsessen 1<br>Currywurst mit So
   // returned response from action function
   const actionResponse = useActionData();
 
-  if (navigation.state === 'idle' && actionResponse === 201) {
-    // Opens information modal.
-    // The modal is a dialog element, so it calls showModal()
-    infoModal.current?.showModal();
-  }
+  // if (navigation.state === 'idle' && actionResponse === 201) {
+  //   // Opens information modal.
+  //   // The modal is a dialog element, so it calls showModal()
+  //   infoModal.current?.showModal();
+  // }
+  useEffect(() => {
+    if (
+      navigation.state === 'idle' &&
+      actionResponse === 201 &&
+      infoModal.current
+    ) {
+      infoModal.current.showModal();
+    }
+  }, [navigation.state, actionResponse]);
+
+  console.log(infoModal);
 
   return (
     <>
@@ -93,7 +104,7 @@ Speiseplan <br><h4>Donnerstag 21.09.2023</h4>Aktionsessen 1<br>Currywurst mit So
             </Form>
             <InfoModal
               title="You are so close!"
-              content="An email has been sent to you to verify your email address, please check your email inbox. The link in the email will expire in 15 minutes"
+              content="An email has been sent to you to verify your email address, please check your email inbox. The link in the email will expire in 15 minutes."
               buttonContent="close"
               ref={infoModal}
             />
