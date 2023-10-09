@@ -4,6 +4,9 @@ import {
   SubscriptionRepository,
   MensaInfoRepository,
 } from '../repositories/index';
+import {loadEnv} from '../utils/loadEnv';
+
+loadEnv();
 
 /**
  * Service for rendering email template.
@@ -39,15 +42,24 @@ class RenderService {
     try {
       // Gets all user subscribed exchange rates.
       const exchangeRates =
-        await this.subscriptionRepo.getUserSubscribedExchangeRates(userEmail);
+        await this.subscriptionRepo.getUserSubscribedExchangeRatesOfToday(
+          userEmail
+        );
       // Gets all user subscribed mensa menus.
       const mensaMenus = await this.getUserMensaMenus(userEmail);
+
+      // Gets root url of backend for unsubscribe link.
+      const rootUrl = process.env.ROOT_URL;
+      // Gets frontend url for updating subscription and share link.
+      const frontendUrl = process.env.FRONTEND_URL;
 
       // Put together email props for email template.
       const emailProps: VEmailProps = {
         exchangeRates,
         mensaMenus,
         versionNumber,
+        rootUrl,
+        frontendUrl,
       };
 
       return this.renderTemplate('boardSkeleton', emailProps);

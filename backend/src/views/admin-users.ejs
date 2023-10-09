@@ -66,9 +66,22 @@
               >check subscriptions</a
             >
           </td>
+          <td>
+            <form action="/admin/delete_user" method="POST">
+              <input type="hidden" name="id" value="<%= user.id %>" />
+              <button type="submit" class="btn btn-danger">delete user</button>
+            </form>
+          </td>
         </tr>
         <% }); %>
       </tbody>
+
+      <form action="/admin/create_user" method="POST">
+        <label for="email">
+          <input type="email" name="email" required placeholder="email" />
+        </label>
+        <button class="btn btn-primary" type="submit">create user</button>
+      </form>
     </table>
   </body>
 </html>

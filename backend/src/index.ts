@@ -6,8 +6,8 @@ async function doScheduledTask(type: string) {
   switch (type) {
     case 'FETCH_DATA':
       await Promise.all([
-        RepoScheduledTasks.saveExchangeRateToDatabase,
-        RepoScheduledTasks.saveMensaMenusToDatabase,
+        RepoScheduledTasks.saveExchangeRateToDatabase(),
+        RepoScheduledTasks.saveMensaMenusToDatabase(),
       ]);
       break;
     case 'SEND_EMAIL':

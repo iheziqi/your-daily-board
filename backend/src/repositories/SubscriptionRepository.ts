@@ -1,4 +1,5 @@
 import {Knex} from 'knex';
+import {getCurrentDate} from '../utils/helpers';
 
 class SubscriptionRepository implements ISubscriptionRepository {
   private db: Knex;
@@ -135,9 +136,10 @@ class SubscriptionRepository implements ISubscriptionRepository {
    * @param email The Email address of user
    * @returns
    */
-  public async getUserSubscribedExchangeRates(
+  public async getUserSubscribedExchangeRatesOfToday(
     email: string
   ): Promise<DExchangeRate[]> {
+    const date = getCurrentDate();
     const exchangeRatesQuery = this.db
       .select(
         'er.from_to',
@@ -146,6 +148,7 @@ class SubscriptionRepository implements ISubscriptionRepository {
         'er.change_from_yesterday'
       )
       .from<DExchangeRate>('exchange_rate AS er')
+      .where('er.date', date)
       .join(
         'exchange_rate_subscriptions AS ers',
         'er.from_to',
