@@ -1,5 +1,5 @@
 import express from 'express';
-import {UserRepository} from '../repositories';
+import {SubscriptionRepository, UserRepository} from '../repositories';
 import KnexService from '../database/KnexService';
 import {UserAuthService} from '../services';
 import {
@@ -71,6 +71,33 @@ router.post('/update_user', authenticateJwtToken, async (req, res) => {
   });
 
   // Redirect back to the admin page after the update
+  res.redirect('/admin/users');
+});
+
+router.post('/delete_user', authenticateJwtToken, async (req, res) => {
+  const userId = req.body.id;
+
+  const knexInstance = KnexService.getInstance();
+
+  await knexInstance<DUser>('users').where({id: userId}).del();
+
+  res.redirect('/admin/users');
+});
+
+router.post('/create_user', authenticateJwtToken, async (req, res) => {
+  const email = req.body.email;
+  const userRepo = new UserRepository(KnexService.getInstance());
+  const subRepo = new SubscriptionRepository(KnexService.getInstance());
+
+  await userRepo.createUser({email});
+
+  await Promise.all([
+    subRepo.createMensaMenuSubscription(email, 'sued'),
+    subRepo.createMensaMenuSubscription(email, 'lmpl'),
+    subRepo.createMensaMenuSubscription(email, 'mohm'),
+    subRepo.createMensaMenuSubscription(email, 'isch'),
+  ]);
+
   res.redirect('/admin/users');
 });
 
