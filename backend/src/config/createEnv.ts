@@ -3,9 +3,9 @@ import fs from 'fs';
 /**
  * Write keys (without values) to a .env file.
  * @param keys - An array of keys to write to the .env file.
- * @param filePath - The path to the .env file. Default is '../.env'.
+ * @param filePath - The path to the .env file. Default is the same level as package.json.
  */
-function writeEnvKeys(keys: string[], filePath = '../.env') {
+function writeEnvKeys(keys: string[], filePath = `__dirname/../../.env`) {
   // Convert the array of keys into a string with each key on a new line
   const envData = keys.join('\n');
 

@@ -19,7 +19,7 @@
     "seeds": "npx ts-node --files ./node_modules/.bin/knex --knexfile src/database/knexfile.ts seed:run",
     "start": "nodemon --exec ts-node --files ./src/app.ts",
     "copy-files": "copyfiles src/**/*.ejs src/**/**/*.ejs src/*.sh build/",
-    "postcompile": "npm run copy-files"
+    "postcompile": "npm run copy-files && node build/src/config/createEnv.js"
   },
   "devDependencies": {
     "@types/cookie-parser": "^1.4.4",
