@@ -42,7 +42,9 @@ class RenderService {
     try {
       // Gets all user subscribed exchange rates.
       const exchangeRates =
-        await this.subscriptionRepo.getUserSubscribedExchangeRates(userEmail);
+        await this.subscriptionRepo.getUserSubscribedExchangeRatesOfToday(
+          userEmail
+        );
       // Gets all user subscribed mensa menus.
       const mensaMenus = await this.getUserMensaMenus(userEmail);
 
