@@ -7,12 +7,16 @@ import {
   validateAuthCode,
   validateEmailInRequestBody,
 } from '../middlewares/authentication';
+import createHttpError from 'http-errors';
 
 const router = express.Router();
 
 // Define a route for rendering the admin login page
 router.get('/login', (req, res) => {
-  res.render('admin-login');
+  const rootUrl = process.env.ROOT_URL;
+  if (!rootUrl)
+    createHttpError.InternalServerError('can not get env variable ROOT_URL');
+  res.render('admin-login', {rootUrl});
 });
 
 // Define a route for handling form submissions
