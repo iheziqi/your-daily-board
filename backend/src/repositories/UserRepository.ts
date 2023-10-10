@@ -80,7 +80,10 @@ class UserRepository implements IUserRepository {
     // Gets a long random string
     const token = crypto.randomUUID();
 
-    await this.db<DUserVerifying>('users_verifying').insert({email, token});
+    await this.db.transaction(async trx => {
+      await trx<DUserVerifying>('users_verifying').where({email}).del();
+      await trx<DUserVerifying>('users_verifying').insert({email, token});
+    });
 
     return token;
   }

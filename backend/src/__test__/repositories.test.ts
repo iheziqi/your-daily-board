@@ -367,7 +367,7 @@ describe('subscriptions repository unit tests', () => {
   });
 
   it('should get subscribed exchange rates of given user', async () => {
-    const queryResult = await mySubRepo.getUserSubscribedExchangeRates(
+    const queryResult = await mySubRepo.getUserSubscribedExchangeRatesOfToday(
       exampleEmail2
     );
 
@@ -379,7 +379,7 @@ describe('subscriptions repository unit tests', () => {
   });
 
   it('should return empty array when get subscribed exchange rates of given user that do not have any subscription', async () => {
-    const queryResult = await mySubRepo.getUserSubscribedExchangeRates(
+    const queryResult = await mySubRepo.getUserSubscribedExchangeRatesOfToday(
       exampleEmail3
     );
 
@@ -388,7 +388,7 @@ describe('subscriptions repository unit tests', () => {
   });
 
   it('should return empty array when the user does not exist', async () => {
-    const queryResult = await mySubRepo.getUserSubscribedExchangeRates(
+    const queryResult = await mySubRepo.getUserSubscribedExchangeRatesOfToday(
       'mailneverexist@test.email'
     );
 

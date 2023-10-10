@@ -19,28 +19,40 @@ async function register(req: Request, res: Response, next: NextFunction) {
     }
 
     // initialize user repository
-    const userRepo = new UserRepository(KnexService.getInstance());
+    const knexInstance = KnexService.getInstance();
+    const userRepo = new UserRepository(knexInstance);
 
-    // if uses already exist, throw conflict error
-    const emailQuery = await userRepo.getUserIdByEmail(email);
-    if (emailQuery) {
+    // if user already exist and the email address has been verified,
+    // throw conflict error
+    // const emailQuery = await userRepo.getUserIdByEmail(email);
+    const userDataQuery = await knexInstance<DUser>('users')
+      .select('is_verified')
+      .where('email', email)
+      .first();
+    if (userDataQuery?.is_verified === 1) {
       throw createError.Conflict('Email address already exists');
     }
 
-    // adds the email address to database
-    await userRepo.createUser({email});
+    // only insert user data to users table when this user does not exist.
+    // if the user forget to click on the verification link in the email,
+    // user can still receive a new email via landing page and don't trigger
+    // primary key error in database.
+    if (!userDataQuery) {
+      // adds the email address to database
+      await userRepo.createUser({email});
 
-    // initialize subscription repository
-    const subscriptionRepo = new SubscriptionRepository(
-      KnexService.getInstance()
-    );
-    // when user register, create the following 4 menu subscriptions.
-    await subscriptionRepo.updateMensaMenuSubscription(email, [
-      'sued',
-      'lmpl',
-      'mohm',
-      'isch',
-    ]);
+      // initialize subscription repository
+      const subscriptionRepo = new SubscriptionRepository(
+        KnexService.getInstance()
+      );
+      // when user register, create the following 4 menu subscriptions.
+      await subscriptionRepo.updateMensaMenuSubscription(email, [
+        'sued',
+        'lmpl',
+        'mohm',
+        'isch',
+      ]);
+    }
 
     // creates an entry in verifying table
     const token = await userRepo.createToBeVerifiedUser(email);

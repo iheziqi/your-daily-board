@@ -185,7 +185,9 @@ interface ISubscriptionRepository {
   ): Promise<from_to[] | undefined>;
 
   // Gets all subscribed exchange rates of the given user.
-  getUserSubscribedExchangeRates(email: string): Promise<DExchangeRate[]>;
+  getUserSubscribedExchangeRatesOfToday(
+    email: string
+  ): Promise<DExchangeRate[]>;
 
   // Gets all subscribed mensa menus of the given user.
   getUserSubscribedMensaMenusOfToday(email: string): Promise<DMensaMenu[]>;

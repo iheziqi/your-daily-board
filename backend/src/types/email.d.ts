@@ -15,4 +15,6 @@ interface VEmailProps {
   exchangeRates: VExchangeRate[];
   mensaMenus: VMensaMenu[];
   versionNumber: string;
+  rootUrl: string | undefined;
+  frontendUrl: string | undefined;
 }
