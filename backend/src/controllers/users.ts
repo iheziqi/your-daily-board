@@ -26,7 +26,7 @@ async function register(req: Request, res: Response, next: NextFunction) {
     // throw conflict error
     // const emailQuery = await userRepo.getUserIdByEmail(email);
     const userDataQuery = await knexInstance<DUser>('users')
-      .select('is_verified')
+      .select()
       .where('email', email)
       .first();
     if (userDataQuery?.is_verified === 1) {
