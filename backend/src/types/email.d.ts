@@ -12,6 +12,7 @@ interface VMensaMenu {
 }
 
 interface VEmailProps {
+  email: string;
   exchangeRates: VExchangeRate[];
   mensaMenus: VMensaMenu[];
   versionNumber: string;

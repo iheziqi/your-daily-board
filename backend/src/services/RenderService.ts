@@ -55,6 +55,7 @@ class RenderService {
 
       // Put together email props for email template.
       const emailProps: VEmailProps = {
+        email: userEmail,
         exchangeRates,
         mensaMenus,
         versionNumber,
