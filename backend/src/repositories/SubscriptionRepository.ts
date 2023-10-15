@@ -173,7 +173,8 @@ class SubscriptionRepository implements ISubscriptionRepository {
       .from<DMensaMenu>('mensa_menu as mm')
       .join('menu_subscriptions as ms', 'mm.mensa_id', '=', 'ms.mensa_id')
       .join('users as u', 'ms.user_id', 'u.id')
-      .where('u.email', email);
+      .where('u.email', email)
+      .andWhere('mm.date', getCurrentDate());
 
     return mensaMenusQuery;
   }
