@@ -2,6 +2,7 @@ import { useRef, useEffect } from 'react';
 import {
   ActionFunction,
   Form,
+  Link,
   useActionData,
   useNavigation,
 } from 'react-router-dom';
@@ -78,8 +79,8 @@ Speiseplan <br><h4>Donnerstag 21.09.2023</h4>Aktionsessen 1<br>Currywurst mit So
             </h1>
             <p className="py-3 text-base md:text-lg font-bold text-neutral-500">
               Stay informed about{' '}
-              <span className="text-secondary">what to eat</span> at
-              Studierendenwerk Erlangen-Nürnberg&apos;s Mensa!
+              <span className="text-secondary">what to eat</span> at Mensa of
+              Studierendenwerk Erlangen-Nürnberg!
             </p>
             <Form method="POST">
               <input
@@ -101,10 +102,15 @@ Speiseplan <br><h4>Donnerstag 21.09.2023</h4>Aktionsessen 1<br>Currywurst mit So
               buttonContent="close"
               ref={infoModal}
             />
-            <p className="py-3 text-sm md:text-base text-neutral-400">
+            <p className="py-2 text-sm md:text-base text-neutral-400">
               Sign up to get a daily email newsletter about all Mensa menus you
               want to know.
-              <br /> You can unsubscribe at any time.
+            </p>
+            <p className="text-sm md:text-base text-neutral-400">
+              Already signed up? Change your subscriptions{' '}
+              <Link to="login" className="link">
+                here.
+              </Link>
             </p>
           </div>
 
