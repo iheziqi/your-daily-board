@@ -60,3 +60,35 @@ export function dateToUnixTimestamp(date: Date): number {
   const timestampInSeconds = date.getTime() / 1000;
   return Math.floor(timestampInSeconds);
 }
+
+/**
+ * Classifies mensa info according to the places.
+ * @param mensaInfo
+ * @returns
+ */
+export function classifyMensas(mensaInfo: Record<MensaID, MensaInfo>) {
+  const classifiedMensas: {
+    [k: string]: Record<MensaID, MensaInfo> | Record<string, never>;
+  } = {Nürnberg: {}, Erlangen: {}, Other: {}};
+
+  const mensaIds = Object.keys(mensaInfo) as Array<
+    keyof Record<MensaID, MensaInfo>
+  >;
+
+  mensaIds.forEach(id => {
+    const mensa = mensaInfo[id];
+    const {name} = mensa;
+    // Get the first word as the prefix
+    const prefix = name.split(' ')[0];
+
+    if (prefix === 'Nürnberg') {
+      classifiedMensas.Nürnberg[id] = mensa;
+    } else if (prefix === 'Erlangen') {
+      classifiedMensas.Erlangen[id] = mensa;
+    } else {
+      classifiedMensas.Other[id] = mensa;
+    }
+  });
+
+  return classifiedMensas;
+}

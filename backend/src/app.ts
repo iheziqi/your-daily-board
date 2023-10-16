@@ -55,6 +55,10 @@ app.use(
     directives: {
       defaultSrc: ["'self'"],
       scriptSrc: ["'self'", 'cdn.jsdelivr.net'],
+      imgSrc: [
+        "'self'",
+        'https://www.max-manager.de/daten-extern/sw-erlangen-nuernberg/icons/', // for icon on mensa menu.
+      ],
     },
   })
 );

@@ -560,7 +560,7 @@
                                     Have a lovely day! :)
                                   </p>
                                    <p style="line-height: 140%">
-                                    <a href="<%= rootUrl %>/api/v1/users/unsubscribe/<%= email %>">Unsubscribe</a>
+                                    <a href="<%= rootUrl %>/api/v1/users/unsubscribe/<%= typeof email!='undefined' ? email : '' %>">Unsubscribe</a>
                                   </p>
                                 </div>
                               </td>

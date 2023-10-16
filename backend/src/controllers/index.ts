@@ -15,6 +15,7 @@ import {
 } from './exchangeRateSettings';
 import {getMensaInfo} from './mensaInfo';
 import {getExchangeRateInfo} from './exchangeRateInfo';
+import {getDailyBoardEmailPreview} from './yourDailyBoardEmail';
 
 export {
   register,
@@ -28,4 +29,5 @@ export {
   setExchangeRateSubscription,
   getMensaInfo,
   getExchangeRateInfo,
+  getDailyBoardEmailPreview,
 };
