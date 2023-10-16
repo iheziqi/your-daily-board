@@ -10,6 +10,7 @@ import NewsletterSettings, {
 } from './pages/NewsletterSettings';
 import LoginForm, { action as loginFormAction } from './components/LoginForm';
 import LoadingModal from './components/LoadingModal';
+import YourDailyBoardPreview from './components/YourDailyBoardPreview';
 
 const router = createBrowserRouter([
   {
@@ -17,6 +18,13 @@ const router = createBrowserRouter([
     element: <Landing />,
     errorElement: <Error />,
     action: newsletterAction,
+    children: [
+      {
+        index: true,
+        element: <YourDailyBoardPreview />,
+        errorElement: <p>Something went wrong :(</p>,
+      },
+    ],
   },
   {
     path: '/subscriptions',
