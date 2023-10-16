@@ -179,3 +179,17 @@ export async function setUserExchangeRateSubscriptions(
 
   return response;
 }
+
+export async function getYourDailyBoardPreview() {
+  const url = `${BASEURL}/info/your_daily_board_email`;
+
+  const response = await fetch(url);
+
+  if (!response.ok) {
+    return '<div>Something went wrong :(</div>';
+  }
+
+  const preview = await response.text();
+
+  return preview;
+}
