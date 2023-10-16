@@ -108,7 +108,7 @@ async function verify(req: Request, res: Response, next: NextFunction) {
     res
       .status(200)
       .send(
-        '<h3 style="font: Sans-Serif">Hooray! Your email address has been confirmed!</h3>'
+        '<div style=" height: 100vh; width: 100vw; display: flex; align-items: center;justify-content: center;"><h3 style="font-family: Arial, Helvetica, sans-serif">Hooray! Your email address has been confirmed!</h3></div>'
       );
   } catch (error) {
     next(error);
@@ -132,7 +132,7 @@ async function unsubscribe(req: Request, res: Response, next: NextFunction) {
     res
       .status(200)
       .send(
-        '<h3 style="font: Sans-Serif">You have unsubscribed. Sorry to see you go.</h3>'
+        '<div style=" height: 100vh; width: 100vw; display: flex; align-items: center;justify-content: center;"><h3 style="font-family: Arial, Helvetica, sans-serif">You have unsubscribed. Sorry to see you go.</h3></div>'
       );
   } catch (error) {
     next(error);
