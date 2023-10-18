@@ -5,6 +5,11 @@ import { json } from 'react-router-dom';
 
 const BASEURL = import.meta.env.VITE_BACKEND_API_BASE_URL;
 
+/**
+ * Submits email address of user .
+ * @param email
+ * @returns
+ */
 export async function submitEmailAddress(email: string) {
   const url = `${BASEURL}/users/register`;
   const option: RequestInit = {
@@ -99,6 +104,11 @@ export async function login(email: string, loginCode: string) {
     throw json({ message: data.message }, { status: response.status });
   }
 
+  const data = await response.json();
+  const authenticationToken = data.authentication_token;
+  // store the authentication token in local storage.
+  localStorage.setItem('authentication_token', authenticationToken);
+
   return response.status;
 }
 
@@ -108,6 +118,13 @@ export async function login(email: string, loginCode: string) {
  */
 export async function getUserMensaMenuSubscriptions() {
   const url = `${BASEURL}/settings/mensa_menu_subscription`;
+
+  // This is a makeshift workaround.
+  // Using local store exposes to XSS and using cookies exposes to CSRF...
+  // However, since I host the frontend on Vercel and backend in a linux server with a domain,
+  // I can't set one domain to two DNS servers of two companies.
+  const authenticationToken = localStorage.getItem('authentication_token');
+  document.cookie = `authentication_token=${authenticationToken}`;
   const option: RequestInit = {
     method: 'GET',
     credentials: 'include',
@@ -130,10 +147,14 @@ export async function getUserMensaMenuSubscriptions() {
  */
 export async function getUserExchangeRateSubscriptions() {
   const url = `${BASEURL}/settings/exchange_rate_subscription`;
+
+  const authenticationToken = localStorage.getItem('authentication_token');
+  document.cookie = `authentication_token=${authenticationToken}`;
   const option: RequestInit = {
     method: 'GET',
     credentials: 'include',
   };
+
   const response = await fetch(url, option);
 
   if (!response.ok) {
@@ -150,6 +171,9 @@ export async function setUserMensaMenuSubscriptions(
   mensaMenuSubscriptions: MensaID[]
 ) {
   const url = `${BASEURL}/settings/mensa_menu_subscription`;
+
+  const authenticationToken = localStorage.getItem('authentication_token');
+  document.cookie = `authentication_token=${authenticationToken}`;
   const option: RequestInit = {
     method: 'POST',
     credentials: 'include',
@@ -167,6 +191,9 @@ export async function setUserExchangeRateSubscriptions(
   exchangeRateSubscriptions: FromTo[]
 ) {
   const url = `${BASEURL}/settings/exchange_rate_subscription`;
+
+  const authenticationToken = localStorage.getItem('authentication_token');
+  document.cookie = `authentication_token=${authenticationToken}`;
   const option: RequestInit = {
     method: 'POST',
     credentials: 'include',
