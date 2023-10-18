@@ -39,8 +39,6 @@ export const action: ActionFunction = async ({ request }) => {
 };
 
 function LoginForm() {
-  // TODO: add error notification when the login code is false
-  // TODO: add notification if the auth code has expired
   const [isCodeSent, setIsCodeSent] = useState(false);
   const codeIsSentModal = useRef<HTMLDialogElement>(null);
 
