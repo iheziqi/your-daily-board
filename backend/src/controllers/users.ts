@@ -170,14 +170,15 @@ async function logInWithAuthCode(req: Request, res: Response) {
   // email exists in request body.
   const email: string = req.body.email;
   const jwtToken = UserAuthService.issueJwtForUser(email);
-  res.cookie('authentication_token', jwtToken, {
-    httpOnly: true, // JavaScript code in frontend won't have access to this cookie
-    maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days in milliseconds
-    path: '/',
-    sameSite: 'none', //specify it as "None" as the cookie needs to be sent in a cross-origin context
-    secure: true, // use https to send
-  });
-  res.sendStatus(200);
+  // res.cookie('authentication_token', jwtToken, {
+  //   httpOnly: true, // JavaScript code in frontend won't have access to this cookie
+  //   maxAge: 7 * 24 * 60 * 60 * 1000, // 7 days in milliseconds
+  //   path: '/',
+  //   sameSite: 'none', //specify it as "None" as the cookie needs to be sent in a cross-origin context
+  //   secure: true, // use https to send
+  // });
+  // res.sendStatus(200);
+  res.json({authentication_token: jwtToken});
 }
 
 export {register, verify, unsubscribe, issueAuthCode, logInWithAuthCode};
