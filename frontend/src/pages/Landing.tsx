@@ -112,12 +112,7 @@ export default function Landing() {
             </p>
           </div>
 
-          <div className="mockup-phone max-lg:hidden overflow-y-scroll flex-shrink-0">
-            <div className="camera" />
-            <div className="artboard artboard-demo phone-1 display">
-              <Outlet />
-            </div>
-          </div>
+          <Outlet />
         </div>
       </div>
       <Footer />
