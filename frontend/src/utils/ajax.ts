@@ -124,7 +124,7 @@ export async function getUserMensaMenuSubscriptions() {
   // However, since I host the frontend on Vercel and backend in a linux server with a domain,
   // I can't set one domain to two DNS servers of two companies.
   const authenticationToken = localStorage.getItem('authentication_token');
-  document.cookie = `authentication_token=${authenticationToken}`;
+  document.cookie = `authentication_token=${authenticationToken}; samesite=none; secure; path=/; `;
   const option: RequestInit = {
     method: 'GET',
     credentials: 'include',
@@ -149,7 +149,7 @@ export async function getUserExchangeRateSubscriptions() {
   const url = `${BASEURL}/settings/exchange_rate_subscription`;
 
   const authenticationToken = localStorage.getItem('authentication_token');
-  document.cookie = `authentication_token=${authenticationToken}`;
+  document.cookie = `authentication_token=${authenticationToken}; samesite=none; secure; path=/; `;
   const option: RequestInit = {
     method: 'GET',
     credentials: 'include',
@@ -173,7 +173,7 @@ export async function setUserMensaMenuSubscriptions(
   const url = `${BASEURL}/settings/mensa_menu_subscription`;
 
   const authenticationToken = localStorage.getItem('authentication_token');
-  document.cookie = `authentication_token=${authenticationToken}`;
+  document.cookie = `authentication_token=${authenticationToken}; samesite=none; secure; path=/; `;
   const option: RequestInit = {
     method: 'POST',
     credentials: 'include',
@@ -193,7 +193,7 @@ export async function setUserExchangeRateSubscriptions(
   const url = `${BASEURL}/settings/exchange_rate_subscription`;
 
   const authenticationToken = localStorage.getItem('authentication_token');
-  document.cookie = `authentication_token=${authenticationToken}`;
+  document.cookie = `authentication_token=${authenticationToken}; samesite=none; secure; path=/; `;
   const option: RequestInit = {
     method: 'POST',
     credentials: 'include',
