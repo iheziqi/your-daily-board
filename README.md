@@ -2,7 +2,7 @@
 ![Vercel](https://vercelbadge.vercel.app/api/iheziqi/your-daily-board)
 [![Code Style: Google](https://img.shields.io/badge/code%20style-google-blueviolet.svg)](https://github.com/google/gts)
 
-A daily newsletter of refectory menus various Studierendenwerk websites.
+A daily newsletter of refectory menus from various Studierendenwerk Nürnberg-Erlange websites.
 
 ## link
 
@@ -27,7 +27,7 @@ Sign up [here](yourdailyboard.vercel.app).
 ## About The App
 
 I don't bother to check menus of university refectories on websites everyday so I decided to automate menu collection from [Studierendenwerk websites](https://www.werkswelt.de/index.php).
-Now this newsletter app intergates all menus of refectories, cafeterias and cafebars published on the website of Studierendenwerk Nürnberg-Erlange.
+Now this newsletter app intergates all menus of refectories, cafeterias and cafebars published on the website of Studierendenwerk Nürnberg-Erlangen.
 A daily email newsletter is sent to subscribers according to their subscriptions. No need to do the tedious check everyday!
 
 ## Screenshots
