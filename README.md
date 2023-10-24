@@ -10,7 +10,7 @@ Do you study at metropolis Nuremberg, go to university refectories everyday and 
 
 Subscribe to a email newsletter that sends you all menus of uni refectories on a daily basis.
 
-Sign up [here](yourdailyboard.vercel.app).
+Sign up [here](yourdailyboard.vercel.app) .
 
 ## Table of Content
 
