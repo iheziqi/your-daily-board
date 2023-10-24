@@ -2,7 +2,7 @@
 ![Vercel](https://vercelbadge.vercel.app/api/iheziqi/your-daily-board)
 [![Code Style: Google](https://img.shields.io/badge/code%20style-google-blueviolet.svg)](https://github.com/google/gts)
 
-A daily newsletter of refectory menus from various Studierendenwerk Nürnberg-Erlange websites.
+A daily email newsletter of refectory, cafeteria, cafebar menus from Studierendenwerk Nürnberg-Erlangen website.
 
 ## link
 
