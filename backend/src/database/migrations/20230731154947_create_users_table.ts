@@ -32,7 +32,7 @@ export async function up(knex: Knex): Promise<void> {
 
 export async function down(knex: Knex): Promise<void> {
   return knex.schema
-    .dropTable('users_authentication')
-    .dropTable('users_verifying')
-    .dropTable('users');
+    .dropTableIfExists('users_authentication')
+    .dropTableIfExists('users_verifying')
+    .dropTableIfExists('users');
 }

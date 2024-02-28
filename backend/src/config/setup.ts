@@ -77,6 +77,37 @@ function runDatabaseMigration() {
 }
 
 /**
+ * Runs database migration files.
+ */
+function rollbackDatabaseMigration() {
+  return new Promise<void>((resolve, reject) => {
+    // Define the command
+    const commandToRun = 'npm run knex migrate:rollback --all';
+
+    // Define the working directory path
+    const workingDirectory = `${__dirname}/../../`;
+
+    // Execute the command with the specified working directory
+    exec(commandToRun, {cwd: workingDirectory}, (error, stdout, stderr) => {
+      if (error) {
+        console.error(`Error: ${error.message}`);
+        reject(error);
+        return;
+      }
+
+      if (stderr) {
+        console.error(`Command stderr: ${stderr}`);
+        reject(stderr);
+        return;
+      }
+
+      console.log(`Command output: ${stdout}`);
+      resolve();
+    });
+  });
+}
+
+/**
  * Sets seed data.
  */
 function setSeedsData() {
