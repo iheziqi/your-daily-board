@@ -3,6 +3,7 @@ import MensaInfoRepository from './MensaInfoRepository';
 import MensaMenuRepository from './MensaMenuRepository';
 import SubscriptionRepository from './SubscriptionRepository';
 import UserRepository from './UserRepository';
+import DBTicketPriceRepository from './DBTicketPriceRepository';
 
 export {
   ExchangeRepository,
@@ -10,4 +11,5 @@ export {
   MensaMenuRepository,
   SubscriptionRepository,
   UserRepository,
+  DBTicketPriceRepository,
 };
