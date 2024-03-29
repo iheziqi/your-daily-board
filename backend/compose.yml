@@ -1,7 +1,7 @@
 version: '3.8'
 
 services:
-  mysql:
+  database:
     container_name: ${DB_HOST}
     image: mysql:latest
     restart: always
@@ -27,8 +27,10 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
+    container_name: your_daily_board_exppress_backend
+    image: your_daily_board_exporess_backend
     depends_on:
-      mysql:
+      database:
         condition: service_healthy
     env_file:
       - path: ./.env
@@ -52,7 +54,7 @@ services:
       - '${PORT}:${PORT}'
     command: >
       bash -c "node ./build/src/config/setup.js
-      && node ./build/src/app.js"
+      && ./build/src/entrypoint.sh"
 
 volumes:
   mysql_data:
