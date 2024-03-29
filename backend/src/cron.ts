@@ -1,7 +1,5 @@
-import KnexService from './database/KnexService';
 import CronJobService from './services/CronjobService';
 import {RepoScheduledTasks, ServiceScheduledTasks} from './services/index';
-import {getCurrentDate} from './utils/helpers';
 import {getNurembergToMunichTrainPlanIn30Days} from './scrapers/DBTrainScraper';
 
 type scheduledTasks = 'FETCH_MENSA_MENU' | 'SEND_EMAIL';
@@ -48,9 +46,11 @@ cronJobService.addJob('FETCH_TRAIN_TICKET_PRICE', {
       console.error(e.message);
     });
   },
-  onComplete: null,
+  onComplete: () => {
+    console.log('Nuremberg to Munich train ticket price fetched successfully');
+  },
 });
 
 cronJobService.startJob('FETCH_MENSA_MENU');
-cronJobService.startJob('FETCH_MENSA');
+cronJobService.startJob('SEND_EMAIL');
 cronJobService.startJob('FETCH_TRAIN_TICKET_PRICE');
