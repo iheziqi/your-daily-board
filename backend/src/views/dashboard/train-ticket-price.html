@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DB Munich to Nuremberg Train Ticket Price</title>
+    <!-- Bootstrap CSS -->
+    <link
+      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
+      rel="stylesheet"
+      integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN"
+      crossorigin="anonymous"
+    />
+    <style>
+      /* Custom CSS to adjust font size */
+      .table td,
+      .table th {
+        font-size: 14px; /* You can adjust the font size here */
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container mt-5">
+      <h1 class="text-center">Train Schedule</h1>
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th scope="col">Start Station</th>
+            <th scope="col">Destination Station</th>
+            <th scope="col">Train Name</th>
+            <th scope="col">Departure Time</th>
+            <th scope="col">Arrival Time</th>
+            <th scope="col">Timestamp</th>
+            <th scope="col">Price</th>
+          </tr>
+        </thead>
+        <tbody id="dataTableBody">
+          <!-- Data will be populated here -->
+        </tbody>
+      </table>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script
+      src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"
+      integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL"
+      crossorigin="anonymous"
+    ></script>
+
+    <script>
+      // Sample data
+      const data = [
+        {
+          start_station: 'Nürnberg Hbf',
+          dest_station: 'München Hbf',
+          train_name: 'ICE 501',
+          departure_time: '2024-03-30 08:11:00',
+          arrive_time: '2024-03-30 09:44:00',
+          timestamp: '2024-03-29 16:22:51',
+          price: 26.9,
+        },
+        // Add more data here if needed
+      ];
+
+      // Function to populate the table with data
+      function populateTable(data) {
+        const tableBody = document.getElementById('dataTableBody');
+        tableBody.innerHTML = '';
+        data.forEach(item => {
+          const row = document.createElement('tr');
+          row.innerHTML = `
+          <td>${item.start_station}</td>
+          <td>${item.dest_station}</td>
+          <td>${item.train_name}</td>
+          <td>${item.departure_time}</td>
+          <td>${item.arrive_time}</td>
+          <td>${item.timestamp}</td>
+          <td>${item.price}</td>
+        `;
+          tableBody.appendChild(row);
+        });
+      }
+
+      // Populate table on page load
+      window.addEventListener('load', () => {
+        populateTable(data);
+      });
+    </script>
+  </body>
+</html>
