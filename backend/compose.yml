@@ -27,8 +27,8 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: your_daily_board_exppress_backend
-    image: your_daily_board_exporess_backend
+    container_name: your_daily_board_express_backend
+    image: your_daily_board_express_backend
     depends_on:
       database:
         condition: service_healthy
