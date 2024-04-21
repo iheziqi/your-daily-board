@@ -57,17 +57,6 @@ export async function validateAuthCode(
   try {
     const email: string = req.body.email;
 
-    // let authCode: number;
-    // if (req.cookies.authentication_code) {
-    //   // first try to get the auth code from cookie
-    //   // this states that client has already logged in
-    //   authCode = parseInt(req.cookies.authentication_code.toString());
-    // } else {
-    //   // if the auth code does not exist in cookie,
-    //   // try to access it in the request body
-    //   // this states that client try to log in
-    //   authCode = parseInt(req.body.authentication_code.toString());
-    // }
     let authCode: number | string = req.body.authentication_code;
 
     if (!authCode) {
@@ -129,7 +118,8 @@ export function authenticateJwtToken(
   next: NextFunction
 ) {
   try {
-    const token = req.cookies.authentication_token;
+    // use Bearer authentication with JWT tokens
+    const token = req.headers['authorization']?.split(' ')[1];
 
     if (!token) {
       throw createHttpError.Unauthorized();
