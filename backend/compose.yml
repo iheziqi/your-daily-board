@@ -1,0 +1,60 @@
+version: '3.8'
+
+services:
+  database:
+    container_name: ${DB_HOST}
+    image: mysql:latest
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_PASSWORD}
+      MYSQL_DATABASE: ${DB_DATABASE}
+      MYSQL_ROOT_HOST: '%'
+    ports:
+      - '3306:3306'
+    expose:
+      - '3306'
+    volumes:
+      - mysql_data:/var/lib/mysql
+    env_file:
+      - path: ./.env
+        required: true # default
+    healthcheck:
+      test: ['CMD', 'mysqladmin', 'ping', '-h', 'localhost']
+      timeout: 20s
+      retries: 10
+
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: your_daily_board_express_backend
+    image: your_daily_board_express_backend
+    depends_on:
+      database:
+        condition: service_healthy
+    env_file:
+      - path: ./.env
+        required: true # default
+    environment:
+      DB_TYPE: ${DB_TYPE}
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      DB_DATABASE: ${DB_DATABASE}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      SMTP_HOST: ${SMTP_HOST}
+      SMTP_PORT: ${SMTP_PORT}
+      SMTP_USER: ${SMTP_USER}
+      SMTP_PASS: ${SMTP_PASS}
+      SECRET_KEY: ${SECRET_KEY}
+      PORT: ${PORT}
+      ROOT_URL: ${ROOT_URL}
+      FRONTEND_URL: ${FRONTEND_URL}
+    ports:
+      - '${PORT}:${PORT}'
+    command: >
+      bash -c "node ./build/src/config/setup.js
+      && ./build/src/entrypoint.sh"
+
+volumes:
+  mysql_data:

@@ -124,10 +124,12 @@ export async function getUserMensaMenuSubscriptions() {
   // However, since I host the frontend on Vercel and backend in a linux server with a domain,
   // I can't set one domain to two DNS servers of two companies.
   const authenticationToken = localStorage.getItem('authentication_token');
-  document.cookie = `authentication_token=${authenticationToken}; samesite=none; secure; path=/; `;
+
   const option: RequestInit = {
     method: 'GET',
-    credentials: 'include',
+    headers: {
+      Authorization: `Bearer ${authenticationToken}`,
+    },
   };
   const response = await fetch(url, option);
 
@@ -149,10 +151,12 @@ export async function getUserExchangeRateSubscriptions() {
   const url = `${BASEURL}/settings/exchange_rate_subscription`;
 
   const authenticationToken = localStorage.getItem('authentication_token');
-  document.cookie = `authentication_token=${authenticationToken}; samesite=none; secure; path=/; `;
+
   const option: RequestInit = {
     method: 'GET',
-    credentials: 'include',
+    headers: {
+      Authorization: `Bearer ${authenticationToken}`,
+    },
   };
 
   const response = await fetch(url, option);
@@ -173,12 +177,12 @@ export async function setUserMensaMenuSubscriptions(
   const url = `${BASEURL}/settings/mensa_menu_subscription`;
 
   const authenticationToken = localStorage.getItem('authentication_token');
-  document.cookie = `authentication_token=${authenticationToken}; samesite=none; secure; path=/; `;
+
   const option: RequestInit = {
     method: 'POST',
-    credentials: 'include',
     headers: {
       'Content-Type': 'application/json',
+      Authorization: `Bearer ${authenticationToken}`,
     },
     body: JSON.stringify({ mensaIds: mensaMenuSubscriptions }),
   };
@@ -193,12 +197,12 @@ export async function setUserExchangeRateSubscriptions(
   const url = `${BASEURL}/settings/exchange_rate_subscription`;
 
   const authenticationToken = localStorage.getItem('authentication_token');
-  document.cookie = `authentication_token=${authenticationToken}; samesite=none; secure; path=/; `;
+
   const option: RequestInit = {
     method: 'POST',
-    credentials: 'include',
     headers: {
       'Content-Type': 'application/json',
+      Authorization: `Bearer ${authenticationToken}`,
     },
     body: JSON.stringify({ fromTos: exchangeRateSubscriptions }),
   };

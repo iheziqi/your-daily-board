@@ -1,0 +1,11 @@
+node_modules
+build
+src/__test__
+
+.editorconfig
+.eslintignore
+.eslintrc.json
+.prettierrc.cjs
+jest.config.js
+LICENSE
+.env

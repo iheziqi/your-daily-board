@@ -27,3 +27,12 @@ type MensaID =
 
 /** Type of Exchange Rate */
 type from_to = 'USD-CNY' | 'EUR-CNY';
+
+type DBTicketInfo = {
+  startStation: string;
+  destStation: string;
+  price: number;
+  departureTime: Date;
+  arriveTime: Date;
+  trainName: string;
+};

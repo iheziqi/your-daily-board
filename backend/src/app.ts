@@ -84,5 +84,5 @@ app.use((_req, _res, next) => {
 // custom error handler
 app.use(errorHandler);
 
-const port = process.env.PORT || 5000;
+const port = parseInt(process.env.PORT || '5000', 10);
 app.listen(port, () => console.log(`Server is listening on port ${port}...`));

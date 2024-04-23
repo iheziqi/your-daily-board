@@ -19,8 +19,19 @@ export async function up(knex: Knex): Promise<void> {
 }
 
 export async function down(knex: Knex): Promise<void> {
-  await knex.schema.table('mensa_menu', table => {
-    table.dropForeign('mensa_id');
-  });
-  return knex.schema.dropTable('mensa_info').dropTable('mensa_menu');
+  // Check if the mensa_menu table exists before attempting to alter it
+  const mensaMenuTableExists = await knex.schema.hasTable('mensa_menu');
+  if (mensaMenuTableExists) {
+    // Drop foreign key constraint from mensa_menu table first
+    await knex.schema.alterTable('mensa_menu', table => {
+      table.dropForeign(['mensa_id']);
+    });
+  }
+
+  // The order of dropping tables is important.
+  // Since mensa_menu has a foreign key constraint referencing mensa_info,
+  // it should be dropped first to avoid foreign key constraint violations.
+  return await knex.schema
+    .dropTableIfExists('mensa_menu')
+    .dropTableIfExists('mensa_info');
 }
