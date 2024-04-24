@@ -20,6 +20,7 @@ import users from './routes/users';
 import settings from './routes/settings';
 import info from './routes/info';
 import admin from './routes/admin';
+import dashboard from './routes/dashboard';
 
 // make PROCESS.ENV available
 loadEnv();
@@ -73,6 +74,9 @@ app.use(cors(corsConfig));
 app.use('/api/v1/users', users);
 app.use('/api/v1/settings', settings);
 app.use('/api/v1/info', info);
+
+// dashboard routes
+app.use('/dashboard', dashboard);
 
 // admin pages routes
 app.use('/admin', admin);
