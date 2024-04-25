@@ -80,14 +80,16 @@ class DBTicketPriceRepository implements IDBTicketPriceRepository {
     departureTime: Date
   ): Promise<DDbTrainTicketPrice[]> {
     try {
+      const formattedDate = departureTime.toISOString().split('T')[0];
+
       const queryResult = await this.db<DDbTrainTicketPrice>(
         'db_train_ticket_price'
       )
         .select()
+        .whereRaw('DATE(departure_time) = ?', [formattedDate])
         .where({
           start_station: startStation,
           dest_station: destStation,
-          departure_time: this.convertJSDateToMySQLDate(departureTime),
         });
 
       return queryResult;

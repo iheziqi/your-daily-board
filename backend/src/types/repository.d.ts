@@ -76,6 +76,7 @@ interface DExchangeRateSubscription {
  * db_train_ticket_price table
  */
 interface DDbTrainTicketPrice {
+  id: number;
   start_station: string;
   dest_station: string;
   price: number;
