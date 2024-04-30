@@ -98,7 +98,7 @@ export async function getNurembergToMunichTrainPlanIn30Days() {
     // or the price in this request is greater than in database,
     // store the price
     if (
-      !price ||
+      !queryResultOfLatestPrice ||
       (queryResultOfLatestPrice && price > queryResultOfLatestPrice.price)
     ) {
       await dbTicketPriceRepo.storePrice({
