@@ -16,6 +16,7 @@ import {
 import {getMensaInfo} from './mensaInfo';
 import {getExchangeRateInfo} from './exchangeRateInfo';
 import {getDailyBoardEmailPreview} from './yourDailyBoardEmail';
+import {dbTrainTicketPrice} from './dbTrainTicketPrice';
 
 export {
   register,
@@ -30,4 +31,5 @@ export {
   getMensaInfo,
   getExchangeRateInfo,
   getDailyBoardEmailPreview,
+  dbTrainTicketPrice,
 };
