@@ -34,6 +34,15 @@ export async function up(knex: Knex): Promise<void> {
         .onUpdate('CASCADE');
 
       table.primary(['user_id', 'from_to']);
+    })
+    .then(() => {
+      return knex.raw('SHOW CREATE TABLE exchange_rate_subscriptions');
+    })
+    .then(result => {
+      console.log(result[0]);
+    })
+    .catch(err => {
+      console.error(err);
     });
 }
 
