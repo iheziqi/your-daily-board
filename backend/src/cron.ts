@@ -1,6 +1,5 @@
 import CronJobService from './services/CronjobService';
 import { RepoScheduledTasks, ServiceScheduledTasks } from './services/index';
-import { getNurembergToMunichTrainPlanIn30Days } from './scrapers/DBTrainScraper';
 
 type scheduledTasks = 'FETCH_MENSA_MENU' | 'SEND_EMAIL';
 
@@ -39,18 +38,5 @@ cronJobService.addJob('SEND_EMAIL', {
   onComplete: null,
 });
 
-cronJobService.addJob('FETCH_TRAIN_TICKET_PRICE', {
-  schedule: '0 * * * *',
-  task: async () => {
-    await getNurembergToMunichTrainPlanIn30Days().catch(e => {
-      console.error(e.message);
-    });
-  },
-  onComplete: () => {
-    console.log('Nuremberg to Munich train ticket price fetched successfully');
-  },
-});
-
 cronJobService.startJob('FETCH_MENSA_MENU');
 cronJobService.startJob('SEND_EMAIL');
-cronJobService.startJob('FETCH_TRAIN_TICKET_PRICE');
