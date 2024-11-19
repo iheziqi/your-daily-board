@@ -2,7 +2,7 @@ import { Knex } from 'knex';
 
 export async function up(knex: Knex): Promise<void> {
   return knex.schema
-    .createTable('menu_subscriptions', table => {
+    .createTableIfNotExists('menu_subscriptions', table => {
       table.integer('user_id').unsigned();
       table
         .foreign('user_id')
@@ -19,7 +19,7 @@ export async function up(knex: Knex): Promise<void> {
 
       table.primary(['user_id', 'mensa_id']);
     })
-    .createTable('exchange_rate_subscriptions', table => {
+    .createTableIfNotExists('exchange_rate_subscriptions', table => {
       table.integer('user_id').unsigned();
       table
         .foreign('user_id')
@@ -47,6 +47,6 @@ export async function down(knex: Knex): Promise<void> {
     table.dropForeign('from_to');
   });
   return knex.schema
-    .dropTable('menu_subscriptions')
-    .dropTable('exchange_rate_subscriptions');
+    .dropTableIfExists('menu_subscriptions')
+    .dropTableIfExists('exchange_rate_subscriptions');
 }

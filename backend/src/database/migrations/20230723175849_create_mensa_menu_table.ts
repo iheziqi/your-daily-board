@@ -2,12 +2,12 @@ import { Knex } from 'knex';
 
 export async function up(knex: Knex): Promise<void> {
   return knex.schema
-    .createTable('mensa_info', table => {
+    .createTableIfNotExists('mensa_info', table => {
       table.string('id').primary();
       table.string('name').notNullable();
       table.string('url').notNullable();
     })
-    .createTable('mensa_menu', table => {
+    .createTableIfNotExists('mensa_menu', table => {
       table.string('mensa_id').notNullable();
       table.foreign('mensa_id').references('mensa_info.id').onUpdate('CASCADE');
       // use string to store date for convenience.

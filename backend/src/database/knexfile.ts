@@ -22,11 +22,25 @@ const config: { [key: string]: Knex.Config } = {
   development: {
     client: 'better-sqlite3',
     connection: {
-      filename: `./sqlite/${
+      filename: `${__dirname}/sqlite/${
         process.env.DB_DATABASE
           ? process.env.DB_DATABASE
           : 'your-daily-board.sqlite'
       }`,
+    },
+    seeds: {
+      directory: './seeds',
+    },
+    migrations: {
+      extension: 'ts',
+      tableName: 'knex_migrations',
+      directory: ['./migrations'],
+    },
+  },
+  production: {
+    client: 'better-sqlite3',
+    connection: {
+      filename: `${__dirname}/sqlite/${process.env.DB_DATABASE}`,
     },
     seeds: {
       directory: './seeds',

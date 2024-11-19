@@ -1,49 +1,8 @@
-import mysql from 'mysql2';
 import { exec } from 'child_process';
+
 import KnexService from '../database/KnexService';
 import { RepoScheduledTasks } from '../services';
 import { seed } from '../database/seeds/mensaInfo';
-import { loadEnv } from '../utils/loadEnv';
-
-loadEnv();
-
-/**
- * Creates database in MySQL if the database does not exist.
- */
-function createDatabaseIfNotExisted() {
-  return new Promise<void>((resolve, reject) => {
-    const connection = mysql.createConnection({
-      host: process.env.DB_HOST || '127.0.0.1',
-      user: process.env.DB_USER || 'root',
-      password: process.env.DB_PASSWORD,
-    });
-
-    // Connect to the MySQL server.
-    connection.connect(err => {
-      if (err) {
-        console.error('Error connecting to MySQL:', err);
-        reject(err);
-      } else {
-        console.log('Connected to MySQL server');
-      }
-    });
-
-    // Create the database using a SQL query.
-    const dbName = 'your_daily_board';
-
-    connection.query(`CREATE DATABASE IF NOT EXISTS ${dbName}`, err => {
-      if (err) {
-        console.error('Error creating database:', err);
-        reject(err);
-      } else {
-        console.log(`Database '${dbName}' created successfully.`);
-        resolve();
-        // Close the MySQL connection
-        connection.end();
-      }
-    });
-  });
-}
 
 /**
  * Runs database migration files.
@@ -65,12 +24,12 @@ function runDatabaseMigration() {
       }
 
       if (stderr) {
-        console.error(`Command stderr: ${stderr}`);
+        console.info(`Command stderr: ${stderr}`);
         reject(stderr);
         return;
       }
 
-      console.log(`Command output: ${stdout}`);
+      console.info(`Command output: ${stdout}`);
       resolve();
     });
   });
@@ -101,7 +60,7 @@ function rollbackDatabaseMigration() {
         return;
       }
 
-      console.log(`Command output: ${stdout}`);
+      console.info(`Command output: ${stdout}`);
       resolve();
     });
   });
@@ -122,7 +81,7 @@ function setSeedsData() {
         return RepoScheduledTasks.saveMensaMenusToDatabase();
       })
       .then(() => {
-        console.log('MensaInfo, exchange rates, and mensa menus loaded');
+        console.info('MensaInfo, exchange rates, and mensa menus loaded');
         resolve();
       })
       .catch(e => {
@@ -136,23 +95,17 @@ function setSeedsData() {
 }
 
 // Now, run the functions one by one in a synchronized way using Promises
-console.log('Start to create database');
-createDatabaseIfNotExisted()
+console.info('Start to run database migration');
+runDatabaseMigration()
   .then(() => {
-    console.log('Database created!');
-    console.log('------------------------------------------------');
-    console.log('Start to run database migration');
-    return runDatabaseMigration();
-  })
-  .then(() => {
-    console.log('Migration finished!');
-    console.log('------------------------------------------------');
-    console.log('Start to load seeds data');
+    console.info('Migration finished!');
+    console.info('------------------------------------------------');
+    console.info('Start to load seeds data');
     return setSeedsData();
   })
   .then(() => {
-    console.log('Seeds loaded!');
-    console.log('------------------------------------------------');
+    console.info('Seeds loaded!');
+    console.info('------------------------------------------------');
   })
   .catch(error => {
     console.error('An error occurred:', error);

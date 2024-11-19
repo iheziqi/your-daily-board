@@ -2,14 +2,14 @@ import { Knex } from 'knex';
 
 export async function up(knex: Knex): Promise<void> {
   return knex.schema
-    .createTable('users', table => {
+    .createTableIfNotExists('users', table => {
       table.increments('id').primary();
       table.string('email').notNullable();
       table.unique('email');
-      table.boolean('admin').defaultTo(false);
-      table.boolean('is_verified').defaultTo(false);
+      table.boolean('admin');
+      table.boolean('is_verified');
     })
-    .createTable('users_verifying', table => {
+    .createTableIfNotExists('users_verifying', table => {
       table.string('email').primary();
       table
         .foreign('email')
@@ -18,7 +18,7 @@ export async function up(knex: Knex): Promise<void> {
         .onUpdate('CASCADE');
       table.string('token');
     })
-    .createTable('users_authentication', table => {
+    .createTableIfNotExists('users_authentication', table => {
       table.string('email').primary();
       table
         .foreign('email')
