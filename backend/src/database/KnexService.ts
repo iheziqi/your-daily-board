@@ -1,7 +1,7 @@
-import type {Knex} from 'knex';
-import {knex} from 'knex';
+import type { Knex } from 'knex';
+import { knex } from 'knex';
 // import {config} from './knexfile';
-import {loadEnv} from '../utils/loadEnv';
+import { loadEnv } from '../utils/loadEnv';
 
 loadEnv();
 

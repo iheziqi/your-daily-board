@@ -1,9 +1,9 @@
 import mysql from 'mysql2';
-import {exec} from 'child_process';
+import { exec } from 'child_process';
 import KnexService from '../database/KnexService';
-import {RepoScheduledTasks} from '../services';
-import {seed} from '../database/seeds/mensaInfo';
-import {loadEnv} from '../utils/loadEnv';
+import { RepoScheduledTasks } from '../services';
+import { seed } from '../database/seeds/mensaInfo';
+import { loadEnv } from '../utils/loadEnv';
 
 loadEnv();
 
@@ -57,7 +57,7 @@ function runDatabaseMigration() {
     const workingDirectory = `${__dirname}/../../`;
 
     // Execute the command with the specified working directory
-    exec(commandToRun, {cwd: workingDirectory}, (error, stdout, stderr) => {
+    exec(commandToRun, { cwd: workingDirectory }, (error, stdout, stderr) => {
       if (error) {
         console.error(`Error: ${error.message}`);
         reject(error);
@@ -88,7 +88,7 @@ function rollbackDatabaseMigration() {
     const workingDirectory = `${__dirname}/../../`;
 
     // Execute the command with the specified working directory
-    exec(commandToRun, {cwd: workingDirectory}, (error, stdout, stderr) => {
+    exec(commandToRun, { cwd: workingDirectory }, (error, stdout, stderr) => {
       if (error) {
         console.error(`Error: ${error.message}`);
         reject(error);

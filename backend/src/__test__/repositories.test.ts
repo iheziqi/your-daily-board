@@ -6,7 +6,7 @@ import {
   MensaInfoRepository,
 } from '../repositories/index';
 import KnexService from '../database/KnexService';
-import {getCurrentDate} from '../utils/helpers';
+import { getCurrentDate } from '../utils/helpers';
 
 // Initial classes
 const knexInstance = KnexService.getInstance();
@@ -101,7 +101,7 @@ describe('user repository unit tests', () => {
   const myUserRepo = new UserRepository(knexInstance);
 
   it('should create user into database', async () => {
-    const user = await myUserRepo.createUser({email: exampleEmail1});
+    const user = await myUserRepo.createUser({ email: exampleEmail1 });
     const queryResult = await knexInstance
       .select()
       .from('users')
@@ -116,7 +116,7 @@ describe('user repository unit tests', () => {
   });
 
   it('should get all users from database', async () => {
-    await knexInstance('users').insert({email: exampleEmail2});
+    await knexInstance('users').insert({ email: exampleEmail2 });
 
     const allUsers = await myUserRepo.getAllUsersData();
 
@@ -179,12 +179,12 @@ describe('user repository unit tests', () => {
   });
 
   it('should create to-be-verified user', async () => {
-    await knexInstance('users').insert({email: exampleEmail4});
+    await knexInstance('users').insert({ email: exampleEmail4 });
     const token = await myUserRepo.createToBeVerifiedUser(exampleEmail4);
 
     const queryResult = await knexInstance('users_verifying')
       .select()
-      .where({email: exampleEmail4})
+      .where({ email: exampleEmail4 })
       .first();
 
     expect(token).toBe(queryResult?.token);
@@ -196,7 +196,7 @@ describe('user repository unit tests', () => {
     const token = await myUserRepo.getVerifyingTokenByUserEmail(exampleEmail4);
     const queryResult = await knexInstance('users_verifying')
       .select()
-      .where({email: exampleEmail4})
+      .where({ email: exampleEmail4 })
       .first();
 
     expect(token).toBe(queryResult?.token);
@@ -205,7 +205,7 @@ describe('user repository unit tests', () => {
   it('should get email address by given token', async () => {
     const queryResult = await knexInstance('users_verifying')
       .select('token')
-      .where({email: exampleEmail4})
+      .where({ email: exampleEmail4 })
       .first();
     const email = await myUserRepo.getEmailByVerifyingToken(queryResult.token);
 
@@ -217,12 +217,12 @@ describe('user repository unit tests', () => {
 
     const queryResult = await knexInstance('users_verifying')
       .select()
-      .where({email})
+      .where({ email })
       .first();
 
     const queryResultUserTable = await knexInstance('users')
       .select('is_verified')
-      .where({email})
+      .where({ email })
       .first();
 
     expect(email).toBe(exampleEmail4);
@@ -417,7 +417,7 @@ describe('subscriptions repository unit tests', () => {
 
     const queryResult = await knexInstance('menu_subscriptions')
       .select()
-      .where({user_id: 2});
+      .where({ user_id: 2 });
 
     expect(queryResult.length).toBe(3);
     queryResult.forEach(e =>
@@ -430,7 +430,7 @@ describe('subscriptions repository unit tests', () => {
 
     const queryResult = await knexInstance('menu_subscriptions')
       .select()
-      .where({user_id: 2});
+      .where({ user_id: 2 });
 
     expect(queryResult.length).toBe(0);
   });
@@ -447,7 +447,7 @@ describe('subscriptions repository unit tests', () => {
 
     const queryResult = await knexInstance('exchange_rate_subscriptions')
       .select()
-      .where({user_id: 2});
+      .where({ user_id: 2 });
 
     expect(queryResult.length).toBe(2);
     queryResult.forEach(e =>
@@ -460,7 +460,7 @@ describe('subscriptions repository unit tests', () => {
 
     const queryResult = await knexInstance('exchange_rate_subscriptions')
       .select()
-      .where({user_id: 2});
+      .where({ user_id: 2 });
 
     expect(queryResult.length).toBe(0);
   });

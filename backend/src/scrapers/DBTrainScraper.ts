@@ -1,6 +1,6 @@
-import {DBTicketPriceRepository} from '../repositories';
+import { DBTicketPriceRepository } from '../repositories';
 import KnexService from '../database/KnexService';
-import {getDateOfNext30DaysWithTime} from '../utils/helpers';
+import { getDateOfNext30DaysWithTime } from '../utils/helpers';
 
 const stationId = {
   Nuremberg_Hbf:
@@ -17,7 +17,7 @@ async function getTrainPlanInfo(
   const fahrPlanUrl = 'https://www.bahn.de/web/api/angebote/fahrplan';
   const option: RequestInit = {
     method: 'POST',
-    headers: {'Content-Type': 'application/json'},
+    headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
       abfahrtsHalt: startStationId,
       anfrageZeitpunkt: timeToLeave.toISOString().slice(0, -5),

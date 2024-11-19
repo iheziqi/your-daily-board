@@ -1,7 +1,7 @@
 import express from 'express';
-import {SubscriptionRepository, UserRepository} from '../repositories';
+import { SubscriptionRepository, UserRepository } from '../repositories';
 import KnexService from '../database/KnexService';
-import {UserAuthService} from '../services';
+import { UserAuthService } from '../services';
 import {
   authenticateJwtToken,
   validateAuthCode,
@@ -16,7 +16,7 @@ router.get('/login', (req, res) => {
   const rootUrl = process.env.ROOT_URL;
   if (!rootUrl)
     createHttpError.InternalServerError('can not get env variable ROOT_URL');
-  res.render('admin-login', {rootUrl});
+  res.render('admin-login', { rootUrl });
 });
 
 // Define a route for handling form submissions
@@ -57,7 +57,7 @@ router.get('/users', authenticateJwtToken, async (req, res) => {
   const userRepo = new UserRepository(knexInstance);
   const allUsers = await userRepo.getAllUsersData();
 
-  res.render('admin-users', {allUsers});
+  res.render('admin-users', { allUsers });
 });
 
 router.post('/update_user', authenticateJwtToken, async (req, res) => {
@@ -83,7 +83,7 @@ router.post('/delete_user', authenticateJwtToken, async (req, res) => {
 
   const knexInstance = KnexService.getInstance();
 
-  await knexInstance<DUser>('users').where({id: userId}).del();
+  await knexInstance<DUser>('users').where({ id: userId }).del();
 
   res.redirect('/admin/users');
 });
@@ -93,7 +93,7 @@ router.post('/create_user', authenticateJwtToken, async (req, res) => {
   const userRepo = new UserRepository(KnexService.getInstance());
   const subRepo = new SubscriptionRepository(KnexService.getInstance());
 
-  await userRepo.createUser({email});
+  await userRepo.createUser({ email });
 
   await Promise.all([
     subRepo.createMensaMenuSubscription(email, 'sued'),

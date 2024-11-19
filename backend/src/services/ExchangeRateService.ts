@@ -1,6 +1,6 @@
-import {Knex} from 'knex';
-import {ExchangeRepository} from '../repositories/index';
-import {getCurrentDate, getPreviousDay} from '../utils/helpers';
+import { Knex } from 'knex';
+import { ExchangeRepository } from '../repositories/index';
+import { getCurrentDate, getPreviousDay } from '../utils/helpers';
 
 class ExchangeRateService {
   private exchangeRateRepo: ExchangeRepository;

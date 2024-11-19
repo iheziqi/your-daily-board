@@ -1,4 +1,4 @@
-import {JSDOM} from 'jsdom';
+import { JSDOM } from 'jsdom';
 import Scraper from './Scraper';
 
 /**
@@ -15,7 +15,7 @@ export async function fetchExchangeRate(
     const rawHTML = await Scraper.fetchRawHTML(url);
 
     // Extracts the exchange rate.
-    const {document} = new JSDOM(rawHTML).window;
+    const { document } = new JSDOM(rawHTML).window;
     const currencyRateElement = document.querySelector('.YMlKec.fxKbKc');
     const currencyRate = currencyRateElement?.textContent || '0';
 

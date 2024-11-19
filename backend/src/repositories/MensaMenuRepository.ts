@@ -1,5 +1,5 @@
-import {Knex} from 'knex';
-import {getCurrentDate} from '../utils/helpers';
+import { Knex } from 'knex';
+import { getCurrentDate } from '../utils/helpers';
 
 class MensaMenuRepository implements IMensaMenuRepository {
   private db: Knex;
@@ -47,7 +47,7 @@ class MensaMenuRepository implements IMensaMenuRepository {
     try {
       const queryResult = await this.db<DMensaMenu>('mensa_menu')
         .select('menu')
-        .where({mensa_id: mensaId, date: date})
+        .where({ mensa_id: mensaId, date: date })
         .first();
 
       return queryResult?.menu;

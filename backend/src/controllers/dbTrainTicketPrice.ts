@@ -1,11 +1,11 @@
-import {NextFunction, Request, Response} from 'express';
+import { NextFunction, Request, Response } from 'express';
 import * as ejs from 'ejs';
-import {readFileSync} from 'fs';
+import { readFileSync } from 'fs';
 
-import {getDirPathOfDashBoardTemplate} from '../views/dashboard/render';
-import {DBTicketPriceRepository} from '../repositories';
+import { getDirPathOfDashBoardTemplate } from '../views/dashboard/render';
+import { DBTicketPriceRepository } from '../repositories';
 import KnexService from '../database/KnexService';
-import {getDateOfNext30DaysWithTime} from '../utils/helpers';
+import { getDateOfNext30DaysWithTime } from '../utils/helpers';
 
 async function dbTrainTicketPrice(
   req: Request,
@@ -38,7 +38,7 @@ async function dbTrainTicketPrice(
 
     const renderedContent = ejs.render(
       templateContent,
-      {data},
+      { data },
       {
         root: templateFilePath,
       }
@@ -50,4 +50,4 @@ async function dbTrainTicketPrice(
   }
 }
 
-export {dbTrainTicketPrice};
+export { dbTrainTicketPrice };

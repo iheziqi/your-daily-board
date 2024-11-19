@@ -1,4 +1,4 @@
-import {Knex} from 'knex';
+import { Knex } from 'knex';
 import MensaInfoScraper from '../scrapers/MensaInfoScraper';
 
 class MensaInfoRepository implements IMensaInfoRepository {

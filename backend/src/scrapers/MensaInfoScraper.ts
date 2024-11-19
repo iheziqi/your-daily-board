@@ -1,4 +1,4 @@
-import {JSDOM} from 'jsdom';
+import { JSDOM } from 'jsdom';
 import Scraper from './Scraper';
 
 class MensaInfoScraper {
@@ -41,7 +41,7 @@ class MensaInfoScraper {
    */
   private hasMensaInfo(htmlPage: string): boolean {
     // Use JSDOM to get the html document object.
-    const {document} = new JSDOM(htmlPage).window;
+    const { document } = new JSDOM(htmlPage).window;
 
     // Select the specific div with the class "dropdown"
     const specificDropdown = document.querySelector('div.dropdown');
@@ -68,7 +68,7 @@ class MensaInfoScraper {
    */
   private extractMensaInfo(htmlPage: string) {
     // Use JSDOM to get the html document object.
-    const {document} = new JSDOM(htmlPage).window;
+    const { document } = new JSDOM(htmlPage).window;
 
     // Select the specific div with the class "dropdown"
     const mensaInfoDropdown = document.querySelector('div.dropdown')!;

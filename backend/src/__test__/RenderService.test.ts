@@ -1,7 +1,7 @@
-import {RenderService} from '../services';
+import { RenderService } from '../services';
 import KnexService from '../database/KnexService';
-import {getTestData} from './test.data';
-import {getDirPathOfEmailTemplate} from '../views/emails/v1/render';
+import { getTestData } from './test.data';
+import { getDirPathOfEmailTemplate } from '../views/emails/v1/render';
 import {
   MensaInfoRepository,
   SubscriptionRepository,

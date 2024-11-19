@@ -1,5 +1,5 @@
-import {Knex} from 'knex';
-import {getCurrentDate} from '../utils/helpers';
+import { Knex } from 'knex';
+import { getCurrentDate } from '../utils/helpers';
 
 class ExchangeRepository implements IExchangeRateRepository {
   private db: Knex;
@@ -55,7 +55,7 @@ class ExchangeRepository implements IExchangeRateRepository {
   ): Promise<DExchangeRate | undefined> {
     const exchangeRate = await this.db<DExchangeRate>('exchange_rate')
       .select()
-      .where({date, from_to})
+      .where({ date, from_to })
       .first();
 
     return exchangeRate;

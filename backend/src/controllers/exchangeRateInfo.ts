@@ -1,5 +1,5 @@
-import {Request, Response, NextFunction} from 'express';
-import {getFromToCodes} from '../scrapers/ExchangeRateScraper';
+import { Request, Response, NextFunction } from 'express';
+import { getFromToCodes } from '../scrapers/ExchangeRateScraper';
 
 /**
  * Controller for getting exchange rate information.
@@ -16,4 +16,4 @@ async function getExchangeRateInfo(
   }
 }
 
-export {getExchangeRateInfo};
+export { getExchangeRateInfo };

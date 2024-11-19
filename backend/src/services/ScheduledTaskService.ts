@@ -11,9 +11,9 @@ import {
   MensaMenuRepository,
   ExchangeRepository,
 } from '../repositories/index';
-import {ExchangeRateService, RenderService, EmailService} from './index';
+import { ExchangeRateService, RenderService, EmailService } from './index';
 
-import {getDirPathOfEmailTemplate} from '../views/emails/v1/render';
+import { getDirPathOfEmailTemplate } from '../views/emails/v1/render';
 
 export class RepoScheduledTasks {
   /**

@@ -1,6 +1,6 @@
 import CronJobService from './services/CronjobService';
-import {RepoScheduledTasks, ServiceScheduledTasks} from './services/index';
-import {getNurembergToMunichTrainPlanIn30Days} from './scrapers/DBTrainScraper';
+import { RepoScheduledTasks, ServiceScheduledTasks } from './services/index';
+import { getNurembergToMunichTrainPlanIn30Days } from './scrapers/DBTrainScraper';
 
 type scheduledTasks = 'FETCH_MENSA_MENU' | 'SEND_EMAIL';
 

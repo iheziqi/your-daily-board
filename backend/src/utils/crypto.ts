@@ -1,6 +1,6 @@
 import crypto from 'crypto';
 import CryptoJS from 'crypto-js';
-import {loadEnv} from './loadEnv';
+import { loadEnv } from './loadEnv';
 import createError from 'http-errors';
 
 /**

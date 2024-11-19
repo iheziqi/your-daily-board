@@ -1,11 +1,11 @@
-import {Request, Response} from 'express';
+import { Request, Response } from 'express';
 import * as ejs from 'ejs';
-import {readFileSync} from 'fs';
+import { readFileSync } from 'fs';
 
 import KnexService from '../database/KnexService';
-import {MensaInfoRepository, MensaMenuRepository} from '../repositories';
-import {getDirPathOfEmailTemplate} from '../views/emails/v1/render';
-import {classifyMensas, getCurrentDate} from '../utils/helpers';
+import { MensaInfoRepository, MensaMenuRepository } from '../repositories';
+import { getDirPathOfEmailTemplate } from '../views/emails/v1/render';
+import { classifyMensas, getCurrentDate } from '../utils/helpers';
 
 export async function getDailyBoardEmailPreview(_req: Request, res: Response) {
   // Initialize repos.
@@ -73,7 +73,7 @@ export async function getDailyBoardEmailPreview(_req: Request, res: Response) {
   // Using ejs to render email.
   const renderedContent = ejs.render(
     templateContent,
-    {exchangeRates: [], mensaMenus, rootUrl, frontendUrl},
+    { exchangeRates: [], mensaMenus, rootUrl, frontendUrl },
     {
       root: templatePath,
     }
