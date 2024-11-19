@@ -25,7 +25,7 @@ const config: { [key: string]: Knex.Config } = {
       filename: `./sqlite/${
         process.env.DB_DATABASE
           ? process.env.DB_DATABASE
-          : 'your-daily-board,sqlite'
+          : 'your-daily-board.sqlite'
       }`,
     },
     seeds: {
