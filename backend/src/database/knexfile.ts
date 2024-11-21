@@ -1,54 +1,34 @@
 import type { Knex } from 'knex';
 
+const commonConfig = {
+  client: 'better-sqlite3',
+  seeds: {
+    directory: `${__dirname}/seeds`,
+  },
+  migrations: {
+    extension: 'ts',
+    tableName: 'knex_migrations',
+    directory: [`${__dirname}/migrations`],
+  },
+};
+
 const config: { [key: string]: Knex.Config } = {
-  // development: {
-  //   client: 'mysql2',
-  //   connection: {
-  //     host: process.env.DB_HOST,
-  //     port: parseInt(process.env.DB_PORT!, 10),
-  //     database: process.env.DB_DATABASE,
-  //     user: process.env.DB_USER,
-  //     password: process.env.DB_PASSWORD,
-  //   },
-  //   seeds: {
-  //     directory: './seeds',
-  //   },
-  //   migrations: {
-  //     extension: 'ts',
-  //     tableName: 'knex_migrations',
-  //     directory: ['./migrations'],
-  //   },
-  // },
   development: {
-    client: 'better-sqlite3',
+    ...commonConfig,
     connection: {
-      filename: `${__dirname}/sqlite/${
-        process.env.DB_DATABASE
-          ? process.env.DB_DATABASE
-          : 'your-daily-board.sqlite'
-      }`,
+      filename: `${__dirname}/sqlite/your-daily-board.development.sqlite`,
     },
-    seeds: {
-      directory: './seeds',
-    },
-    migrations: {
-      extension: 'ts',
-      tableName: 'knex_migrations',
-      directory: ['./migrations'],
+  },
+  test: {
+    ...commonConfig,
+    connection: {
+      filename: `${__dirname}/sqlite/your-daily-board.test.sqlite`,
     },
   },
   production: {
-    client: 'better-sqlite3',
+    ...commonConfig,
     connection: {
-      filename: `${__dirname}/sqlite/${process.env.DB_DATABASE}`,
-    },
-    seeds: {
-      directory: './seeds',
-    },
-    migrations: {
-      extension: 'ts',
-      tableName: 'knex_migrations',
-      directory: ['./migrations'],
+      filename: `${__dirname}/sqlite/your-daily-board.production.sqlite`,
     },
   },
 };
