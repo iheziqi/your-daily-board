@@ -38,15 +38,7 @@ export async function up(knex: Knex): Promise<void> {
 }
 
 export async function down(knex: Knex): Promise<void> {
-  await knex.schema.table('menu_subscriptions', table => {
-    table.dropForeign('user_id');
-    table.dropForeign('mensa_id');
-  });
-  await knex.schema.table('exchange_rate_subscriptions', table => {
-    table.dropForeign('user_id');
-    table.dropForeign('from_to');
-  });
   return knex.schema
-    .dropTableIfExists('menu_subscriptions')
-    .dropTableIfExists('exchange_rate_subscriptions');
+    .dropTableIfExists('exchange_rate_subscriptions')
+    .dropTableIfExists('menu_subscriptions');
 }
