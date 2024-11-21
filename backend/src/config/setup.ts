@@ -2,7 +2,7 @@ import { exec } from 'child_process';
 
 import KnexService from '../database/KnexService';
 import { RepoScheduledTasks } from '../services';
-import { seed } from '../database/seeds/mensaInfo';
+import { seed } from '../database/seeds/mensa-Info';
 
 /**
  * Runs database migration files.
