@@ -26,12 +26,8 @@ export async function up(knex: Knex): Promise<void> {
         .references('users.id')
         .onUpdate('CASCADE')
         .onDelete('CASCADE');
+
       table.string('from_to');
-      table
-        .foreign('from_to')
-        .references('exchange_rate.from_to')
-        .onDelete('CASCADE')
-        .onUpdate('CASCADE');
 
       table.primary(['user_id', 'from_to']);
     });
