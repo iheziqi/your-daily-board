@@ -1,5 +1,6 @@
 import type { Knex } from 'knex';
 import { knex } from 'knex';
+import { loadEnv } from '../utils/loadEnv';
 
 /**
  * A service class for managing the Knex instance.
@@ -16,6 +17,7 @@ class KnexService {
    * @returns {Knex} The Knex instance.
    */
   static getInstance(): Knex {
+    loadEnv();
     if (!KnexService.knexInstance) {
       KnexService.knexInstance = knex(
         require('./knexfile')[process.env.NODE_ENV || 'development']
