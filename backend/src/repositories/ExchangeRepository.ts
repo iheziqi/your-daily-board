@@ -9,7 +9,7 @@ class ExchangeRepository implements IExchangeRateRepository {
   }
 
   /**
-   * Loads the exchange rate of given date into database.
+   * Loads or updates the exchange rate of given date into database.
    * @param exchangeRate
    * @param from_to
    * @param change_from_yesterday The volatility of exchange rate compared to yesterday
@@ -22,18 +22,19 @@ class ExchangeRepository implements IExchangeRateRepository {
   ): Promise<DExchangeRate | null> {
     try {
       const today = getCurrentDate();
-      await this.db('exchange_rate').insert({
-        from_to: from_to,
-        date: today,
-        exchange_rate: exchangeRate,
-        change_from_yesterday: change_from_yesterday,
-      });
-      return {
+      const data = {
         from_to,
         date: today,
         exchange_rate: exchangeRate,
         change_from_yesterday,
       };
+
+      await this.db('exchange_rate')
+        .insert(data)
+        .onConflict(['from_to', 'date'])
+        .merge();
+
+      return data;
     } catch (error) {
       console.error(
         `An error occurred when loading exchange rate of ${from_to} on ${getCurrentDate()}`,
