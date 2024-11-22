@@ -1,9 +1,5 @@
 import type { Knex } from 'knex';
 import { knex } from 'knex';
-// import {config} from './knexfile';
-import { loadEnv } from '../utils/loadEnv';
-
-loadEnv();
 
 /**
  * A service class for managing the Knex instance.
@@ -22,9 +18,7 @@ class KnexService {
   static getInstance(): Knex {
     if (!KnexService.knexInstance) {
       KnexService.knexInstance = knex(
-        require('./knexfile')[
-          process.env.NODE_ENV === 'production' ? 'production' : 'development'
-        ]
+        require('./knexfile')[process.env.NODE_ENV || 'development']
       );
     }
 
@@ -34,9 +28,10 @@ class KnexService {
   /**
    * Close the Knex instance.
    */
-  static destroyInstance() {
+  static async destroyInstance(): Promise<void> {
     if (KnexService.knexInstance) {
-      KnexService.knexInstance.destroy();
+      await KnexService.knexInstance.destroy();
+      KnexService.knexInstance = null;
     }
   }
 }
