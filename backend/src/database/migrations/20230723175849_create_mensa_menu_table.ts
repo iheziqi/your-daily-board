@@ -1,13 +1,20 @@
-import {Knex} from 'knex';
+import { Knex } from 'knex';
 
 export async function up(knex: Knex): Promise<void> {
-  return knex.schema
-    .createTable('mensa_info', table => {
+  // Create mensa_info table if it doesn't exist
+  const hasMensaInfo = await knex.schema.hasTable('mensa_info');
+  if (!hasMensaInfo) {
+    await knex.schema.createTable('mensa_info', table => {
       table.string('id').primary();
       table.string('name').notNullable();
       table.string('url').notNullable();
-    })
-    .createTable('mensa_menu', table => {
+    });
+  }
+
+  // Create mensa_menu table if it doesn't exist
+  const hasMensaMenu = await knex.schema.hasTable('mensa_menu');
+  if (!hasMensaMenu) {
+    await knex.schema.createTable('mensa_menu', table => {
       table.string('mensa_id').notNullable();
       table.foreign('mensa_id').references('mensa_info.id').onUpdate('CASCADE');
       // use string to store date for convenience.
@@ -16,6 +23,7 @@ export async function up(knex: Knex): Promise<void> {
       table.text('menu').nullable();
       table.primary(['mensa_id', 'date']);
     });
+  }
 }
 
 export async function down(knex: Knex): Promise<void> {

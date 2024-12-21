@@ -1,8 +1,8 @@
-import {Request, Response, NextFunction} from 'express';
+import { Request, Response, NextFunction } from 'express';
 import createHttpError from 'http-errors';
 import jwt from 'jsonwebtoken';
-import {CustomRequest} from '../middlewares/authentication';
-import {SubscriptionRepository} from '../repositories';
+import { CustomRequest } from '../middlewares/authentication';
+import { SubscriptionRepository } from '../repositories';
 import KnexService from '../database/KnexService';
 
 /**
@@ -31,7 +31,7 @@ async function getMensaMenuSubscription(
       );
     }
 
-    res.status(200).json({email, mensaMenuSubscriptions});
+    res.status(200).json({ email, mensaMenuSubscriptions });
   } catch (error) {
     next(error);
   }
@@ -62,10 +62,10 @@ async function setMensaMenuSubscription(
     await subscriptionRepo.updateMensaMenuSubscription(email, mensaIds);
     res
       .status(201)
-      .json({message: 'Updated mensa menu subscription successfully'});
+      .json({ message: 'Updated mensa menu subscription successfully' });
   } catch (error) {
     next(error);
   }
 }
 
-export {getMensaMenuSubscription, setMensaMenuSubscription};
+export { getMensaMenuSubscription, setMensaMenuSubscription };

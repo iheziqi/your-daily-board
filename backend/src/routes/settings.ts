@@ -5,7 +5,7 @@ import {
   getExchangeRateSubscription,
   setExchangeRateSubscription,
 } from '../controllers';
-import {authenticateJwtToken} from '../middlewares/authentication';
+import { authenticateJwtToken } from '../middlewares/authentication';
 
 const router = express.Router();
 

@@ -3,8 +3,8 @@ import createHttpError from 'http-errors';
 import crypto from 'crypto';
 import KnexService from '../database/KnexService';
 import EmailService from './EmailService';
-import {dateToUnixTimestamp} from '../utils/helpers';
-import {loadEnv} from '../utils/loadEnv';
+import { dateToUnixTimestamp } from '../utils/helpers';
+import { loadEnv } from '../utils/loadEnv';
 
 loadEnv();
 
@@ -43,7 +43,7 @@ class UserAuthService {
       // First delete the current code if it exists
       await trx<DUserAuthentication>('users_authentication')
         .del()
-        .where({email});
+        .where({ email });
       await trx<DUserAuthentication>('users_authentication').insert({
         email,
         authentication_code: authCode,
@@ -72,7 +72,7 @@ class UserAuthService {
       'users_authentication'
     )
       .select()
-      .where({email})
+      .where({ email })
       .first();
 
     return queryResult;
@@ -95,7 +95,7 @@ class UserAuthService {
         email: email,
       },
       secretKey,
-      {expiresIn: '7d'}
+      { expiresIn: '7d' }
     );
 
     return token;

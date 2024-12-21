@@ -1,7 +1,7 @@
 // dependencies
 import express from 'express';
 import path from 'path';
-import {loadEnv} from './utils/loadEnv';
+import { loadEnv } from './utils/loadEnv';
 import cookieParser from 'cookie-parser';
 import logger from 'morgan';
 import createError from 'http-errors';
@@ -10,10 +10,10 @@ import createError from 'http-errors';
 import helmet from 'helmet';
 import xss from 'xss-clean';
 import cors from 'cors';
-import {rateLimit} from 'express-rate-limit';
+import { rateLimit } from 'express-rate-limit';
 
 // middle wares
-import {errorHandler} from './middlewares/error-handler';
+import { errorHandler } from './middlewares/error-handler';
 
 // routes
 import users from './routes/users';
@@ -34,7 +34,7 @@ app.set('views', path.join(__dirname, 'views'));
 
 app.use(logger('combined'));
 app.use(express.json());
-app.use(express.urlencoded({extended: false}));
+app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
 // Use to limit repeated requests to public APIs and/or endpoints.

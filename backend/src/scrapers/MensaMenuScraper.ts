@@ -1,5 +1,5 @@
-import {JSDOM} from 'jsdom';
-import {removeNewLines} from '../utils/helpers';
+import { JSDOM } from 'jsdom';
+import { removeNewLines } from '../utils/helpers';
 import Scraper from './Scraper';
 
 /**
@@ -33,7 +33,7 @@ class MensaMenuScraper {
    */
   private static hasMenu(htmlPage: string): boolean {
     // Use JSDOM to get the html document object.
-    const {document} = new JSDOM(htmlPage).window;
+    const { document } = new JSDOM(htmlPage).window;
     const menuDivElement = document.querySelector(
       'div[style*="border-radius: 4px 4px 0px 0px;"]'
     );
@@ -61,7 +61,7 @@ class MensaMenuScraper {
    */
   private static extractMenu(htmlPage: string): string {
     // Use JSDOM to get the menu div element.
-    const {window} = new JSDOM(htmlPage, {runScripts: 'outside-only'});
+    const { window } = new JSDOM(htmlPage, { runScripts: 'outside-only' });
 
     // Remove all <details> tags, because Gmail client does not support it.
     // Remove the buttons at the bottom of menu.

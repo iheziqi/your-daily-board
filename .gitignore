@@ -107,3 +107,7 @@ dist
 build/
 
 .DS_Store
+
+# Database files
+*.sqlite
+*.sqlite3

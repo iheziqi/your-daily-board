@@ -1,5 +1,5 @@
-import {Knex} from 'knex';
-import {MensaInfoRepository} from '../../repositories';
+import { Knex } from 'knex';
+import { MensaInfoRepository } from '../../repositories';
 
 export async function seed(knex: Knex): Promise<void> {
   // Inserts seed entries

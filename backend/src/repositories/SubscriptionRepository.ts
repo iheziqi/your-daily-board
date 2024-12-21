@@ -1,5 +1,5 @@
-import {Knex} from 'knex';
-import {getCurrentDate} from '../utils/helpers';
+import { Knex } from 'knex';
+import { getCurrentDate } from '../utils/helpers';
 
 class SubscriptionRepository implements ISubscriptionRepository {
   private db: Knex;
@@ -16,7 +16,7 @@ class SubscriptionRepository implements ISubscriptionRepository {
   private async getUserDataByEmail(email: string) {
     const user = await this.db<DUser>('users')
       .select('id')
-      .where({email})
+      .where({ email })
       .first();
     return user;
   }
@@ -40,7 +40,7 @@ class SubscriptionRepository implements ISubscriptionRepository {
         user_id: user.id,
         from_to: from_to,
       });
-      return {user_id: user.id!, from_to: from_to};
+      return { user_id: user.id!, from_to: from_to };
     } else {
       console.log(`User with email ${email} not found.`);
       return;
@@ -66,7 +66,7 @@ class SubscriptionRepository implements ISubscriptionRepository {
         user_id: user.id,
         mensa_id: mensaId,
       });
-      return {user_id: user.id!, mensa_id: mensaId};
+      return { user_id: user.id!, mensa_id: mensaId };
     } else {
       console.log(`User with email ${email} not found.`);
       return;
@@ -89,7 +89,7 @@ class SubscriptionRepository implements ISubscriptionRepository {
         'exchange_rate_subscriptions'
       )
         .select('from_to')
-        .where({user_id: user.id});
+        .where({ user_id: user.id });
 
       const subscriptions = queryResult.map(sub => {
         return sub.from_to;
@@ -118,7 +118,7 @@ class SubscriptionRepository implements ISubscriptionRepository {
         'menu_subscriptions'
       )
         .select('mensa_id')
-        .where({user_id: user.id});
+        .where({ user_id: user.id });
 
       const subscriptions = queryResult.map(sub => {
         return sub.mensa_id;
@@ -199,7 +199,7 @@ class SubscriptionRepository implements ISubscriptionRepository {
       // Deletes existing menu subscriptions for the user.
       await trx<DMensaMenuSubscription>('menu_subscriptions')
         .del()
-        .where({user_id: user!.id});
+        .where({ user_id: user!.id });
 
       // Inserts new menu subscriptions based on latestMensaIds.
       const insertPromises = mensaMenuSubscription.map(async mensaId => {
@@ -234,7 +234,7 @@ class SubscriptionRepository implements ISubscriptionRepository {
       // Deletes existing menu subscriptions for the user.
       await trx<DExchangeRateSubscription>('exchange_rate_subscriptions')
         .del()
-        .where({user_id: user!.id});
+        .where({ user_id: user!.id });
 
       // Inserts new menu subscriptions based on latestMensaIds.
       const insertPromises = exchangeRateSubscription.map(async fromTo => {

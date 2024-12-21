@@ -1,11 +1,11 @@
-import {Request, Response, NextFunction} from 'express';
+import { Request, Response, NextFunction } from 'express';
 import createHttpError from 'http-errors';
 import jwt from 'jsonwebtoken';
-import {UserRepository} from '../repositories';
+import { UserRepository } from '../repositories';
 import UserAuthService from '../services/UserAuthService';
 import KnexService from '../database/KnexService';
-import {dateToUnixTimestamp} from '../utils/helpers';
-import {loadEnv} from '../utils/loadEnv';
+import { dateToUnixTimestamp } from '../utils/helpers';
+import { loadEnv } from '../utils/loadEnv';
 
 loadEnv();
 

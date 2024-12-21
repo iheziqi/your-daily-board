@@ -1,10 +1,10 @@
 import * as ejs from 'ejs';
-import {readFileSync} from 'fs';
+import { readFileSync } from 'fs';
 import {
   SubscriptionRepository,
   MensaInfoRepository,
 } from '../repositories/index';
-import {loadEnv} from '../utils/loadEnv';
+import { loadEnv } from '../utils/loadEnv';
 
 loadEnv();
 
