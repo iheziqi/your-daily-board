@@ -1,5 +1,7 @@
 import KnexService from '../database/KnexService';
+import { ensureDbDir } from '../database/ensure-database-dir';
 
+ensureDbDir();
 const knex = KnexService.getInstance();
 
 async function setupDatabase() {
@@ -16,7 +18,7 @@ async function setupDatabase() {
 
 setupDatabase()
   .then(() => {
-    console.log('database inital setup done!');
+    console.log('database initial setup done!');
   })
   .catch(e => {
     console.error(e);

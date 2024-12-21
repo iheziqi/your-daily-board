@@ -30,6 +30,7 @@ const keysToWrite = [
   'SECRET_KEY=',
   'ROOT_URL=',
   'FRONTEND_URL=',
+  'NODE_ENV=',
 ];
 
 writeEnvKeys(keysToWrite);

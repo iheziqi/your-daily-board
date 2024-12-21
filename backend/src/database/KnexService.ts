@@ -20,7 +20,9 @@ class KnexService {
     loadEnv();
     if (!KnexService.knexInstance) {
       KnexService.knexInstance = knex(
-        require('./knexfile')[process.env.NODE_ENV || 'development']
+        process.env.NODE_ENV === 'production'
+          ? require('./knexfile.production')[process.env.NODE_ENV]
+          : require('./knexfile')[process.env.NODE_ENV || 'development']
       );
     }
 

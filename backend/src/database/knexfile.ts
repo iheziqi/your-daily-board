@@ -26,12 +26,6 @@ const config: { [key: string]: Knex.Config } = {
       filename: `${__dirname}/sqlite/your-daily-board.test.sqlite`,
     },
   },
-  production: {
-    ...commonConfig,
-    connection: {
-      filename: `${__dirname}/sqlite/your-daily-board.production.sqlite`,
-    },
-  },
 };
 
 module.exports = config;

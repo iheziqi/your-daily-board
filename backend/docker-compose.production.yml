@@ -7,7 +7,7 @@ services:
     image: your_daily_board_express_backend
     env_file:
       - path: ./.env
-        required: true # default
+        required: true
     environment:
       NODE_ENV: ${NODE_ENV}
       SMTP_HOST: ${SMTP_HOST}
@@ -21,7 +21,7 @@ services:
     ports:
       - '${PORT}:${PORT}'
     command: >
-      bash -c "node ./build/src/config/setup-database.js
+      bash -c "NODE_ENV='production' node ./build/src/config/setup-database.js
       && ./build/src/entrypoint.sh"
     volumes:
       - sqlite_data:/app/build/src/database/sqlite # use named volume to persist sqlite file
