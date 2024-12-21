@@ -1,8 +1,9 @@
 import { Knex } from 'knex';
 
 export async function up(knex: Knex): Promise<void> {
-  return knex.schema
-    .createTableIfNotExists('menu_subscriptions', table => {
+  const hasMenuSubscriptions = await knex.schema.hasTable('menu_subscriptions');
+  if (!hasMenuSubscriptions) {
+    await knex.schema.createTable('menu_subscriptions', table => {
       table.integer('user_id').unsigned();
       table
         .foreign('user_id')
@@ -18,8 +19,14 @@ export async function up(knex: Knex): Promise<void> {
         .onDelete('CASCADE');
 
       table.primary(['user_id', 'mensa_id']);
-    })
-    .createTableIfNotExists('exchange_rate_subscriptions', table => {
+    });
+  }
+
+  const hasExchangeRateSubscription = await knex.schema.hasTable(
+    'exchange_rate_subscriptions'
+  );
+  if (!hasExchangeRateSubscription) {
+    await knex.schema.createTable('exchange_rate_subscriptions', table => {
       table.integer('user_id').unsigned();
       table
         .foreign('user_id')
@@ -31,6 +38,7 @@ export async function up(knex: Knex): Promise<void> {
 
       table.primary(['user_id', 'from_to']);
     });
+  }
 }
 
 export async function down(knex: Knex): Promise<void> {
