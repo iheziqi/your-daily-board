@@ -60,7 +60,6 @@
     "jsonwebtoken": "^9.0.2",
     "knex": "^2.5.1",
     "morgan": "^1.10.0",
-    "mysql2": "^3.9.4",
     "nodemailer": "^6.9.9",
     "xss-clean": "^0.1.4"
   }
