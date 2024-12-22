@@ -1,6 +1,6 @@
-import {Request, Response, NextFunction} from 'express';
+import { Request, Response, NextFunction } from 'express';
 import createHttpError from 'http-errors';
-import {MensaInfoRepository} from '../repositories';
+import { MensaInfoRepository } from '../repositories';
 import KnexService from '../database/KnexService';
 
 /**
@@ -29,4 +29,4 @@ async function getMensaInfo(req: Request, res: Response, next: NextFunction) {
   }
 }
 
-export {getMensaInfo};
+export { getMensaInfo };

@@ -1,8 +1,8 @@
-import {Request, Response, NextFunction} from 'express';
+import { Request, Response, NextFunction } from 'express';
 import createHttpError from 'http-errors';
 import jwt from 'jsonwebtoken';
-import {CustomRequest} from '../middlewares/authentication';
-import {SubscriptionRepository} from '../repositories';
+import { CustomRequest } from '../middlewares/authentication';
+import { SubscriptionRepository } from '../repositories';
 import KnexService from '../database/KnexService';
 
 /**
@@ -31,7 +31,7 @@ async function getExchangeRateSubscription(
       );
     }
 
-    res.status(200).json({email, exchangeRateSubscriptions});
+    res.status(200).json({ email, exchangeRateSubscriptions });
   } catch (error) {
     next(error);
   }
@@ -66,10 +66,10 @@ async function setExchangeRateSubscription(
 
     res
       .status(201)
-      .json({message: 'Updated exchange rate subscription successfully'});
+      .json({ message: 'Updated exchange rate subscription successfully' });
   } catch (error) {
     next(error);
   }
 }
 
-export {getExchangeRateSubscription, setExchangeRateSubscription};
+export { getExchangeRateSubscription, setExchangeRateSubscription };

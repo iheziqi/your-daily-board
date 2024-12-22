@@ -1,9 +1,9 @@
-import {Request, Response, NextFunction} from 'express';
+import { Request, Response, NextFunction } from 'express';
 import createError from 'http-errors';
-import {SubscriptionRepository, UserRepository} from '../repositories/index';
-import {EmailService, UserAuthService} from '../services/index';
+import { SubscriptionRepository, UserRepository } from '../repositories/index';
+import { EmailService, UserAuthService } from '../services/index';
 import KnexService from '../database/KnexService';
-import {loadEnv} from '../utils/loadEnv';
+import { loadEnv } from '../utils/loadEnv';
 
 /**
  * Controller for registering user.
@@ -39,7 +39,7 @@ async function register(req: Request, res: Response, next: NextFunction) {
     // primary key error in database.
     if (!userDataQuery) {
       // adds the email address to database
-      await userRepo.createUser({email});
+      await userRepo.createUser({ email });
 
       // initialize subscription repository
       const subscriptionRepo = new SubscriptionRepository(
@@ -79,7 +79,7 @@ async function register(req: Request, res: Response, next: NextFunction) {
 		<a href="${verifyLink}" style="color:#ff0066;text-decoration:underline" title="" target="_blank"><span style="color:#ff0066;font-size:15px">Link to confirm email</span></a>`;
     emailService.sendEmail(email, subject, content);
 
-    res.status(201).json({message: 'Verification email sent.'});
+    res.status(201).json({ message: 'Verification email sent.' });
   } catch (error) {
     next(error);
   }
@@ -151,7 +151,7 @@ async function issueAuthCode(req: Request, res: Response, next: NextFunction) {
     await UserAuthService.createAuthCodeForUser(email, 15);
     res
       .status(200)
-      .json({message: 'An Email with authentication code has been sent'});
+      .json({ message: 'An Email with authentication code has been sent' });
   } catch (error) {
     next(error);
   }
@@ -178,7 +178,7 @@ async function logInWithAuthCode(req: Request, res: Response) {
   //   secure: true, // use https to send
   // });
   // res.sendStatus(200);
-  res.json({authentication_token: jwtToken});
+  res.json({ authentication_token: jwtToken });
 }
 
-export {register, verify, unsubscribe, issueAuthCode, logInWithAuthCode};
+export { register, verify, unsubscribe, issueAuthCode, logInWithAuthCode };

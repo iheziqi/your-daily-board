@@ -13,10 +13,10 @@ import {
   getExchangeRateSubscription,
   setExchangeRateSubscription,
 } from './exchangeRateSettings';
-import {getMensaInfo} from './mensaInfo';
-import {getExchangeRateInfo} from './exchangeRateInfo';
-import {getDailyBoardEmailPreview} from './yourDailyBoardEmail';
-import {dbTrainTicketPrice} from './dbTrainTicketPrice';
+import { getMensaInfo } from './mensaInfo';
+import { getExchangeRateInfo } from './exchangeRateInfo';
+import { getDailyBoardEmailPreview } from './yourDailyBoardEmail';
+import { dbTrainTicketPrice } from './dbTrainTicketPrice';
 
 export {
   register,

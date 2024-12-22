@@ -1,4 +1,4 @@
-import {Knex} from 'knex';
+import { Knex } from 'knex';
 import crypto from 'crypto';
 
 class UserRepository implements IUserRepository {
@@ -14,8 +14,8 @@ class UserRepository implements IUserRepository {
    * @returns DUser
    */
   public async createUser(userData: DUser): Promise<DUser> {
-    const {email} = userData;
-    await this.db<DUser>('users').insert({email});
+    const { email } = userData;
+    await this.db<DUser>('users').insert({ email });
     return userData;
   }
 
@@ -38,7 +38,7 @@ class UserRepository implements IUserRepository {
   ): Promise<Pick<DUser, 'id'> | undefined> {
     const user = await this.db<DUser>('users')
       .select('id')
-      .where({email})
+      .where({ email })
       .first();
 
     return user;
@@ -53,10 +53,10 @@ class UserRepository implements IUserRepository {
     oldEmail: string;
     newEmail: string;
   }): Promise<string> {
-    const {oldEmail, newEmail} = userData;
+    const { oldEmail, newEmail } = userData;
     await this.db<DUser>('users')
       .where('email', '=', oldEmail)
-      .update({email: newEmail});
+      .update({ email: newEmail });
     return newEmail;
   }
 
@@ -81,8 +81,8 @@ class UserRepository implements IUserRepository {
     const token = crypto.randomUUID();
 
     await this.db.transaction(async trx => {
-      await trx<DUserVerifying>('users_verifying').where({email}).del();
-      await trx<DUserVerifying>('users_verifying').insert({email, token});
+      await trx<DUserVerifying>('users_verifying').where({ email }).del();
+      await trx<DUserVerifying>('users_verifying').insert({ email, token });
     });
 
     return token;
@@ -98,7 +98,7 @@ class UserRepository implements IUserRepository {
   ): Promise<string | undefined> {
     const queryResult = await this.db<DUserVerifying>('users_verifying')
       .select('token')
-      .where({email})
+      .where({ email })
       .first();
     return queryResult?.token;
   }
@@ -113,7 +113,7 @@ class UserRepository implements IUserRepository {
   ): Promise<string | undefined> {
     const queryResult = await this.db<DUserVerifying>('users_verifying')
       .select('email')
-      .where({token})
+      .where({ token })
       .first();
     return queryResult?.email;
   }
@@ -126,8 +126,8 @@ class UserRepository implements IUserRepository {
    */
   public async deleteToBeVerifiedUser(email: string): Promise<string> {
     await this.db.transaction(async trx => {
-      await trx<DUserVerifying>('users_verifying').where({email}).del();
-      await trx<DUser>('users').where({email}).update({is_verified: 1});
+      await trx<DUserVerifying>('users_verifying').where({ email }).del();
+      await trx<DUser>('users').where({ email }).update({ is_verified: 1 });
     });
     return email;
   }
@@ -140,7 +140,7 @@ class UserRepository implements IUserRepository {
   public async isVerifiedEmail(email: string): Promise<number | undefined> {
     const queryResult = await this.db<DUser>('users')
       .select('is_verified')
-      .where({email})
+      .where({ email })
       .first();
     return queryResult?.is_verified;
   }

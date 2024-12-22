@@ -1,4 +1,4 @@
-import Scraper from '../scrapers/Scraper';
+import Scraper from '../../scrapers/Scraper';
 import axios from 'axios'; // Import axios for accessing the mocked instance.
 
 // Create a mock axios for testing purpose.

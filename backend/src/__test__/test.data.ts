@@ -1,4 +1,4 @@
-import {getCurrentDate} from '../utils/helpers';
+import { getCurrentDate } from '../utils/helpers';
 
 export function getTestData() {
   /** test users */
@@ -73,20 +73,20 @@ export function getTestData() {
   };
 
   function users() {
-    return {user1, user2, user3};
+    return { user1, user2, user3 };
   }
 
   function mensaInfo() {
-    return {lmpl, mohm, isch};
+    return { lmpl, mohm, isch };
   }
 
   function menus() {
-    return {mensaMenu1, mensaMenu2, mensaMenu3};
+    return { mensaMenu1, mensaMenu2, mensaMenu3 };
   }
 
   function exchangeRates() {
-    return {exchangeRate1, exchangeRate2};
+    return { exchangeRate1, exchangeRate2 };
   }
 
-  return {users, mensaInfo, menus, exchangeRates};
+  return { users, mensaInfo, menus, exchangeRates };
 }

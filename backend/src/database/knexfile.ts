@@ -1,26 +1,29 @@
-import type {Knex} from 'knex';
-import 'dotenv/config';
-import {loadEnv} from '../utils/loadEnv';
+import type { Knex } from 'knex';
 
-loadEnv();
+const commonConfig = {
+  client: 'better-sqlite3',
+  seeds: {
+    directory: `${__dirname}/seeds`,
+  },
+  migrations: {
+    extension: 'ts',
+    tableName: 'knex_migrations',
+    directory: [`${__dirname}/migrations`],
+  },
+  useNullAsDefault: true,
+};
 
-const config: {[key: string]: Knex.Config} = {
+const config: { [key: string]: Knex.Config } = {
   development: {
-    client: 'mysql2',
+    ...commonConfig,
     connection: {
-      host: process.env.DB_HOST,
-      port: parseInt(process.env.DB_PORT!, 10),
-      database: process.env.DB_DATABASE,
-      user: process.env.DB_USER,
-      password: process.env.DB_PASSWORD,
+      filename: `${__dirname}/sqlite/your-daily-board.development.sqlite`,
     },
-    seeds: {
-      directory: './seeds',
-    },
-    migrations: {
-      extension: 'ts',
-      tableName: 'knex_migrations',
-      directory: ['./migrations'],
+  },
+  test: {
+    ...commonConfig,
+    connection: {
+      filename: `${__dirname}/sqlite/your-daily-board.test.sqlite`,
     },
   },
 };

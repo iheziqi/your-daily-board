@@ -1,4 +1,4 @@
-import {getPreviousDay} from '../utils/helpers';
+import { getPreviousDay } from '../../utils/helpers';
 
 describe('helper functions unit tests', () => {
   it('should return the previous day for a given date', () => {

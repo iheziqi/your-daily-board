@@ -1,5 +1,5 @@
 import express from 'express';
-import {dbTrainTicketPrice} from '../controllers';
+import { dbTrainTicketPrice } from '../controllers';
 
 const router = express.Router();
 
