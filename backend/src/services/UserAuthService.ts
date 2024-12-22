@@ -2,7 +2,7 @@ import jwt from 'jsonwebtoken';
 import createHttpError from 'http-errors';
 import crypto from 'crypto';
 import KnexService from '../database/KnexService';
-import EmailService from './EmailService';
+import EmailService from './email/EmailService';
 import { dateToUnixTimestamp } from '../utils/helpers';
 import { loadEnv } from '../utils/loadEnv';
 

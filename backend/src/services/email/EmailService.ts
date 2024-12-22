@@ -1,5 +1,5 @@
 import * as nodemailer from 'nodemailer';
-import { loadEnv } from '../utils/loadEnv';
+import { loadEnv } from '../../utils/loadEnv';
 
 /**
  * Service for sending email using nodemailer.

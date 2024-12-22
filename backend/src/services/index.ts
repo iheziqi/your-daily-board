@@ -1,5 +1,5 @@
 import RenderService from './RenderService';
-import EmailService from './EmailService';
+import EmailService from './email/EmailService';
 import ExchangeRateService from './ExchangeRateService';
 import {
   RepoScheduledTasks,
