@@ -1,20 +1,15 @@
-import KnexService from '../database/KnexService';
-import MensaMenuScraper from '../scrapers/MensaMenuScraper';
+import KnexService from '../../database/KnexService';
+import MensaMenuScraper from '../../scrapers/MensaMenuScraper';
 import {
   fetchExchangeRate,
   getFromToCodes,
-} from '../scrapers/ExchangeRateScraper';
+} from '../../scrapers/ExchangeRateScraper';
 import {
   MensaInfoRepository,
-  SubscriptionRepository,
-  UserRepository,
   MensaMenuRepository,
   ExchangeRepository,
-} from '../repositories/index';
-import { ExchangeRateService, RenderService, EmailService } from './index';
-
-import { getDirPathOfEmailTemplate } from '../views/emails/v1/render';
-import { IEmailService } from './email/IEmailService';
+} from '../../repositories/index';
+import { ExchangeRateService } from '../index';
 
 export class RepoScheduledTasks {
   /**
@@ -93,73 +88,6 @@ export class RepoScheduledTasks {
       console.log('Exchange rates have been updated.');
     } catch (error) {
       console.error('An error occurred while updating exchange rates:', error);
-    }
-  }
-}
-
-export class ServiceScheduledTasks {
-  /**
-   * Sends all daily board emails every day.
-   * @param versionNumber
-   * @returns
-   */
-  public static async sendDailyBoardEmails(versionNumber: string) {
-    try {
-      // Initializes repo.
-      const knexInstance = KnexService.getInstance();
-      const userRepo = new UserRepository(knexInstance);
-      const subRepo = new SubscriptionRepository(knexInstance);
-      const mensaInfoRepo = new MensaInfoRepository(knexInstance);
-      // Initializes services.
-      const renderService = new RenderService(
-        getDirPathOfEmailTemplate(),
-        subRepo,
-        mensaInfoRepo
-      );
-      const emailService: IEmailService = new EmailService();
-
-      // Gets all users' email in database.
-      let usersData = await userRepo.getAllUsersData();
-
-      if (!usersData || usersData.length === 0) {
-        console.warn('No users found in the database. No emails will be sent.');
-        return; // Return early if there are no users.
-      }
-
-      // Filters email addresses that has been confirmed.
-      usersData = usersData.filter(user => {
-        return user.is_verified === 1;
-      });
-
-      // Batch users for email sending.
-      const batchSize = 10;
-
-      for (let i = 0; i < usersData.length; i += batchSize) {
-        const batch = usersData.slice(i, i + batchSize);
-
-        // Use Promise.all to send emails in parallel within the batch.
-        await Promise.all(
-          batch.map(async data => {
-            const emailAddress = data.email;
-            const emailHTML =
-              await renderService.renderYourDailyBoardEmailForUser(
-                emailAddress,
-                versionNumber
-              );
-            await emailService.sendEmail({
-              to: emailAddress,
-              subject: 'Check out daily mensa menu and more!',
-              html: emailHTML,
-            });
-          })
-        );
-
-        console.log(`Sent ${batch.length} emails in this batch.`);
-      }
-
-      console.log('All daily board emails have been sent.');
-    } catch (error) {
-      console.log('An error occurred while sending daily board emails:', error);
     }
   }
 }
