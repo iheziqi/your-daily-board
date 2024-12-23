@@ -5,6 +5,7 @@ import KnexService from '../database/KnexService';
 import EmailService from './email/EmailService';
 import { dateToUnixTimestamp } from '../utils/helpers';
 import { loadEnv } from '../utils/loadEnv';
+import { IEmailService } from './email/IEmailService';
 
 loadEnv();
 
@@ -29,7 +30,7 @@ class UserAuthService {
   public static async createAuthCodeForUser(email: string, expireIn: number) {
     const knexInstance = KnexService.getInstance();
     const authCode = UserAuthService.generateAuthCode();
-    const emailService = new EmailService();
+    const emailService: IEmailService = new EmailService();
 
     // Calculates the expiration time.
     const expirationTime = new Date();
@@ -56,7 +57,11 @@ class UserAuthService {
     const emailContent = `
 		<p style="font-family:Helvetica,Arial,sans-serif;font-size:15px;color:#455463;line-height:20px;margin:0 0 1em 0">Your login code is ${authCode}.</p>
 		<p style="font-family:Helvetica,Arial,sans-serif;font-size:15px;color:#455463;line-height:20px;margin:0 0 1em 0">It will be expired in ${expireIn} minutes.</p>`;
-    await emailService.sendEmail(email, emailSubject, emailContent);
+    await emailService.sendEmail({
+      to: email,
+      subject: emailSubject,
+      html: emailContent,
+    });
   }
 
   /**
