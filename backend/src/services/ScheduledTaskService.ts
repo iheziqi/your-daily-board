@@ -14,6 +14,7 @@ import {
 import { ExchangeRateService, RenderService, EmailService } from './index';
 
 import { getDirPathOfEmailTemplate } from '../views/emails/v1/render';
+import { IEmailService } from './email/IEmailService';
 
 export class RepoScheduledTasks {
   /**
@@ -115,7 +116,7 @@ export class ServiceScheduledTasks {
         subRepo,
         mensaInfoRepo
       );
-      const emailService = new EmailService();
+      const emailService: IEmailService = new EmailService();
 
       // Gets all users' email in database.
       let usersData = await userRepo.getAllUsersData();
@@ -145,11 +146,11 @@ export class ServiceScheduledTasks {
                 emailAddress,
                 versionNumber
               );
-            await emailService.sendEmail(
-              emailAddress,
-              'Check out daily mensa menu and more!',
-              emailHTML
-            );
+            await emailService.sendEmail({
+              to: emailAddress,
+              subject: 'Check out daily mensa menu and more!',
+              html: emailHTML,
+            });
           })
         );
 
