@@ -1,51 +1,93 @@
 import * as nodemailer from 'nodemailer';
 import { loadEnv } from '../../utils/loadEnv';
+import { IEmailService } from './IEmailService';
+import { EmailOptions, EmailResult } from './types';
 
 /**
  * Service for sending email using nodemailer.
  */
-class EmailService {
+class EmailService implements IEmailService {
   private transporter: nodemailer.Transporter;
 
-  constructor() {
-    // loads .env file.
+  private readonly defaultFrom: string;
+
+  constructor(config?: {
+    host?: string;
+    port?: number;
+    user?: string;
+    pass?: string;
+  }) {
     loadEnv();
 
-    // SMTP host
-    const host = process.env.SMTP_HOST || 'localhost';
-    // SMTP port
-    const port = Number(process.env.SMTP_PORT || 7777);
+    const host = config?.host ?? process.env.SMTP_HOST ?? 'localhost';
+    const port = Number(config?.port ?? process.env.SMTP_PORT ?? 7777);
+    const user = config?.user ?? process.env.SMTP_USER;
+    const pass = config?.pass ?? process.env.SMTP_PASS;
 
-    // creates reusable transporter object using the default SMTP transport.
-    this.transporter = nodemailer.createTransport({
-      host: host,
-      port: port,
+    if (!user || !pass) {
+      throw new Error('SMTP credentials are required');
+    }
+
+    this.defaultFrom = `"Your Daily Board" <${user}>`;
+    this.transporter = this.createTransporter(host, port, user, pass);
+  }
+
+  private createTransporter(
+    host: string,
+    port: number,
+    user: string,
+    pass: string
+  ): nodemailer.Transporter {
+    return nodemailer.createTransport({
+      host,
+      port,
       secure: port === 465, // true for 465, false for other ports
-      auth: {
-        user: process.env.SMTP_USER,
-        pass: process.env.SMTP_PASS,
-      },
+      auth: { user, pass },
     });
   }
 
   /**
-   * Sends email using smtp service.
-   * @param to The receivers of this email.
-   * @param subject The subject of this email.
-   * @param content The content of this email.
+   * Sends an email using configured SMTP settings
+   * @param options - Email options including recipients, subject, and content
+   * @returns Promise resolving to the send result
+   * @throws Error if SMTP credentials are missing
    */
-  async sendEmail(to: string, subject: string, content: string): Promise<void> {
+  async sendEmail(options: EmailOptions): Promise<EmailResult> {
+    const { from, to, subject, html, cc, bcc, attachments } = options;
+
     try {
-      // send mail with defined transport object
       const info = await this.transporter.sendMail({
-        from: `"Your Daily Board" <${process.env.SMTP_USER}>`, // sender address
-        to: to, // list of receivers
-        subject: subject, // Subject line
-        html: content, // html body
+        from: from ?? this.defaultFrom,
+        to: Array.isArray(to) ? to.join(', ') : to,
+        cc: cc?.join(', '),
+        bcc: bcc?.join(', '),
+        subject,
+        html,
+        attachments,
       });
-      console.log('Message sent: %s', info.messageId);
+
+      return {
+        success: true,
+        messageId: info.messageId,
+      };
     } catch (error) {
+      const errorMessage = `Email failed to send: from ${from}, to ${to}, subject: ${subject}`;
       console.error('Error sending email:', error);
+
+      return {
+        success: false,
+        error: error instanceof Error ? error : new Error(errorMessage),
+      };
+    }
+  }
+
+  async verifyConnection(): Promise<boolean> {
+    try {
+      await this.transporter.verify();
+      return true;
+    } catch (error) {
+      console.error('SMTP connection verification failed:', error);
+      return false;
     }
   }
 }
