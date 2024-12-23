@@ -6,8 +6,8 @@ export interface EmailAttachment {
 }
 
 export interface EmailOptions {
-  from: string;
-  to: string[];
+  from?: string;
+  to: string | string[];
   cc?: string[];
   bcc?: string[];
   subject: string;
