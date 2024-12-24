@@ -6,11 +6,11 @@ import {
 } from './repositories';
 import CronJobService from './services/CronjobService';
 import {
-  EmailService,
   RenderService,
   RepoScheduledTasks,
   ServiceScheduledTasks,
-} from './services/index';
+  EmailServiceFactory,
+} from './services';
 import { getDirPathOfEmailTemplate } from './views/emails/v1/render';
 
 type scheduledTasks = 'FETCH_MENSA_MENU' | 'SEND_EMAIL';
@@ -19,7 +19,7 @@ const knexInstance = KnexService.getInstance();
 
 const serviceScheduledTasks = new ServiceScheduledTasks(
   new UserRepository(knexInstance),
-  new EmailService(),
+  EmailServiceFactory.getInstance().getEmailService(),
   new RenderService(
     getDirPathOfEmailTemplate(),
     new SubscriptionRepository(knexInstance),

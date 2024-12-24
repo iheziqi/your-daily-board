@@ -2,10 +2,9 @@ import jwt from 'jsonwebtoken';
 import createHttpError from 'http-errors';
 import crypto from 'crypto';
 import KnexService from '../database/KnexService';
-import EmailService from './email/EmailService';
+import EmailServiceProvider from './email/EmailServiceFactory';
 import { dateToUnixTimestamp } from '../utils/helpers';
 import { loadEnv } from '../utils/loadEnv';
-import { IEmailService } from './email/IEmailService';
 
 loadEnv();
 
@@ -30,7 +29,7 @@ class UserAuthService {
   public static async createAuthCodeForUser(email: string, expireIn: number) {
     const knexInstance = KnexService.getInstance();
     const authCode = UserAuthService.generateAuthCode();
-    const emailService: IEmailService = new EmailService();
+    const emailService = EmailServiceProvider.getInstance().getEmailService();
 
     // Calculates the expiration time.
     const expirationTime = new Date();

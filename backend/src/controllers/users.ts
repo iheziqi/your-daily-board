@@ -1,7 +1,8 @@
 import { Request, Response, NextFunction } from 'express';
 import createError from 'http-errors';
-import { SubscriptionRepository, UserRepository } from '../repositories/index';
-import { EmailService, UserAuthService } from '../services/index';
+
+import { SubscriptionRepository, UserRepository } from '../repositories';
+import { UserAuthService, EmailServiceFactory } from '../services';
 import KnexService from '../database/KnexService';
 import { loadEnv } from '../utils/loadEnv';
 
@@ -64,7 +65,6 @@ async function register(req: Request, res: Response, next: NextFunction) {
 
     // sends confirmation email to the email address
     loadEnv();
-    const emailService = new EmailService();
     const subject = 'Please confirm your email address';
     const rootUrl = process.env.ROOT_URL;
     if (!rootUrl) {
@@ -77,7 +77,9 @@ async function register(req: Request, res: Response, next: NextFunction) {
 		<p style="font-family:Helvetica,Arial,sans-serif;font-size:15px;color:#455463;line-height:20px;margin:0 0 1em 0">Thank you for subscribing to Your Daily Board</p>
 		<p style="font-family:Helvetica,Arial,sans-serif;font-size:15px;color:#455463;line-height:20px;margin:0 0 1em 0">Click the below link to confirm your email.</p>
 		<a href="${verifyLink}" style="color:#ff0066;text-decoration:underline" title="" target="_blank"><span style="color:#ff0066;font-size:15px">Link to confirm email</span></a>`;
-    emailService.sendEmail({ to: email, subject, html: content });
+    EmailServiceFactory.getInstance()
+      .getEmailService()
+      .sendEmail({ to: email, subject, html: content });
 
     res.status(201).json({ message: 'Verification email sent.' });
   } catch (error) {
