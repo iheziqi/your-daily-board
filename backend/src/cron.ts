@@ -1,7 +1,31 @@
+import KnexService from './database/KnexService';
+import {
+  MensaInfoRepository,
+  SubscriptionRepository,
+  UserRepository,
+} from './repositories';
 import CronJobService from './services/CronjobService';
-import { RepoScheduledTasks, ServiceScheduledTasks } from './services/index';
+import {
+  RenderService,
+  RepoScheduledTasks,
+  ServiceScheduledTasks,
+  EmailServiceFactory,
+} from './services';
+import { getDirPathOfEmailTemplate } from './views/emails/v1/render';
 
 type scheduledTasks = 'FETCH_MENSA_MENU' | 'SEND_EMAIL';
+
+const knexInstance = KnexService.getInstance();
+
+const serviceScheduledTasks = new ServiceScheduledTasks(
+  new UserRepository(knexInstance),
+  EmailServiceFactory.getInstance().getEmailService(),
+  new RenderService(
+    getDirPathOfEmailTemplate(),
+    new SubscriptionRepository(knexInstance),
+    new MensaInfoRepository(knexInstance)
+  )
+);
 
 async function doScheduledTask(type: scheduledTasks) {
   switch (type) {
@@ -12,7 +36,7 @@ async function doScheduledTask(type: scheduledTasks) {
       ]);
       break;
     case 'SEND_EMAIL':
-      await ServiceScheduledTasks.sendDailyBoardEmails('0.0.1');
+      await serviceScheduledTasks.sendDailyBoardEmails('0.0.1');
   }
 }
 
