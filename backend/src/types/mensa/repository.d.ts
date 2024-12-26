@@ -28,3 +28,21 @@ interface IMensaMenuRepository {
     date: string
   ): Promise<string | undefined | null>;
 }
+
+type MensaDish = {
+  dish_name: string;
+  dish_category: string;
+};
+
+/**
+ * function to extract all dishes from raw mensa menu html
+ */
+type extractMensaMenuDishes = (html: string) => MensaDish[];
+
+/**
+ * mensa_menu_dishes repository
+ */
+interface IMensaMenuDishesRepository {
+  saveDishes(mensaId: MensaID, dishes: MensaDish[]): Promise<void>;
+  getMensaDishesOn(mensaId: MensaID, date: string): Promise<DMensaDish[]>;
+}
