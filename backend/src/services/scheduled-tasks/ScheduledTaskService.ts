@@ -7,15 +7,58 @@ import {
 import {
   MensaInfoRepository,
   MensaMenuRepository,
+  MensaMenuDishesRepository,
   ExchangeRepository,
-} from '../../repositories/index';
+} from '../../repositories';
 import { ExchangeRateService } from '../index';
+import { extractDishes } from '../../repositories/helpers/extract-mensa-dishes';
+import MensaEventService from '../mensa/MensaEventService';
+import { getCurrentDate } from '../../utils/helpers';
 
 export class RepoScheduledTasks {
+  private static mensaEventService = MensaEventService.getInstance();
+  private static setupEventHandlers() {
+    const mensaMenuDishesRepository = new MensaMenuDishesRepository(
+      KnexService.getInstance()
+    );
+
+    // Setup event handler for menu saved event
+    RepoScheduledTasks.mensaEventService.onMenuSaved(
+      async ({ mensaId, menu, date }) => {
+        try {
+          let dishes: MensaDish[];
+          if (!menu) {
+            dishes = [];
+          } else {
+            dishes = extractDishes(menu);
+          }
+          await mensaMenuDishesRepository.saveDishes(mensaId, dishes);
+        } catch (error) {
+          RepoScheduledTasks.mensaEventService.emitDishesSaveFailed({
+            mensaId,
+            error: error as Error,
+            date,
+          });
+          console.error(`Error saving dishes for ${mensaId}:`, error);
+        }
+      }
+    );
+
+    RepoScheduledTasks.mensaEventService.onDishesSaveFailed(
+      ({ mensaId, error }) => {
+        console.error(`Failed to save dishes for mensa ${mensaId}:`, error);
+        // TODO: add retry logic here
+      }
+    );
+  }
+
   /**
    * Fetches everyday mensa menu and save them to database.
    */
   public static async saveMensaMenusToDatabase() {
+    // Ensure event handlers are setup
+    RepoScheduledTasks.setupEventHandlers();
+
     // Initializes repos and scraper.
     const mensaInfoRepo = new MensaInfoRepository(KnexService.getInstance());
     const mensaMenuRepo = new MensaMenuRepository(KnexService.getInstance());
@@ -32,6 +75,13 @@ export class RepoScheduledTasks {
         mensaIds.map(async mensaId => {
           const menu = await mensaMenuScraper.getMenu(mensaInfo[mensaId].url);
           await mensaMenuRepo.loadMensaMenuOfToday(menu, mensaId);
+
+          // Emits event to extract and save mensa dishes
+          this.mensaEventService.emitMenuSaved({
+            mensaId,
+            menu,
+            date: getCurrentDate(),
+          });
         })
       );
 
