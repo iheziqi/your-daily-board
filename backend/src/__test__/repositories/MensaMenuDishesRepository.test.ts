@@ -1,6 +1,5 @@
 import { Knex } from 'knex';
 import MensaMenuDishesRepository from '../../repositories/MensaMenuDishesRepository';
-import { setupTestDb } from '../helpers/dbSetup';
 import { getCurrentDate } from '../../utils/helpers';
 
 describe('MensaMenuDishesRepository', () => {
@@ -10,7 +9,7 @@ describe('MensaMenuDishesRepository', () => {
   const testDate = getCurrentDate();
 
   beforeAll(async () => {
-    knex = await setupTestDb();
+    knex = global.__KNEX__;
     mensaMenuDishesRepository = new MensaMenuDishesRepository(knex);
   });
 
