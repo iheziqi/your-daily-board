@@ -15,13 +15,16 @@ export async function up(knex: Knex): Promise<void> {
   const hasMensaMenu = await knex.schema.hasTable('mensa_menu');
   if (!hasMensaMenu) {
     await knex.schema.createTable('mensa_menu', table => {
+      table.increments('id').primary();
       table.string('mensa_id').notNullable();
       table.foreign('mensa_id').references('mensa_info.id').onUpdate('CASCADE');
       // use string to store date for convenience.
       // the date is in format YYYY-MM-DD, so the length is 10.
       table.string('date', 10).notNullable();
       table.text('menu').nullable();
-      table.primary(['mensa_id', 'date']);
+
+      // Add unique constraint
+      table.unique(['mensa_id', 'date']);
     });
   }
 }
