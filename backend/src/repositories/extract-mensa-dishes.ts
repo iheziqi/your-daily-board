@@ -1,15 +1,9 @@
-interface MensaDish {
-  date: string;
-  dish_name: string;
-  dish_category: string;
-}
-
 function extractDishes(html: string): MensaDish[] {
   const dishes: MensaDish[] = [];
 
   // Extract date from the HTML
-  const dateMatch = html.match(/<h4>([^<]+)<\/h4>/);
-  const date = dateMatch ? dateMatch[1].split(' ').slice(1).join(' ') : '';
+  // const dateMatch = html.match(/<h4>([^<]+)<\/h4>/);
+  // const date = dateMatch ? dateMatch[1].split(' ').slice(1).join(' ') : '';
 
   // Split the HTML into sections for each dish
   const sections = html.split('<br>');
@@ -46,7 +40,6 @@ function extractDishes(html: string): MensaDish[] {
           !dishName.includes('Tipp des Tages')
         ) {
           dishes.push({
-            date,
             dish_name: dishName,
             dish_category: category,
           });
@@ -58,4 +51,4 @@ function extractDishes(html: string): MensaDish[] {
   return dishes;
 }
 
-export { MensaDish, extractDishes };
+export { extractDishes };

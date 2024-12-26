@@ -1,4 +1,4 @@
-import { extractDishes } from '../../utils/extract-mensa-dishes';
+import { extractDishes } from '../../repositories/extract-mensa-dishes';
 
 describe('dish name extraction tests', () => {
   test('dish name extraction test1', () => {
@@ -16,8 +16,6 @@ Speiseplan <br><h4>Montag 07.10.2024</h4>Aktionsessen 1<br>Currywurst mit Soße 
     const dishData = extractDishes(html);
 
     expect(Array.isArray(dishData)).toBe(true);
-    expect(dishData[0].date).toBe('07.10.2024');
-
     expect(dishData.length).toBe(4);
 
     expect(dishData[0].dish_category).toBe('Aktionsessen 1');
@@ -52,8 +50,6 @@ Speiseplan <br><h4>Montag 07.10.2024</h4>Essen 1<br>Köttbullar mit Preiselbeere
     const dishData = extractDishes(html);
 
     expect(Array.isArray(dishData)).toBe(true);
-    expect(dishData[0].date).toBe('07.10.2024');
-
     expect(dishData.length).toBe(3);
 
     expect(dishData[0].dish_category).toBe('Essen 1');
@@ -85,8 +81,6 @@ Speiseplan <br><h4>Mittwoch 25.10.2023</h4>Aktionsessen 6<br>große Salatbowl ve
     const dishData = extractDishes(html);
 
     expect(Array.isArray(dishData)).toBe(true);
-    expect(dishData[0].date).toBe('25.10.2023');
-
     expect(dishData.length).toBe(3);
 
     expect(dishData[0].dish_category).toBe('Aktionsessen 6');
@@ -118,8 +112,6 @@ Speiseplan <br><h4>Dienstag 27.02.2024</h4>Essen 1<br>Paprikarahmgulasch vom Sch
     const dishData = extractDishes(html);
 
     expect(Array.isArray(dishData)).toBe(true);
-    expect(dishData[0].date).toBe('27.02.2024');
-
     expect(dishData.length).toBe(2);
 
     expect(dishData[0].dish_category).toBe('Essen 1');
@@ -146,8 +138,6 @@ Speiseplan <br><h4>Dienstag 24.10.2023</h4>Aktionsessen 1<br>Grill-Käsetaler ge
     const dishData = extractDishes(html);
 
     expect(Array.isArray(dishData)).toBe(true);
-    expect(dishData[0].date).toBe('24.10.2023');
-
     expect(dishData.length).toBe(6);
 
     expect(dishData[0].dish_category).toBe('Aktionsessen 1');
@@ -200,8 +190,6 @@ Speiseplan <br><h4>Montag 23.10.2023</h4>Aktionsessen 6<br>große Salatbowl vers
     const dishData = extractDishes(html);
 
     expect(Array.isArray(dishData)).toBe(true);
-    expect(dishData[0].date).toBe('23.10.2023');
-
     expect(dishData.length).toBe(4);
 
     expect(dishData[0].dish_category).toBe('Aktionsessen 6');
