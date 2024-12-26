@@ -1,4 +1,4 @@
-import { extractDishes } from '../../repositories/extract-mensa-dishes';
+import { extractDishes } from '../../repositories/helpers/extract-mensa-dishes';
 
 describe('dish name extraction tests', () => {
   test('dish name extraction test1', () => {
