@@ -1,4 +1,4 @@
-/** This file contains types of scrapers' need. */
+/** This file contains types of common need. */
 
 /** Type of Mensa object */
 interface MensaInfo {
