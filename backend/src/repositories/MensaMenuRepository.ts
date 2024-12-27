@@ -24,6 +24,7 @@ class MensaMenuRepository implements IMensaMenuRepository {
         date: getCurrentDate(),
         menu: menu,
       });
+      console.log(`Menu of ${mensaId} has been loaded on ${getCurrentDate()}`);
       return menu;
     } catch (error) {
       console.error(
