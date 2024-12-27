@@ -69,6 +69,7 @@ export class RepoScheduledTasks {
           const menu = await mensaMenuScraper.getMenu(mensaInfo[mensaId].url);
           await mensaMenuRepo.loadMensaMenuOfToday(menu, mensaId);
 
+          if (!menu) return;
           // Emits event to extract and save mensa dishes
           this.mensaEventService.emitMenuSaved({
             mensaId,
