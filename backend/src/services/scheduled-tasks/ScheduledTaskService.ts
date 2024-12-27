@@ -4,12 +4,7 @@ import {
   fetchExchangeRate,
   getFromToCodes,
 } from '../../scrapers/ExchangeRateScraper';
-import {
-  MensaInfoRepository,
-  MensaMenuRepository,
-  MensaMenuDishesRepository,
-  ExchangeRepository,
-} from '../../repositories';
+import { ExchangeRepository } from '../../repositories';
 import { ExchangeRateService } from '../index';
 import { extractDishes } from '../../repositories/helpers/extract-mensa-dishes';
 import MensaEventService from '../mensa/MensaEventService';
@@ -17,11 +12,9 @@ import { getCurrentDate } from '../../utils/helpers';
 
 export class RepoScheduledTasks {
   private static mensaEventService = MensaEventService.getInstance();
-  private static setupEventHandlers() {
-    const mensaMenuDishesRepository = new MensaMenuDishesRepository(
-      KnexService.getInstance()
-    );
-
+  private static setupEventHandlers(
+    mensaMenuDishesRepo: IMensaMenuDishesRepository
+  ) {
     // Setup event handler for menu saved event
     RepoScheduledTasks.mensaEventService.onMenuSaved(
       async ({ mensaId, menu, date }) => {
@@ -32,7 +25,7 @@ export class RepoScheduledTasks {
           } else {
             dishes = extractDishes(menu);
           }
-          await mensaMenuDishesRepository.saveDishes(mensaId, dishes);
+          await mensaMenuDishesRepo.saveDishes(mensaId, dishes);
         } catch (error) {
           RepoScheduledTasks.mensaEventService.emitDishesSaveFailed({
             mensaId,
@@ -55,14 +48,14 @@ export class RepoScheduledTasks {
   /**
    * Fetches everyday mensa menu and save them to database.
    */
-  public static async saveMensaMenusToDatabase() {
+  public static async saveMensaMenusToDatabase(
+    mensaInfoRepo: IMensaInfoRepository,
+    mensaMenuRepo: IMensaMenuRepository,
+    mensaMenuDishesRepo: IMensaMenuDishesRepository,
+    mensaMenuScraper: MensaMenuScraper
+  ) {
     // Ensure event handlers are setup
-    RepoScheduledTasks.setupEventHandlers();
-
-    // Initializes repos and scraper.
-    const mensaInfoRepo = new MensaInfoRepository(KnexService.getInstance());
-    const mensaMenuRepo = new MensaMenuRepository(KnexService.getInstance());
-    const mensaMenuScraper = new MensaMenuScraper();
+    RepoScheduledTasks.setupEventHandlers(mensaMenuDishesRepo);
 
     try {
       //Gets all names and urls of mensa.
@@ -85,7 +78,7 @@ export class RepoScheduledTasks {
         })
       );
 
-      console.log('Menus have been updated.');
+      console.log('All menus have been updated successfully');
     } catch (error) {
       console.error('An error occurred while updating menus:', error);
     }
