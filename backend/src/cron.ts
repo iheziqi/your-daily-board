@@ -15,6 +15,7 @@ import {
 } from './services';
 import { getDirPathOfEmailTemplate } from './views/emails/v1/render';
 import MensaMenuScraper from './scrapers/MensaMenuScraper';
+import { logger } from './logging/logger.cron';
 
 type scheduledTasks = 'FETCH_MENSA_MENU' | 'SEND_EMAIL';
 
@@ -59,8 +60,8 @@ const cronJobService = CronJobService.getInstance();
 cronJobService.addJob('FETCH_MENSA_MENU', {
   schedule: '0 10 * * 1-5',
   task: async () => {
-    await doScheduledTask('FETCH_MENSA_MENU').catch(e => {
-      console.error(e.message);
+    await doScheduledTask('FETCH_MENSA_MENU').catch(() => {
+      logger.error('An error occurred during FETCH_MENSA_MENU');
     });
   },
   onComplete: null,
@@ -69,8 +70,8 @@ cronJobService.addJob('FETCH_MENSA_MENU', {
 cronJobService.addJob('SEND_EMAIL', {
   schedule: '30 10 * * 1-5',
   task: async () => {
-    await doScheduledTask('SEND_EMAIL').catch(e => {
-      console.error(e.message);
+    await doScheduledTask('SEND_EMAIL').catch(() => {
+      logger.error('An error occurred during SEND_EMAIL');
     });
   },
   onComplete: null,
