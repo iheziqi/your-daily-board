@@ -1,6 +1,8 @@
 import KnexService from './database/KnexService';
 import {
   MensaInfoRepository,
+  MensaMenuDishesRepository,
+  MensaMenuRepository,
   SubscriptionRepository,
   UserRepository,
 } from './repositories';
@@ -12,18 +14,25 @@ import {
   EmailServiceFactory,
 } from './services';
 import { getDirPathOfEmailTemplate } from './views/emails/v1/render';
+import MensaMenuScraper from './scrapers/MensaMenuScraper';
 
 type scheduledTasks = 'FETCH_MENSA_MENU' | 'SEND_EMAIL';
 
 const knexInstance = KnexService.getInstance();
+const userRepo = new UserRepository(knexInstance);
+const mensaInfoRepo = new MensaInfoRepository(knexInstance);
+const mensaMenuRepo = new MensaMenuRepository(knexInstance);
+const mensaDishesRepo = new MensaMenuDishesRepository(knexInstance);
+const mensaMenuScraper = new MensaMenuScraper();
+const subscriptionRepo = new SubscriptionRepository(knexInstance);
 
 const serviceScheduledTasks = new ServiceScheduledTasks(
-  new UserRepository(knexInstance),
+  userRepo,
   EmailServiceFactory.getInstance().getEmailService(),
   new RenderService(
     getDirPathOfEmailTemplate(),
-    new SubscriptionRepository(knexInstance),
-    new MensaInfoRepository(knexInstance)
+    subscriptionRepo,
+    mensaInfoRepo
   )
 );
 
@@ -32,7 +41,12 @@ async function doScheduledTask(type: scheduledTasks) {
     case 'FETCH_MENSA_MENU':
       await Promise.all([
         RepoScheduledTasks.saveExchangeRateToDatabase(),
-        RepoScheduledTasks.saveMensaMenusToDatabase(),
+        RepoScheduledTasks.saveMensaMenusToDatabase(
+          mensaInfoRepo,
+          mensaMenuRepo,
+          mensaDishesRepo,
+          mensaMenuScraper
+        ),
       ]);
       break;
     case 'SEND_EMAIL':
