@@ -5,6 +5,12 @@ ensureDbDir();
 const knex = KnexService.getInstance();
 
 async function setupDatabase() {
+  const hasMigrations = await knex.schema.hasTable('knex_migrations');
+  if (hasMigrations) {
+    console.log('Database already initialized. Skipping setup.');
+    return;
+  }
+
   console.log(
     '-------------------------- start to run database migration... ----------------------------'
   );
