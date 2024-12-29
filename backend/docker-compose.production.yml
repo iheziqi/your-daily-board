@@ -21,10 +21,11 @@ services:
     ports:
       - '${PORT}:${PORT}'
     command: >
-      bash -c "NODE_ENV='production' node ./build/src/config/setup-database.js
-      && ./build/src/entrypoint.sh"
+      bash -c "node ./build/src/config/setup-database.js && ./build/src/entrypoint.sh"
     volumes:
       - sqlite_data:/app/build/src/database/sqlite # use named volume to persist sqlite file
+      - ./logs:/app/logs # Persist combined logs
+      - ./error-logs:/app/error-logs # Persist error logs
 
 volumes:
   sqlite_data:
