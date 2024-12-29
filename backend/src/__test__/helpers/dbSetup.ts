@@ -42,6 +42,7 @@ export async function cleanupTables(knexInstance: Knex): Promise<void> {
     const tables = [
       'menu_subscriptions',
       'exchange_rate_subscriptions',
+      'mensa_menu_dishes',
       'mensa_menu',
       'exchange_rate',
       'users_verifying',

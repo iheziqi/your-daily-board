@@ -14,6 +14,7 @@ import {
   setExchangeRateSubscription,
 } from './exchangeRateSettings';
 import { getMensaInfo } from './mensaInfo';
+import { getMensaMenu, getMensaMenuDishes } from './mensaMenu';
 import { getExchangeRateInfo } from './exchangeRateInfo';
 import { getDailyBoardEmailPreview } from './yourDailyBoardEmail';
 import { dbTrainTicketPrice } from './dbTrainTicketPrice';
@@ -29,6 +30,8 @@ export {
   getExchangeRateSubscription,
   setExchangeRateSubscription,
   getMensaInfo,
+  getMensaMenu,
+  getMensaMenuDishes,
   getExchangeRateInfo,
   getDailyBoardEmailPreview,
   dbTrainTicketPrice,

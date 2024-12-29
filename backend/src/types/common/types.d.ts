@@ -22,6 +22,7 @@ type MensaID =
   | 'bingstrasse'
   | 'eich'
   | 'ingo'
+  | 'mtneuburg'
   | 'ansb'
   | 'trie';
 

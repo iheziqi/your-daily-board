@@ -16,3 +16,13 @@ interface DMensaInfo {
   name: string;
   url: string;
 }
+
+/**
+ * mensa_menu_dishes table
+ */
+interface DMensaDish {
+  id?: number;
+  menu_id?: number;
+  dish_name: string;
+  dish_category: string;
+}

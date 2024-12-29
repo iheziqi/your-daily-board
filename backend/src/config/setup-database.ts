@@ -6,19 +6,25 @@ const knex = KnexService.getInstance();
 
 async function setupDatabase() {
   console.log(
-    '-------------------------- start to run database migration ----------------------------'
+    '-------------------------- start to run database migration... ----------------------------'
   );
   await knex.migrate.latest();
+  console.log(
+    '-------------------------- database migration done! ----------------------------'
+  );
 
   console.log(
-    '-------------------------- start to load see data ----------------------------'
+    '-------------------------- start to load seed data... ----------------------------'
   );
   await knex.seed.run();
+  console.log(
+    '-------------------------- seed data loaded! ----------------------------'
+  );
 }
 
 setupDatabase()
   .then(() => {
-    console.log('database initial setup done!');
+    console.log('database initial setup successful!');
   })
   .catch(e => {
     console.error(e);

@@ -3,11 +3,17 @@ import {
   getDailyBoardEmailPreview,
   getExchangeRateInfo,
   getMensaInfo,
+  getMensaMenu,
+  getMensaMenuDishes,
 } from '../controllers';
 
 const router = express.Router();
 
 router.get('/mensa', getMensaInfo);
+
+router.get('/mensa_menu', getMensaMenu);
+
+router.get('/mensa_menu_dishes', getMensaMenuDishes);
 
 router.get('/exchange_rate', getExchangeRateInfo);
 
