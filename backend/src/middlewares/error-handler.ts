@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import createError from 'http-errors';
+import { logger } from '../logging/logger';
 
 export function errorHandler(
   err: Error,
@@ -9,7 +10,7 @@ export function errorHandler(
 ) {
   if (err instanceof createError.HttpError) {
     // Handle HTTP errors with specific status codes and messages
-    console.error(err);
+    logger.error(err);
     return res.status(err.statusCode).json({
       error: true,
       errorCode: err.status,
@@ -17,7 +18,7 @@ export function errorHandler(
     });
   } else {
     // Handle unexpected errors with a generic message and log them
-    console.error(`Unexpected error: ${err.stack}`);
+    logger.error(`Unexpected error: ${err.stack}`);
     return res.status(500).json({
       error: true,
       errorCode: 'INTERNAL_ERROR', // Use a custom code for internal errors
