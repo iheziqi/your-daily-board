@@ -1,5 +1,6 @@
 import { Knex } from 'knex';
 import { getCurrentDate } from '../utils/helpers';
+import { logger } from '../logging/logger';
 
 class SubscriptionRepository implements ISubscriptionRepository {
   private db: Knex;
@@ -42,7 +43,9 @@ class SubscriptionRepository implements ISubscriptionRepository {
       });
       return { user_id: user.id!, from_to: from_to };
     } else {
-      console.log(`User with email ${email} not found.`);
+      logger.warn(
+        `SubscriptionRepository#createExchangeRateSubscription: user with email ${email} not found.`
+      );
       return;
     }
   }
@@ -68,7 +71,9 @@ class SubscriptionRepository implements ISubscriptionRepository {
       });
       return { user_id: user.id!, mensa_id: mensaId };
     } else {
-      console.log(`User with email ${email} not found.`);
+      logger.warn(
+        `SubscriptionRepository#createMensaMenuSubscription: user with email ${email} not found.`
+      );
       return;
     }
   }
@@ -97,7 +102,9 @@ class SubscriptionRepository implements ISubscriptionRepository {
 
       return subscriptions;
     } else {
-      console.log(`User with email ${email} not found.`);
+      logger.warn(
+        `SubscriptionRepository#getExchangeRateSubscriptionByUserEmail: user with email ${email} not found.`
+      );
       return;
     }
   }
@@ -126,7 +133,9 @@ class SubscriptionRepository implements ISubscriptionRepository {
 
       return subscriptions;
     } else {
-      console.log(`User with email ${email} not found.`);
+      logger.warn(
+        `SubscriptionRepository#getMensaMenuSubscriptionByUserEmail: user with email ${email} not found.`
+      );
       return;
     }
   }

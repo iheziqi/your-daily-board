@@ -1,5 +1,6 @@
 import { Knex } from 'knex';
 import MensaInfoScraper from '../scrapers/MensaInfoScraper';
+import { logger } from '../logging/logger';
 
 class MensaInfoRepository implements IMensaInfoRepository {
   /** Database connection object. */
@@ -53,7 +54,9 @@ class MensaInfoRepository implements IMensaInfoRepository {
     const allMensaInfo = await myMensaInfoScraper.getAllMensaInfo();
 
     if (!allMensaInfo) {
-      console.log('Mensa info array is null!');
+      logger.warn(
+        'MensaInfoRepository#loadAllMensaInfo: Mensa info array is null!'
+      );
       return;
     }
 
