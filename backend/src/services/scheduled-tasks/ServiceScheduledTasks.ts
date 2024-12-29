@@ -1,3 +1,4 @@
+import { logger } from '../../logging/logger.cron';
 import { UserRepository } from '../../repositories';
 import { IEmailService } from '../email/IEmailService';
 import RenderService from '../RenderService';
@@ -51,7 +52,7 @@ export class ServiceScheduledTasks {
       summary.totalUsers = verifiedUsers.length;
 
       if (verifiedUsers.length === 0) {
-        console.info('No verified users found in the database.');
+        logger.info('No verified users found in the database.');
         return summary;
       }
 
@@ -71,7 +72,7 @@ export class ServiceScheduledTasks {
     } catch (error) {
       summary.error =
         error instanceof Error ? error : new Error('Unknown error occurred');
-      console.error('Failed to send daily board emails:', error);
+      logger.error('Failed to send daily board emails:', error);
     }
 
     return summary;
@@ -117,7 +118,7 @@ export class ServiceScheduledTasks {
 
     await Promise.all(emailPromises);
 
-    console.log(
+    logger.info(
       `Batch ${batchIndex + 1}: ${result.successCount} succeeded, ${
         result.failedCount
       } failed`

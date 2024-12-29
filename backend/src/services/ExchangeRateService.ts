@@ -1,6 +1,7 @@
 import { Knex } from 'knex';
 import { ExchangeRepository } from '../repositories/index';
 import { getCurrentDate, getPreviousDay } from '../utils/helpers';
+import { logger } from '../logging/logger';
 
 class ExchangeRateService {
   private exchangeRateRepo: ExchangeRepository;
@@ -37,7 +38,7 @@ class ExchangeRateService {
 
       return parseFloat(volatility.toFixed(4));
     } catch (error) {
-      console.log(
+      logger.error(
         `An error occurred when calculating the volatility of exchange rates ${fromTo} between ${getCurrentDate()} and ${getPreviousDay(
           getCurrentDate()
         )}`,

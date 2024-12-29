@@ -2,6 +2,7 @@ import * as nodemailer from 'nodemailer';
 import { loadEnv } from '../../utils/loadEnv';
 import { IEmailService } from './IEmailService';
 import { EmailOptions, EmailResult } from './types';
+import { logger } from '../../logging/logger';
 
 /**
  * Service for sending email using nodemailer.
@@ -72,7 +73,7 @@ class EmailService implements IEmailService {
       };
     } catch (error) {
       const errorMessage = `Email failed to send: from ${from}, to ${to}, subject: ${subject}`;
-      console.error('Error sending email:', error);
+      logger.error('Error sending email:', error);
 
       return {
         success: false,
@@ -86,7 +87,7 @@ class EmailService implements IEmailService {
       await this.transporter.verify();
       return true;
     } catch (error) {
-      console.error('SMTP connection verification failed:', error);
+      logger.error('SMTP connection verification failed:', error);
       return false;
     }
   }

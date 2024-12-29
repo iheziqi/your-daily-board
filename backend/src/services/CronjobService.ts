@@ -1,5 +1,6 @@
 /* eslint-disable prefer-arrow-callback */
 import * as cron from 'cron';
+import { logger } from '../logging/logger.cron';
 
 export interface CronJobDefinition {
   schedule: string; // Cron schedule expression
@@ -41,14 +42,14 @@ class CronJobService {
 
     this.jobs.set(name, newJob);
 
-    console.log(`Cron job ${name} at ${newJob.cronTime} has been added.`);
+    logger.info(`Cron job ${name} at ${newJob.cronTime} has been added.`);
   }
 
   startJob(name: string): void {
     const job = this.jobs.get(name);
     if (job) {
       job.start();
-      console.log(`${name} at ${job.cronTime} started.`);
+      logger.info(`${name} at ${job.cronTime} started.`);
     } else {
       throw new Error(`Job with name ${name} does not exist.`);
     }
@@ -58,7 +59,7 @@ class CronJobService {
     const job = this.jobs.get(name);
     if (job) {
       job.stop();
-      console.log(`${name} at ${job.cronTime} stopped.`);
+      logger.info(`${name} at ${job.cronTime} stopped.`);
     } else {
       throw new Error(`Job with name ${name} does not exist.`);
     }
@@ -69,7 +70,7 @@ class CronJobService {
     if (job) {
       job.stop();
       this.jobs.delete(name);
-      console.log(`${name} at deleted.`);
+      logger.info(`${name} at deleted.`);
     } else {
       throw new Error(`Job with name ${name} does not exist.`);
     }
