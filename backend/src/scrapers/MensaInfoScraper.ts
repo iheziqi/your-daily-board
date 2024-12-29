@@ -1,5 +1,6 @@
 import { JSDOM } from 'jsdom';
 import Scraper from './Scraper';
+import { logger } from '../logging/logger';
 
 class MensaInfoScraper {
   private url: string;
@@ -29,7 +30,7 @@ class MensaInfoScraper {
 
       return this.mensaInfoList;
     } catch (error) {
-      console.log(error);
+      logger.error(error);
       return null;
     }
   }
