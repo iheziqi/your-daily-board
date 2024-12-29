@@ -1,4 +1,5 @@
 import fs from 'fs';
+import { generateSecretKey } from '../utils/crypto';
 
 /**
  * Write keys (without values) to a .env file.
@@ -17,17 +18,11 @@ function writeEnvKeys(keys: string[], filePath = `${__dirname}/../../.env`) {
 
 // create .env file under root directory
 const keysToWrite = [
-  'DB_HOST=',
-  'DB_PORT=',
-  'DB_DATABASE=',
-  'DB_USER=',
-  'DB_PASSWORD=',
-  'DB_TYPE=',
   'SMTP_HOST=',
   'SMTP_PORT=',
   'SMTP_USER=',
   'SMTP_PASS=',
-  'SECRET_KEY=',
+  `SECRET_KEY=${generateSecretKey()}`,
   'ROOT_URL=',
   'FRONTEND_URL=',
   'NODE_ENV=',
