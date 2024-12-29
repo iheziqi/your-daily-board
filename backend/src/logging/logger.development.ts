@@ -1,19 +1,15 @@
-import { createLogger, format, transports } from 'winston';
-const { combine, timestamp, json, colorize } = format;
+import winston from 'winston';
+const { combine, timestamp, printf, colorize, align } = winston.format;
 
-const consoleLogFormat = format.combine(
-  format.colorize(),
-  format.printf(({ level, message, timestamp }) => {
-    return `[${timestamp}]${level}: ${message}`;
-  })
-);
-
-export const logger = createLogger({
-  level: 'info',
-  format: combine(colorize(), timestamp(), json()),
-  transports: [
-    new transports.Console({
-      format: consoleLogFormat,
+export const logger = winston.createLogger({
+  level: process.env.LOG_LEVEL || 'info',
+  format: combine(
+    colorize({ all: true }),
+    timestamp({
+      format: 'YYYY-MM-DD hh:mm:ss.SSS A',
     }),
-  ],
+    align(),
+    printf(info => `[${info.timestamp}] ${info.level}: ${info.message}`)
+  ),
+  transports: [new winston.transports.Console()],
 });
