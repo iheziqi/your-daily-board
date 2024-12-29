@@ -6,9 +6,10 @@ import {
 } from '../../scrapers/ExchangeRateScraper';
 import { ExchangeRepository } from '../../repositories';
 import { ExchangeRateService } from '../index';
-import { extractDishes } from '../../repositories/helpers/extract-mensa-dishes';
 import MensaEventService from '../mensa/MensaEventService';
+import { extractDishes } from '../../repositories/helpers/extract-mensa-dishes';
 import { getCurrentDate } from '../../utils/helpers';
+import { logger } from '../../logging/logger.cron';
 
 export class RepoScheduledTasks {
   private static mensaEventService = MensaEventService.getInstance();
@@ -26,20 +27,22 @@ export class RepoScheduledTasks {
             dishes = extractDishes(menu);
           }
           await mensaMenuDishesRepo.saveDishes(mensaId, dishes);
+          logger.info(
+            `Mensa Dishes: ${mensaId} updated ${dishes.length} dishes successfully!`
+          );
         } catch (error) {
           RepoScheduledTasks.mensaEventService.emitDishesSaveFailed({
             mensaId,
             error: error as Error,
             date,
           });
-          console.error(`Error saving dishes for ${mensaId}:`, error);
         }
       }
     );
 
     RepoScheduledTasks.mensaEventService.onDishesSaveFailed(
       ({ mensaId, error }) => {
-        console.error(`Failed to save dishes for mensa ${mensaId}:`, error);
+        logger.error(`Error saving dishes for ${mensaId}:`, error);
         // TODO: add retry logic here
       }
     );
@@ -66,10 +69,14 @@ export class RepoScheduledTasks {
       // Using Promise.all to run the scraping and saving in parallel.
       await Promise.all(
         mensaIds.map(async mensaId => {
-          const menu = await mensaMenuScraper.getMenu(mensaInfo[mensaId].url);
+          const url = mensaInfo[mensaId].url;
+          const menu = await mensaMenuScraper.getMenu(url);
           await mensaMenuRepo.loadMensaMenuOfToday(menu, mensaId);
 
-          if (!menu) return;
+          if (!menu) {
+            logger.info(`Mensa Menu: ${mensaId}(${url}) has no menu today.`);
+            return;
+          }
           // Emits event to extract and save mensa dishes
           this.mensaEventService.emitMenuSaved({
             mensaId,
@@ -79,9 +86,11 @@ export class RepoScheduledTasks {
         })
       );
 
-      console.log('All menus have been updated successfully');
+      logger.info(
+        '--------------- All menus have been updated successfully! ---------------'
+      );
     } catch (error) {
-      console.error('An error occurred while updating menus:', error);
+      logger.error('An error occurred while updating menus:', error);
     }
   }
 
@@ -104,7 +113,7 @@ export class RepoScheduledTasks {
         const exchangeRateString = await fetchExchangeRate(fromTo);
 
         if (!exchangeRateString) {
-          console.error(
+          logger.error(
             `Error fetching exchange rate for ${fromTo}. Skipping database update.`
           );
           return;
@@ -123,15 +132,19 @@ export class RepoScheduledTasks {
         await exchangeRateRepo.loadExchangeRateOfToday(
           exchangeRateNum,
           fromTo,
-          changeFromYesterday!
+          changeFromYesterday ? changeFromYesterday : 0
         );
+
+        logger.info(`Exchange Rate: ${fromTo} at ${exchangeRateNum} updated.`);
       });
 
       await Promise.all(exchangePromises);
 
-      console.log('Exchange rates have been updated.');
+      logger.info(
+        '----------------- Exchange rates have been updated successfully! -----------------'
+      );
     } catch (error) {
-      console.error('An error occurred while updating exchange rates:', error);
+      logger.error('An error occurred while updating exchange rates:', error);
     }
   }
 }
