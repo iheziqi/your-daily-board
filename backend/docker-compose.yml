@@ -6,8 +6,7 @@ services:
     container_name: yourdailyboard_backend
     image: yourdailyboard_backend
     env_file:
-      - path: ./.env
-        required: true
+      - .env
     environment:
       NODE_ENV: ${NODE_ENV}
       SMTP_HOST: ${SMTP_HOST}
@@ -23,9 +22,21 @@ services:
     command: >
       bash -c "node ./build/src/config/setup-database.js && ./build/src/entrypoint.sh"
     volumes:
-      - sqlite_data:/app/build/src/database/sqlite # use named volume to persist sqlite file
-      - ./logs:/app/logs # Persist combined logs
-      - ./error-logs:/app/error-logs # Persist error logs
+      - sqlite_data:/app/build/src/database/sqlite # persist database
+      - ./logs:/app/logs # bind mount for logs
+      - ./error-logs:/app/error-logs # bind mount for error logs
+    restart: unless-stopped
+
+  nginx:
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
+    container_name: yourdailyboard_nginx
+    ports:
+      - '80:80'
+    depends_on:
+      - yourdailyboard_backend
+    restart: unless-stopped
 
 volumes:
   sqlite_data:
