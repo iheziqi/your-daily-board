@@ -1,0 +1,43 @@
+services:
+  yourdailyboard_frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    container_name: yourdailyboard_frontend
+    image: yourdailyboard_frontend
+    env_file: ./frontend/.env
+    environment:
+      VITE_BACKEND_API_BASE_URL: ${VITE_BACKEND_API_BASE_URL}
+    ports:
+      - '80:80'
+    depends_on:
+      - yourdailyboard_backend
+
+  yourdailyboard_backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: yourdailyboard_backend
+    image: yourdailyboard_backend
+    env_file: ./backend/.env
+    environment:
+      NODE_ENV: ${NODE_ENV}
+      SMTP_HOST: ${SMTP_HOST}
+      SMTP_PORT: ${SMTP_PORT}
+      SMTP_USER: ${SMTP_USER}
+      SMTP_PASS: ${SMTP_PASS}
+      SECRET_KEY: ${SECRET_KEY}
+      PORT: ${PORT}
+      ROOT_URL: ${ROOT_URL}
+      FRONTEND_URL: ${FRONTEND_URL}
+    ports:
+      - '${PORT}:${PORT}'
+    command: >
+      bash -c "node ./build/src/config/setup-database.js && ./build/src/entrypoint.sh"
+    volumes:
+      - sqlite_data:/app/build/src/database/sqlite
+      - ./backend/logs:/app/logs
+      - ./backend/error-logs:/app/error-logs
+
+volumes:
+  sqlite_data:
