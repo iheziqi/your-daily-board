@@ -9,7 +9,7 @@ A daily email newsletter of the refectory, cafeteria, cafebar menus from the Stu
 
 ## link
 
-Do you study in the metropolis Nuremberg, visit university refectories daily, and don't know what to eat? 
+Do you study in the metropolis Nuremberg, go to university refectories daily, and don't know what to eat? 
 
 Subscribe to an email newsletter that sends you all menus of uni refectories on a daily basis.
 
@@ -49,11 +49,22 @@ Backend:
 - ts-node for development and testing
 - Express
 - Knex
-- MySQL
+- SQLite
 
 ## Setup
 ### Backend
-First please make sure MySQL is installed on your machine.
+
+#### Running with docker
+Backend of this app is fully containerized. You can run it with docker compose.
+
+Just run the following command in the root directory of the project:
+
+```bash
+cd backend
+docker compose up --build
+```
+
+#### Running without docker
 
 Clone the repository and get into the backend directory.
 run:
@@ -71,36 +82,37 @@ npm compile
 After compilation, set up the .env file in the **build** folder
 
 ```text
-DB_HOST=
-DB_PORT=
-DB_DATABASE=
-DB_USER=
-DB_PASSWORD=
-DB_TYPE=
-
+# SMTP server to send email
 SMTP_HOST=
 SMTP_PORT=
 SMTP_USER=
 SMTP_PASS=
 
+# secret key for JWT
 SECRET_KEY=[generate a secret key using a libary like Crypto in Node, something like `crypto.randomBytes(64).toString('hex');`]
 
-ROOT_URL=http://localhost:5000 [please notice that if you change the port in package.json, also remember to change the port here]
+# root url of the backend
+ROOT_URL=[root url of the backend, if you start the backend and frontend on the same machine, it is http://localhost:5000]
+
+# frontend url
 FRONTEND_URL=[frontend URL, if you start the frontend and backend on the same machine, it is http://localhost:5173]
+
+# node environment
+NODE_ENV=[development or production]
 ```
 
 
-Then run the setup script setup.js in the src/config folder:
+Then run the database setup script setup-database.js in the src/build/config folder, it will run all database migrations and seeds.
 
 ```bash
-node setup.js
+node setup-database.js
 ```
 
 
-Lastly, go to the src folder inside the build directory:
+Lastly, go to the src folder inside the build directory, and there is a script entrypoint.sh to start all backend services, run it:
 
 ```bash
-npm run start
+./src/entrypoint.sh
 ```
 
 Or if you use PM2:
@@ -110,18 +122,20 @@ pm2 start app.js
 ```
 
 ### Frontend
-For development:
+#### For development:
 
 ```bash
 npm run dev
 ```
 
-For deployment, you have a lot of options. Usually, host service is the best choice because you don't need to worry about the building process.
+#### For deployment:
 
-Or if you want to build the frontend by yourself, just like building any vite project:
+You have a lot of options. Usually, host service is the best choice because you don't need to worry about the building process.
+
+There is a docker-compose.yml file in the root directory of the project, it will build the frontend and backend and run them.
 
 ```bash
-npm run build
+docker compose up --build
 ```
 
 ## License
