@@ -1,6 +1,7 @@
 import { JSDOM } from 'jsdom';
 import { removeNewLines } from '../utils/helpers';
 import Scraper from './Scraper';
+import { logger } from '../logging/logger';
 
 /**
  * Scrapes the menu of given Mensa.
@@ -20,7 +21,7 @@ class MensaMenuScraper {
       }
       return MensaMenuScraper.extractMenu(mensaPage);
     } catch (error) {
-      console.error(error);
+      logger.error(error);
       return null;
     }
   }

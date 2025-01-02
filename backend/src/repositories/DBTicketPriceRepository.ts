@@ -1,4 +1,5 @@
 import { Knex } from 'knex';
+import { logger } from '../logging/logger';
 
 class DBTicketPriceRepository implements IDBTicketPriceRepository {
   private db: Knex;
@@ -59,7 +60,7 @@ class DBTicketPriceRepository implements IDBTicketPriceRepository {
 
       return queryResult;
     } catch (error) {
-      console.error(
+      logger.error(
         `An error occurred when getting train ticket information from ${startStation} to ${destStation} at ${departureTime}:`,
         (error as Error).message
       );
@@ -94,7 +95,7 @@ class DBTicketPriceRepository implements IDBTicketPriceRepository {
 
       return queryResult;
     } catch (error) {
-      console.error(
+      logger.error(
         `An error occurred when getting train ticket information from ${startStation} to ${destStation} at ${departureTime}:`,
         (error as Error).message
       );
@@ -117,7 +118,7 @@ class DBTicketPriceRepository implements IDBTicketPriceRepository {
 
       return ticketInfo;
     } catch (error) {
-      console.error(
+      logger.error(
         'An error occurred when inserting train ticket information:',
         (error as Error).message
       );

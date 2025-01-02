@@ -1,5 +1,6 @@
 import { Knex } from 'knex';
 import { getCurrentDate } from '../utils/helpers';
+import { logger } from '../logging/logger';
 
 class MensaMenuRepository implements IMensaMenuRepository {
   private db: Knex;
@@ -24,11 +25,13 @@ class MensaMenuRepository implements IMensaMenuRepository {
         date: getCurrentDate(),
         menu: menu,
       });
-      console.log(`Menu of ${mensaId} has been loaded on ${getCurrentDate()}`);
+      logger.info(
+        `Menu of ${mensaId} has been successfully loaded on ${getCurrentDate()}`
+      );
       return menu;
     } catch (error) {
-      console.error(
-        `An error ocurred when loading menu of mensa ${mensaId}.`,
+      logger.error(
+        `An error occurred when loading menu of mensa ${mensaId}`,
         error
       );
       return null;
@@ -53,8 +56,8 @@ class MensaMenuRepository implements IMensaMenuRepository {
 
       return queryResult?.menu;
     } catch (error) {
-      console.error(
-        `An error ocurred when getting menu of mensa ${mensaId} on ${date}.`,
+      logger.error(
+        `An error occurred when getting menu of mensa ${mensaId} on ${date}`,
         error
       );
       return;

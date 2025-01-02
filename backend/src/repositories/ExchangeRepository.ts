@@ -1,5 +1,6 @@
 import { Knex } from 'knex';
 import { getCurrentDate } from '../utils/helpers';
+import { logger } from '../logging/logger';
 
 class ExchangeRepository implements IExchangeRateRepository {
   private db: Knex;
@@ -36,7 +37,7 @@ class ExchangeRepository implements IExchangeRateRepository {
 
       return data;
     } catch (error) {
-      console.error(
+      logger.error(
         `An error occurred when loading exchange rate of ${from_to} on ${getCurrentDate()}`,
         error
       );

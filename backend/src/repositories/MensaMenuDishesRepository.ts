@@ -1,5 +1,6 @@
 import { Knex } from 'knex';
 import { getCurrentDate } from '../utils/helpers';
+import { logger } from '../logging/logger';
 
 class MensaMenuDishesRepository implements IMensaMenuDishesRepository {
   constructor(private knexInstance: Knex) {}
@@ -38,7 +39,10 @@ class MensaMenuDishesRepository implements IMensaMenuDishesRepository {
         await trx('mensa_menu_dishes').insert(dishesData);
       });
     } catch (error) {
-      console.error('Error saving mensa dishes:', error);
+      logger.error(
+        'MensaMenuDishesRepository#saveDishes: error saving mensa dishes',
+        error
+      );
       throw error;
     }
   }
@@ -69,7 +73,10 @@ class MensaMenuDishesRepository implements IMensaMenuDishesRepository {
 
       return dishes;
     } catch (error) {
-      console.error('Error getting mensa dishes:', error);
+      logger.error(
+        `MensaMenuDishesRepository#getMensaDishesOn ${mensaId} ${date}: error getting mensa dishes`,
+        error
+      );
       throw error;
     }
   }

@@ -1,4 +1,5 @@
 import axios, { AxiosResponse } from 'axios';
+import { logger } from '../logging/logger';
 
 class Scraper {
   /**
@@ -30,11 +31,10 @@ class Scraper {
             `Request to ${url} failed with status code ${response.status}.`
           );
         }
-      } catch (error: any) {
-        // Log the error for debugging purposes.
-        console.error(
+      } catch (error: unknown) {
+        logger.error(
           `Error fetching the ${url} page (Attempt ${retry + 1}): \n`,
-          error.message
+          error
         );
 
         // Wait for the specified delay before retrying the request.

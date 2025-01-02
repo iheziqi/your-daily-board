@@ -8,7 +8,7 @@ import createError from 'http-errors';
  */
 export function generateSecretKey() {
   const key = crypto.randomBytes(32).toString('hex');
-  console.log('Generated Key:', key);
+  return key;
 }
 
 /**

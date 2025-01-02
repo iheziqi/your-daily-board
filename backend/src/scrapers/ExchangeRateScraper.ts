@@ -8,22 +8,17 @@ import Scraper from './Scraper';
  */
 export async function fetchExchangeRate(
   from_to: from_to
-): Promise<string | undefined> {
-  try {
-    const url = `https://www.google.com/finance/quote/${from_to}`;
-    // Gets the raw html of the website.
-    const rawHTML = await Scraper.fetchRawHTML(url);
+): Promise<string | null | undefined> {
+  const url = `https://www.google.com/finance/quote/${from_to}`;
+  // Gets the raw html of the website.
+  const rawHTML = await Scraper.fetchRawHTML(url);
 
-    // Extracts the exchange rate.
-    const { document } = new JSDOM(rawHTML).window;
-    const currencyRateElement = document.querySelector('.YMlKec.fxKbKc');
-    const currencyRate = currencyRateElement?.textContent || '0';
+  // Extracts the exchange rate.
+  const { document } = new JSDOM(rawHTML).window;
+  const currencyRateElement = document.querySelector('.YMlKec.fxKbKc');
+  const currencyRate = currencyRateElement?.textContent;
 
-    return currencyRate;
-  } catch (error) {
-    console.log(error);
-    return undefined;
-  }
+  return currencyRate;
 }
 
 /**

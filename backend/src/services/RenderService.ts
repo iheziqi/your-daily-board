@@ -5,6 +5,7 @@ import {
   MensaInfoRepository,
 } from '../repositories/index';
 import { loadEnv } from '../utils/loadEnv';
+import { logger } from '../logging/logger';
 
 loadEnv();
 
@@ -65,7 +66,7 @@ class RenderService {
 
       return this.renderTemplate('boardSkeleton', emailProps);
     } catch (error) {
-      console.error('Error rendering email:', error);
+      logger.error('Error rendering email:', error);
       throw new Error(
         'An error occurred while rendering your daily board email.'
       );

@@ -1,9 +1,8 @@
 // dependencies
 import express from 'express';
 import path from 'path';
-import { loadEnv } from './utils/loadEnv';
 import cookieParser from 'cookie-parser';
-import logger from 'morgan';
+import morgan from 'morgan';
 import createError from 'http-errors';
 
 // extra security packages
@@ -14,6 +13,9 @@ import { rateLimit } from 'express-rate-limit';
 
 // middle wares
 import { errorHandler } from './middlewares/error-handler';
+// utils
+import { loadEnv } from './utils/loadEnv';
+import { logger } from './logging/logger';
 
 // routes
 import users from './routes/users';
@@ -32,7 +34,7 @@ app.set('view engine', 'ejs');
 // Set the views directory
 app.set('views', path.join(__dirname, 'views'));
 
-app.use(logger('combined'));
+app.use(morgan('combined'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
@@ -89,4 +91,4 @@ app.use((_req, _res, next) => {
 app.use(errorHandler);
 
 const port = parseInt(process.env.PORT || '5000', 10);
-app.listen(port, () => console.log(`Server is listening on port ${port}...`));
+app.listen(port, () => logger.info(`Server is listening on port ${port}...`));
