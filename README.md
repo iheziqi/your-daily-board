@@ -57,7 +57,7 @@ Backend:
 #### Running with docker
 Backend of this app is fully containerized. You can run it with docker compose.
 
-Just run the following command in the root directory of the project:
+Just create a .env file in the /backend directory of the project following the .env.example file, and run the following command in the root directory of the project:
 
 ```bash
 cd backend
